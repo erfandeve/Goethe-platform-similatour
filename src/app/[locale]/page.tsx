@@ -19,6 +19,8 @@ import { Section, SectionHeading } from "@/components/ui/Section";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale } from "@/i18n/config";
 import { apiFetch } from "@/lib/api";
+import { EMPTY_HOME, orOffline } from "@/lib/offline";
+import { OfflineNotice } from "@/components/layout/OfflineNotice";
 import { buildMetadata, JsonLd, SITE_URL } from "@/lib/seo";
 import type { HomePayload } from "@/lib/types";
 
@@ -46,7 +48,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   if (!isLocale(locale)) notFound();
 
   const dict = await getDictionary(locale);
-  const data = await apiFetch<HomePayload>("/home/", { locale, revalidate: 300 });
+  const [data, online] = await orOffline<HomePayload>(
+    apiFetch<HomePayload>("/home/", { locale, revalidate: 300 }),
+    EMPTY_HOME,
+  );
 
   const organization = {
     "@context": "https://schema.org",
@@ -71,6 +76,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return (
     <>
+      {!online && <OfflineNotice locale={locale} />}
       <JsonLd data={[organization, courseList]} />
 
       <Hero locale={locale} dict={dict} stats={data.stats} />
