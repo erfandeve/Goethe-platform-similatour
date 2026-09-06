@@ -6,7 +6,8 @@ simulators, high-frequency exam banks and podcasts, with a personal student pane
 ```
 goteh/
 ├── api/   Django 5 + DRF + MongoEngine (MongoDB)          → http://localhost:8010
-└── web/   Next.js 16 (App Router) + Tailwind 4 + three.js → http://localhost:3000
+└── src/   Next.js 16 (App Router) + Tailwind 4 + three.js → http://localhost:3000
+         (the Next app lives at the repo root so Vercel needs no Root Directory)
 ```
 
 ## Backend
@@ -62,7 +63,7 @@ Three faces, composed per glyph rather than per page:
 | --- | --- | --- |
 | `--font-bricolage` | Bricolage Grotesque | Latin display / headings |
 | `--font-manrope` | Manrope | Latin body, including `ä ö ü ß` |
-| `--font-yekan` | Yekan Bakh (variable, `web/src/app/fonts/`) | Persian |
+| `--font-yekan` | Yekan Bakh (variable, `src/app/fonts/`) | Persian |
 
 Yekan Bakh ships no accented Latin, and German words appear on every Persian
 page, so its `@font-face` is scoped with `unicode-range` to the Arabic blocks.
@@ -105,7 +106,7 @@ an attempt is open — the runner is served without them and they are only
 returned in the review after submission. Writing tasks carry no automatic
 points and are flagged for teacher grading.
 
-The exam player (`web/src/components/exams/goethe/`) always renders
+The exam player (`src/components/exams/goethe/`) always renders
 left-to-right, in every locale: the design it mirrors is LTR and the exam
 material is entirely German. Persian interface labels inside it carry
 `dir="auto"`. It reproduces the Goethe digital test layout: dark header with the session number and remaining time,
@@ -122,7 +123,7 @@ recordings before going live.
 ## AI speaking teacher
 
 Video lessons with a spoken answer that OpenAI transcribes and a German teacher
-persona grades. Lives in `api/apps/learning` and `web/src/components/learning`;
+persona grades. Lives in `api/apps/learning` and `src/components/learning`;
 the classroom is at `/[locale]/learn/<course-slug>`.
 
 ```bash
@@ -145,7 +146,7 @@ cd api && ./.venv/bin/python manage.py make_staff you@example.com
 ## Frontend
 
 ```bash
-cd web
+cd ..
 npm install
 npm run dev
 ```

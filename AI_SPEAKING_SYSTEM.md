@@ -216,7 +216,7 @@ STORE_AUDIO=false
 AI_MAX_RETRIES=2
 ```
 
-`web/.env.local` holds only the harmless `NEXT_PUBLIC_MAX_AUDIO_DURATION=60`.
+`.env.local` holds only the harmless `NEXT_PUBLIC_MAX_AUDIO_DURATION=60`.
 
 ---
 
@@ -231,7 +231,7 @@ cd api
 ./.venv/bin/python manage.py runserver 8010
 
 # frontend
-cd web && npm run dev
+npm run dev
 ```
 
 Sign in as `student@goteh.de` / `goteh1234` and open

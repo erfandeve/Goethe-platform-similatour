@@ -4,12 +4,12 @@
 
 | بخش | چیست | کجا مستقر می‌شود |
 |---|---|---|
-| `web/` | اپلیکیشن Next.js | **Vercel** |
+| ریشهٔ ریپو | اپلیکیشن Next.js | **Vercel** |
 | `api/` | Django + DRF | **Render / Railway / Fly.io** (ورسل نمی‌تواند جنگو را اجرا کند) |
 | دیتابیس | MongoDB | **MongoDB Atlas** (پلن رایگان کافی است) |
 
 > ⚠️ **مکالمه با هوش مصنوعی بدون بک‌اند کار نمی‌کند.** کلید OpenAI فقط روی سرور
-> جنگو می‌نشیند؛ مرورگر هیچ‌وقت مستقیم با OpenAI حرف نمی‌زند. اگر فقط `web/` را
+> جنگو می‌نشیند؛ مرورگر هیچ‌وقت مستقیم با OpenAI حرف نمی‌زند. اگر فقط فرانت‌اند را
 > روی ورسل بالا بیاورید، سایت باز می‌شود ولی ضبط صدا و تحلیل جواب نمی‌دهد.
 
 ---
@@ -70,11 +70,11 @@
 ## ۳) فرانت‌اند — Vercel
 
 1. [vercel.com/new](https://vercel.com/new) → همین ریپو.
-2. **Root Directory** را روی `web` بگذارید. (مهم — وگرنه بیلد پیدا نمی‌شود.)
-3. **Framework Preset** باید `Next.js` باشد و در بخش *Build & Development
-   Settings* هیچ Override‌ای روشن نباشد. اگر ارور `vite: command not found`
-   گرفتید یعنی یک Build Command قدیمی (`vite build`) روی پروژه مانده — کلید
-   Override را خاموش کنید. این پروژه Vite نیست و هیچ‌جای ریپو Vite ندارد.
+2. **Root Directory** را دست نزنید — اپ Next.js در ریشهٔ ریپو است، پس مقدار
+   پیش‌فرض (`./`) درست است. اگر از قبل روی `web` تنظیم شده، خالی‌اش کنید.
+3. Framework Preset خودش `Next.js` تشخیص داده می‌شود، و `vercel.json` ریشه هم
+   `buildCommand` را صریح `next build` می‌گذارد؛ پس هر Override قدیمی روی
+   پروژه (مثلاً `vite build`) بی‌اثر می‌شود.
 4. Environment Variables:
 
    ```
@@ -85,7 +85,7 @@
    ```
 
    `NEXT_PUBLIC_MEDIA_URL` را **خالی** بگذارید (مقدار تهی، نه حذفش). یعنی
-   ویدیوها و صداها از خود ورسل سرو شوند — نسخه‌شان در `web/public/media/`
+   ویدیوها و صداها از خود ورسل سرو شوند — نسخه‌شان در `public/media/`
    کامیت شده (۷۶ مگابایت) تا نیازی به سرویس فایل نباشد.
 
 5. Deploy.
@@ -107,9 +107,9 @@
 ## اجرای محلی
 
 ```bash
-# ویدیوها و صداها یک نسخه دارند و آن نسخه در web/public/media است.
+# ویدیوها و صداها یک نسخه دارند و آن نسخه در public/media است.
 # برای اینکه بک‌اند محلی هم بتواند سروشان کند:
-cp -R web/public/media api/media
+cp -R public/media api/media
 
 # بک‌اند
 cd api
@@ -118,8 +118,8 @@ cp .env.example .env      # و OPENAI_API_KEY را داخلش بگذارید
 .venv/bin/python manage.py bootstrap
 .venv/bin/python manage.py runserver 8010
 
-# فرانت‌اند
-cd web
+# فرانت‌اند (ریشهٔ ریپو)
+cd ..
 npm install
 cp .env.example .env.local
 npm run dev
