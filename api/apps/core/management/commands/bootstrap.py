@@ -8,6 +8,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
 from apps.accounts.models import User
+from apps.courses.models import Course
 
 STEPS = [
     ("seed", {"flush": True}),          # courses, podcasts, users, wallet
@@ -26,8 +27,17 @@ class Command(BaseCommand):
             default="student@goteh.de",
             help="Email to grant back-office access to.",
         )
+        parser.add_argument(
+            "--if-empty",
+            action="store_true",
+            help="Do nothing when the database already holds courses. Safe to run on every boot.",
+        )
 
     def handle(self, *args, **options):
+        if options["if_empty"] and Course.objects.count():
+            self.stdout.write("Database already seeded; nothing to do.")
+            return
+
         for name, kwargs in STEPS:
             self.stdout.write(self.style.MIGRATE_HEADING(f"→ {name}"))
             call_command(name, **kwargs)

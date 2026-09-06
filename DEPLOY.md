@@ -5,8 +5,8 @@
 | بخش | چیست | کجا مستقر می‌شود |
 |---|---|---|
 | ریشهٔ ریپو | اپلیکیشن Next.js | **Vercel** |
-| `api/` | Django + DRF | **Render / Railway / Fly.io** (ورسل نمی‌تواند جنگو را اجرا کند) |
-| دیتابیس | MongoDB | **MongoDB Atlas** (پلن رایگان کافی است) |
+| `api/` | Django + DRF | **Railway** (ورسل نمی‌تواند جنگو را اجرا کند) |
+| دیتابیس | MongoDB | **Railway** (در همان پروژه) |
 
 > ⚠️ **مکالمه با هوش مصنوعی بدون بک‌اند کار نمی‌کند.** کلید OpenAI فقط روی سرور
 > جنگو می‌نشیند؛ مرورگر هیچ‌وقت مستقیم با OpenAI حرف نمی‌زند. اگر فقط فرانت‌اند را
@@ -14,60 +14,56 @@
 
 ---
 
-## ۱) دیتابیس — MongoDB Atlas
+## ۱) بک‌اند + دیتابیس — Railway (یک حساب، هر دو با هم)
 
-1. در [cloud.mongodb.com](https://cloud.mongodb.com) یک کلاستر رایگان (M0) بسازید.
-2. **Database Access** → یک کاربر با رمز بسازید.
-3. **Network Access** → `0.0.0.0/0` را اضافه کنید (تا سرویس ابری بتواند وصل شود).
-4. رشتهٔ اتصال را بردارید:
-   `mongodb+srv://USER:PASS@cluster0.xxxxx.mongodb.net/goteh?retryWrites=true&w=majority`
+Railway هم جنگو را اجرا می‌کند و هم MongoDB می‌دهد، پس فقط **یک** حساب لازم است.
 
----
-
-## ۲) بک‌اند — Render
-
-`api/render.yaml` و `api/Dockerfile` آماده‌اند.
-
-1. در [render.com](https://render.com) → **New → Web Service** → همین ریپو را وصل کنید.
-2. **Root Directory** را `api` بگذارید؛ Render خودش `Dockerfile` را پیدا می‌کند.
-3. متغیرهای محیطی را ست کنید:
+1. [railway.app](https://railway.app) → با گیت‌هاب وارد شوید.
+2. **New Project → Deploy from GitHub repo** → `Goethe-platform-similatour`.
+3. در تنظیمات سرویس، **Root Directory** را `api` بگذارید. (`api/railway.json` و
+   `api/Dockerfile` بقیه‌اش را خودشان می‌گویند.)
+4. داخل همان پروژه: **+ New → Database → Add MongoDB**.
+5. برو روی سرویس جنگو → تب **Variables** → این‌ها را اضافه کن:
 
    ```
    SECRET_KEY=<یک رشتهٔ تصادفی بلند>
    DEBUG=False
-   ALLOWED_HOSTS=goteh-api.onrender.com
-   CORS_ORIGINS=https://<اسم-پروژه>.vercel.app
-   CSRF_TRUSTED_ORIGINS=https://<اسم-پروژه>.vercel.app
-   MONGO_HOST=mongodb+srv://…/goteh
+   MONGO_HOST=${{MongoDB.MONGO_URL}}
    MONGO_DB=goteh
    OPENAI_API_KEY=sk-…            ← فقط اینجا، هیچ‌وقت داخل گیت
-   OPENAI_TEXT_MODEL=gpt-5.4-mini
-   OPENAI_TRANSCRIPTION_MODEL=gpt-transcribe
-   MAX_AUDIO_DURATION=60
-   JWT_ACCESS_MINUTES=180
    ```
 
-4. بعد از اولین دیپلوی، در **Shell** سرویس یک بار بزنید:
+   `${{MongoDB.MONGO_URL}}` را عیناً همین‌طور بنویسید — Railway خودش آدرس
+   دیتابیس را جایش می‌گذارد.
 
-   ```bash
-   python manage.py bootstrap
-   ```
+6. **Settings → Networking → Generate Domain** تا یک آدرس عمومی بگیرید،
+   مثل `goteh-api-production.up.railway.app`.
 
-   این دستور همهٔ دیتای نمونه را می‌سازد: دوره‌ها، پادکست‌ها، شبیه‌ساز B2 کامل،
-   دورهٔ مکالمه با AI، سه پلن اشتراک، و کاربر نمونه:
+**نیازی به اجرای دستی seed نیست.** کانتینر موقع بالا آمدن اگر دیتابیس خالی باشد
+خودش پُرش می‌کند: دوره‌ها، پادکست‌ها، شبیه‌ساز کامل B2، دورهٔ مکالمه با AI، سه
+پلن اشتراک، و این کاربر:
 
-   - ایمیل: `student@goteh.de`
-   - رمز: `goteh1234`
-   - دسترسی پنل ادمین: دارد (`/fa/admin`)
+- ایمیل: `student@goteh.de`
+- رمز: `goteh1234`
+- پنل ادمین: دارد (`/fa/admin`)
 
-5. سلامت سرویس: `https://goteh-api.onrender.com/api/health/` باید `{"status":"ok"}` بدهد.
+سلامت سرویس: `https://<دامنه>/api/health/` باید `{"status":"ok"}` بدهد.
 
-> پلن رایگان Render بعد از ۱۵ دقیقه بی‌کاری می‌خوابد؛ اولین درخواست بعدی
-> ~۳۰ ثانیه طول می‌کشد. برای تست مشکلی نیست.
+> `ALLOWED_HOSTS` لازم نیست ست شود (پیش‌فرضش `*` است) و `CORS_ORIGINS` هم لازم
+> نیست، چون مرورگر هیچ‌وقت مستقیم با جنگو حرف نمی‌زند — همه چیز از مسیر
+> `/api/proxy/*` خودِ Next.js رد می‌شود.
+
+### گزینهٔ جایگزین: Render + MongoDB Atlas
+
+اگر Railway را نمی‌خواهید: دیتابیس را روی [Atlas](https://cloud.mongodb.com)
+بسازید (کلاستر رایگان M0، در Network Access آی‌پی `0.0.0.0/0` را باز کنید) و
+سرویس را روی [Render](https://render.com) با **Root Directory = `api`** بالا
+بیاورید؛ `api/render.yaml` آماده است. همان متغیرهای بالا، فقط `MONGO_HOST` را
+دستی با رشتهٔ اتصال Atlas پر کنید.
 
 ---
 
-## ۳) فرانت‌اند — Vercel
+## ۲) فرانت‌اند — Vercel
 
 1. [vercel.com/new](https://vercel.com/new) → همین ریپو.
 2. **Root Directory** را دست نزنید — اپ Next.js در ریشهٔ ریپو است، پس مقدار
@@ -78,7 +74,7 @@
 4. Environment Variables:
 
    ```
-   NEXT_PUBLIC_API_URL=https://goteh-api.onrender.com/api
+   NEXT_PUBLIC_API_URL=https://<دامنهٔ-railway>/api
    NEXT_PUBLIC_SITE_URL=https://<اسم-پروژه>.vercel.app
    NEXT_PUBLIC_MEDIA_URL=
    NEXT_PUBLIC_MAX_AUDIO_DURATION=60
@@ -92,11 +88,11 @@
 
 ---
 
-## ۴) بعد از استقرار
+## ۳) بعد از استقرار
 
-- `CORS_ORIGINS` و `CSRF_TRUSTED_ORIGINS` روی Render باید دقیقاً برابر دامنهٔ
-  ورسل باشند، وگرنه ورود کار نمی‌کند.
-- **آپلود از پنل ادمین** روی ورسل ماندگار نیست: فایل جدید روی دیسک Render
+- بعد از ست‌کردن متغیرها در ورسل حتماً **Redeploy** بزنید: متغیرهای
+  `NEXT_PUBLIC_*` موقع بیلد داخل کد می‌روند، نه موقع اجرا.
+- **آپلود از پنل ادمین** ماندگار نیست: فایل جدید روی دیسک سرویس ابری
   می‌نشیند و با هر دیپلوی پاک می‌شود. برای تست کافی است؛ برای پروداکشن باید
   S3 یا Cloudflare R2 وصل شود و `SERVE_MEDIA=false` ست شود.
 - مسیر تست مکالمه با AI:
