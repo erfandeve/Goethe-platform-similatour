@@ -71,7 +71,11 @@
 
 1. [vercel.com/new](https://vercel.com/new) → همین ریپو.
 2. **Root Directory** را روی `web` بگذارید. (مهم — وگرنه بیلد پیدا نمی‌شود.)
-3. Environment Variables:
+3. **Framework Preset** باید `Next.js` باشد و در بخش *Build & Development
+   Settings* هیچ Override‌ای روشن نباشد. اگر ارور `vite: command not found`
+   گرفتید یعنی یک Build Command قدیمی (`vite build`) روی پروژه مانده — کلید
+   Override را خاموش کنید. این پروژه Vite نیست و هیچ‌جای ریپو Vite ندارد.
+4. Environment Variables:
 
    ```
    NEXT_PUBLIC_API_URL=https://goteh-api.onrender.com/api
@@ -84,7 +88,7 @@
    ویدیوها و صداها از خود ورسل سرو شوند — نسخه‌شان در `web/public/media/`
    کامیت شده (۷۶ مگابایت) تا نیازی به سرویس فایل نباشد.
 
-4. Deploy.
+5. Deploy.
 
 ---
 
