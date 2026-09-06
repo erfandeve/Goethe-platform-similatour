@@ -1,0 +1,38 @@
+# One-click backend deploy on Render. MongoDB lives on Atlas (free tier is fine).
+services:
+  - type: web
+    name: goteh-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/health/
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        sync: false      # your-api.onrender.com
+      - key: CORS_ORIGINS
+        sync: false      # https://your-app.vercel.app
+      - key: CSRF_TRUSTED_ORIGINS
+        sync: false      # https://your-app.vercel.app
+      - key: MONGO_HOST
+        sync: false      # mongodb+srv://…/goteh
+      - key: MONGO_DB
+        value: goteh
+      - key: OPENAI_API_KEY
+        sync: false      # set it in the dashboard, never in git
+      - key: OPENAI_TEXT_MODEL
+        value: gpt-5.4-mini
+      - key: OPENAI_TRANSCRIPTION_MODEL
+        value: gpt-transcribe
+      - key: MAX_AUDIO_DURATION
+        value: "60"
+      - key: STORE_AUDIO
+        value: "False"
+      - key: AI_MAX_RETRIES
+        value: "2"
+      - key: JWT_ACCESS_MINUTES
+        value: "180"

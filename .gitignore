@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# secrets
+.env
+.env.local
+*.local
+
+# build output
+.next/
+out/
+staticfiles/
+*.tsbuildinfo
+
+# runtime uploads; the copy the site ships lives in web/public/media
+api/media/
+
+# os
+.DS_Store
+
+# raw source footage — the encoded copies the site uses live in web/public/media
+Video/
+part 3/
+*.odt

@@ -1,0 +1,376 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   GOTEH design tokens
+   Dark, cinematic base with an aurora field behind everything; content sits
+   on hairline-bordered glass so the 3D layer stays visible through the page.
+   ========================================================================= */
+
+@theme {
+  --color-ink-950: #050510;
+  --color-ink-900: #080814;
+  --color-ink-850: #0b0b1c;
+  --color-ink-800: #101024;
+  --color-ink-700: #17172f;
+  --color-ink-600: #21213f;
+
+  --color-mist-50: #f7f7fb;
+  --color-mist-200: #d8d8e6;
+  --color-mist-400: #a2a2bd;
+  --color-mist-500: #7d7d9b;
+  --color-mist-600: #5c5c78;
+
+  --color-violet-400: #8b7dff;
+  --color-violet-500: #6d5efc;
+  --color-violet-600: #5a4ae0;
+  --color-cyan-400: #22d3ee;
+  --color-amber-400: #f59e0b;
+  --color-rose-400: #ff6b6b;
+  --color-mint-400: #34d399;
+  --color-fuchsia-400: #e879f9;
+
+  /* Composed from the per-face variables set by next/font on <html>.
+     Yekan Bakh comes FIRST in every stack. Its @font-face is limited to the
+     Arabic ranges, so Latin skips straight past it — while the Latin faces ship
+     an auto-generated fallback family that claims all of Unicode and would
+     otherwise swallow Persian before it ever reached Yekan Bakh. */
+  --font-display: var(--font-yekan), var(--font-bricolage), ui-serif, Georgia, serif;
+  --font-sans: var(--font-yekan), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-persian: var(--font-yekan), var(--font-manrope), Tahoma, sans-serif;
+
+  --radius-xl2: 1.75rem;
+
+  --shadow-glow: 0 0 80px -20px rgba(109, 94, 252, 0.55);
+  --shadow-lift: 0 24px 60px -30px rgba(0, 0, 0, 0.9);
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-drift: drift 22s linear infinite;
+  --animate-pulse-soft: pulse-soft 4s ease-in-out infinite;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes drift {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  100% { transform: translate3d(0, 0, 0) rotate(360deg); }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.85; }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------------------------------------------------------------- base --- */
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-ink-950);
+  color: var(--color-mist-50);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Aurora field + fine grain, painted once behind the whole document. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+  background:
+    radial-gradient(38rem 38rem at 12% 8%, rgba(109, 94, 252, 0.28), transparent 60%),
+    radial-gradient(32rem 32rem at 88% 4%, rgba(34, 211, 238, 0.16), transparent 62%),
+    radial-gradient(46rem 46rem at 72% 68%, rgba(232, 121, 249, 0.14), transparent 65%),
+    radial-gradient(30rem 30rem at 20% 88%, rgba(245, 158, 11, 0.1), transparent 60%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+::selection {
+  background: rgba(109, 94, 252, 0.4);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-ink-900); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-violet-600), var(--color-ink-600));
+  border-radius: 999px;
+  border: 2px solid var(--color-ink-900);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-violet-400);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* --------------------------------------------------------- utilities --- */
+
+@utility glass {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.028) 45%,
+    rgba(255, 255, 255, 0.012) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(18px) saturate(1.4);
+}
+
+@utility glass-strong {
+  background: linear-gradient(160deg, rgba(20, 20, 42, 0.92), rgba(9, 9, 22, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(26px) saturate(1.5);
+}
+
+@utility hairline {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@utility text-gradient {
+  background: linear-gradient(100deg, #ffffff 0%, #cfc9ff 40%, #8b7dff 75%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-muted {
+  color: var(--color-mist-400);
+}
+
+@utility shine {
+  position: relative;
+  overflow: hidden;
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 84rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@utility reveal {
+  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Reveal wrappers are visible by default; JS only hides what is below the fold. */
+.reveal-item {
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item.is-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* Card hover: a light follows the cursor via --mx/--my set in JS. */
+@utility spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    22rem 22rem at var(--mx, 50%) var(--my, 0%),
+    var(--spot, rgba(109, 94, 252, 0.22)),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.spotlight:hover::before { opacity: 1; }
+
+.shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.16) 45%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+  pointer-events: none;
+}
+
+/* Persian needs a little more line height; Yekan Bakh also runs a touch small,
+   so the RTL layout gets a nudge in size to match the Latin pages optically. */
+[dir="rtl"] body,
+[lang="fa"] {
+  font-family: var(--font-persian);
+  line-height: 1.9;
+  letter-spacing: 0;
+}
+
+[dir="rtl"] .font-display {
+  font-weight: 700;
+}
+
+[dir="rtl"] .flip-x { transform: scaleX(-1); }
+
+/* Numbers stay Latin inside Persian UI where they are IDs or codes. */
+.tnum { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =========================================================================
+   Exam mode
+   The exam is a light, high-contrast environment modelled on the Goethe
+   digital test player, deliberately unlike the rest of the (dark) site: the
+   chrome disappears and the palette resets so nothing competes with the task.
+   ========================================================================= */
+
+body[data-mode="exam"] > header,
+body[data-mode="exam"] > footer {
+  display: none;
+}
+
+body[data-mode="exam"] {
+  background: #e9e9e7;
+  overflow: hidden;
+}
+
+body[data-mode="exam"] > main {
+  padding-top: 0;
+}
+
+.exam-root {
+  --exam-bar: #3d4142;
+  --exam-bar-soft: #4a4f50;
+  --exam-green: #a4c63f;
+  --exam-green-dark: #8fb032;
+  --exam-page: #e9e9e7;
+  --exam-card: #ffffff;
+  --exam-band: #969694;
+  --exam-line: #d8d8d4;
+  --exam-text: #2f3132;
+  --exam-muted: #6f7375;
+  --exam-radio: #3b7ddd;
+  --exam-gap: #e4e4e0;
+
+  font-family: var(--font-yekan), var(--font-manrope), Arial, Helvetica, sans-serif;
+  color: var(--exam-text);
+  font-size: calc(1rem * var(--exam-scale, 1));
+}
+
+/* The learner can step the type size up and down, as in the real player. */
+.exam-root .exam-body { font-size: calc(0.9375rem * var(--exam-scale, 1)); line-height: 1.65; }
+.exam-root .exam-lead { font-size: calc(1rem * var(--exam-scale, 1)); }
+
+.exam-root[data-contrast="high"] {
+  --exam-card: #ffffff;
+  --exam-text: #000000;
+  --exam-muted: #333333;
+  --exam-line: #000000;
+  --exam-band: #4a4a48;
+}
+
+.exam-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.exam-scroll::-webkit-scrollbar { width: 12px; }
+.exam-scroll::-webkit-scrollbar-track { background: #f1f1ef; }
+.exam-scroll::-webkit-scrollbar-thumb {
+  background: #c3c3bf;
+  border: 3px solid #f1f1ef;
+  border-radius: 999px;
+}
+
+.exam-gap-slot {
+  display: inline-flex;
+  align-items: center;
+  min-width: 11rem;
+  min-height: 1.6rem;
+  vertical-align: middle;
+  border-bottom: 1px dashed #9a9a96;
+  background: var(--exam-gap);
+  padding: 0.1rem 0.4rem;
+  margin: 0 0.15rem;
+  font-size: 0.85em;
+  line-height: 1.35;
+  text-align: start;
+}
+
+.exam-gap-slot[data-over="true"] {
+  background: #dff0b8;
+  border-bottom-color: var(--exam-green-dark);
+}
+
+.exam-gap-number {
+  display: inline-block;
+  background: #c9c9c5;
+  color: #2f3132;
+  font-weight: 600;
+  padding: 0.05rem 0.4rem;
+  margin-inline-end: 0.25rem;
+  font-size: 0.85em;
+}
+
+.exam-option-tile {
+  border: 1px dashed #a8a8a4;
+  background: #fff;
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  cursor: grab;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.exam-option-tile:hover { border-color: var(--exam-green-dark); background: #fbfdf5; }
+.exam-option-tile[data-used="true"] { opacity: 0.35; cursor: default; }
+.exam-option-tile:active { cursor: grabbing; }
