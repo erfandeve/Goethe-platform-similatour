@@ -10,8 +10,10 @@ from django.core.management.base import BaseCommand
 from apps.cms.models import HomeSection, SectionItem
 from apps.core.i18n import tt
 
-EXAM_COVER = "/media/covers/exams/b2-cover-8f00ecf8.png"
-COURSE_COVER = "/media/covers/courses/einreise-cover-201c4ad9.png"
+# One picture per prose section, named after the section it belongs to.
+ABOUT_IMAGE = "/media/sections/about-lexora.webp"
+SIMULATOR_IMAGE = "/media/sections/why-simulator.webp"
+SPEAKING_IMAGE = "/media/sections/ai-speaking.webp"
 
 
 def item(fa_t, en_t, de_t, fa_b, en_b, de_b, icon=""):
@@ -23,7 +25,7 @@ SECTIONS = [
         "key": "about-lexora",
         "kind": "text_image",
         "order": 10,
-        "image": COURSE_COVER,
+        "image": ABOUT_IMAGE,
         "image_side": "end",
         "accent": "#8b7dff",
         "eyebrow": tt("درباره لکسورا", "About Lexora", "Über Lexora"),
@@ -67,6 +69,12 @@ SECTIONS = [
             "„Deutsch im Kontext“ — eine KI-Sprechlehrerin. Alles auf Persisch, Deutsch und "
             "Englisch.",
         ),
+        "image_alt": tt(
+            "سه زبان‌آموز لکسورا با کتاب‌های آلمانی و تابلوی Lexora، با پس‌زمینه برلین",
+            "Three Lexora learners holding German coursebooks and a Lexora sign, Berlin behind them",
+            "Drei Lexora-Lernende mit deutschen Lehrbüchern und einem Lexora-Schild vor Berliner "
+            "Kulisse",
+        ),
         "cta_label": tt("بیشتر درباره لکسورا", "More about Lexora", "Mehr über Lexora"),
         "cta_href": "/about",
     },
@@ -74,7 +82,7 @@ SECTIONS = [
         "key": "why-simulator",
         "kind": "text_image",
         "order": 20,
-        "image": EXAM_COVER,
+        "image": SIMULATOR_IMAGE,
         "image_side": "start",
         "accent": "#22d3ee",
         "eyebrow": tt(
@@ -115,6 +123,13 @@ SECTIONS = [
             "Aufgaben und Ihre Punktzahl zeigt echten Fortschritt statt erinnerter Antworten. Die "
             "Auswertung ist nach Modul und Aufgabentyp aufgeschlüsselt, mit einer Erklärung zu "
             "jeder Frage.",
+        ),
+        "image_alt": tt(
+            "داوطلبی در حال دادن آزمون دیجیتال گوته روی لپ‌تاپ، با تایمر و سؤال چهارگزینه‌ای",
+            "A candidate sitting the digital Goethe exam on a laptop, timer and multiple-choice "
+            "question on screen",
+            "Eine Kandidatin bei der digitalen Goethe-Prüfung am Laptop, mit Timer und "
+            "Multiple-Choice-Aufgabe",
         ),
         "cta_label": tt("دیدن سیمیلیتورها", "Open the simulators", "Zu den Simulatoren"),
         "cta_href": "/exams",
@@ -166,7 +181,7 @@ SECTIONS = [
         "key": "ai-speaking",
         "kind": "text_image",
         "order": 40,
-        "image": COURSE_COVER,
+        "image": SPEAKING_IMAGE,
         "image_side": "end",
         "accent": "#f472b6",
         "eyebrow": tt("آلمانی در محیط", "German in Context", "Deutsch im Kontext"),
@@ -202,6 +217,14 @@ SECTIONS = [
             "erhalten eine Rückmeldung nach Aussprache, Grammatik, Wortschatz und Redefluss — "
             "erklärt in Ihrer Sprache, mit einer korrigierten deutschen Fassung.\n\n"
             "Nichts zu installieren; jedes Laptop- oder Handymikrofon genügt.",
+        ),
+        "image_alt": tt(
+            "زبان‌آموزی با هدفون در حال مکالمه با هوش مصنوعی؛ روی صفحه «Sprich mit AI» و "
+            "حباب‌های گفتگوی آلمانی دیده می‌شود",
+            "A learner with earphones speaking to an AI partner; the screen shows \"Sprich mit "
+            "AI\" and German chat bubbles",
+            "Eine Lernende mit Kopfhörern im Gespräch mit einer KI; auf dem Bildschirm „Sprich "
+            "mit AI“ und deutsche Sprechblasen",
         ),
         "cta_label": tt("شروع آلمانی در محیط", "Start German in Context", "Deutsch im Kontext starten"),
         "cta_href": "/courses/einreise-nach-deutschland",

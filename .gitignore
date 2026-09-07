@@ -21,9 +21,10 @@ backend/media/
 # os
 .DS_Store
 
-# raw source footage — the encoded copies the site uses live in frontend/public/media
+# raw source assets — the copies the site uses live in frontend/public/media
 Video/
 part 3/
+Image/
 *.odt
 
 # --- next.js / node (was web/.gitignore) ---
