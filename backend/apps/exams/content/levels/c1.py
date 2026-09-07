@@ -254,25 +254,25 @@ LESEN = {
             "stimulus_title": "Aus einer Stellungnahme zur Hochschulreform",
             "blocks": [
                 ("section", "", "",
-                 "Die vorgeschlagene Reform verfolgt ein nachvollziehbares Ziel, __24__ sie die "
+                 "Die vorgeschlagene Reform verfolgt ein nachvollziehbares Ziel, [[24]] sie die "
                  "Studiendauer verkürzen und den Übergang in den Beruf erleichtern soll."),
                 ("section", "", "",
-                 "Gleichwohl bleibt offen, __25__ die zusätzlichen Mittel bereitgestellt werden, "
+                 "Gleichwohl bleibt offen, [[25]] die zusätzlichen Mittel bereitgestellt werden, "
                  "ohne die eine Betreuung in kleineren Gruppen nicht möglich ist."),
                 ("section", "", "",
                  "Die Erfahrung anderer Bundesländer zeigt, dass Reformen dieser Art "
-                 "__26__ scheitern, wenn sie ohne Beteiligung der Fachbereiche eingeführt werden."),
+                 "[[26]] scheitern, wenn sie ohne Beteiligung der Fachbereiche eingeführt werden."),
                 ("section", "", "",
-                 "Wir empfehlen daher, den Zeitplan zu strecken, __27__ die betroffenen "
+                 "Wir empfehlen daher, den Zeitplan zu strecken, [[27]] die betroffenen "
                  "Einrichtungen ihre Curricula anpassen können."),
                 ("section", "", "",
-                 "__28__ einer sorgfältigen Vorbereitung wäre der erwartete Nutzen kaum zu "
+                 "[[28]] einer sorgfältigen Vorbereitung wäre der erwartete Nutzen kaum zu "
                  "erreichen."),
                 ("section", "", "",
-                 "Die Stellungnahme versteht sich __29__ als Ablehnung, sondern als Beitrag zu "
+                 "Die Stellungnahme versteht sich [[29]] als Ablehnung, sondern als Beitrag zu "
                  "einer tragfähigen Umsetzung."),
                 ("section", "", "",
-                 "Für Rückfragen stehen wir __30__ zur Verfügung."),
+                 "Für Rückfragen stehen wir [[30]] zur Verfügung."),
             ],
             "pool": [
                 ("a", "indem"), ("b", "inwiefern"), ("c", "regelmäßig"), ("d", "damit"),

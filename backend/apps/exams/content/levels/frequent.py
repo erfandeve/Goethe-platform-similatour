@@ -93,19 +93,19 @@ B2_LESEN = {
             "blocks": [
                 ("section", "", "",
                  "Sehr geehrte Frau Dr. Kramer,\n\nmit großem Interesse habe ich Ihre "
-                 "Ausschreibung gelesen, __6__ ich seit Jahren in genau diesem Bereich "
+                 "Ausschreibung gelesen, [[6]] ich seit Jahren in genau diesem Bereich "
                  "arbeite."),
                 ("section", "", "",
                  "In meiner jetzigen Position betreue ich ein Team von acht Personen, "
-                 "__7__ ich zusätzlich die Budgetplanung verantworte."),
+                 "[[7]] ich zusätzlich die Budgetplanung verantworte."),
                 ("section", "", "",
-                 "__8__ meiner technischen Ausbildung bringe ich Erfahrung in der "
+                 "[[8]] meiner technischen Ausbildung bringe ich Erfahrung in der "
                  "Kundenkommunikation mit."),
                 ("section", "", "",
-                 "Über eine Einladung zu einem Gespräch würde ich mich freuen, __9__ Sie "
+                 "Über eine Einladung zu einem Gespräch würde ich mich freuen, [[9]] Sie "
                  "weitere Unterlagen benötigen, sende ich diese gern nach."),
                 ("section", "", "",
-                 "__10__ verbleibe ich mit freundlichen Grüßen"),
+                 "[[10]] verbleibe ich mit freundlichen Grüßen"),
             ],
             "pool": [
                 ("a", "da"), ("b", "wobei"), ("c", "Neben"), ("d", "sollten"),
@@ -234,22 +234,22 @@ C1_LESEN = {
             "stimulus_title": "Aus einem Gutachten",
             "blocks": [
                 ("section", "", "",
-                 "Die Ergebnisse sind belastbar, __7__ sie auf einer ausreichend großen "
+                 "Die Ergebnisse sind belastbar, [[7]] sie auf einer ausreichend großen "
                  "Stichprobe beruhen."),
                 ("section", "", "",
-                 "__8__ der methodischen Sorgfalt bleibt eine Unsicherheit bestehen, die im "
+                 "[[8]] der methodischen Sorgfalt bleibt eine Unsicherheit bestehen, die im "
                  "Bericht offen benannt wird."),
                 ("section", "", "",
-                 "Es empfiehlt sich, die Erhebung zu wiederholen, __9__ sich die "
+                 "Es empfiehlt sich, die Erhebung zu wiederholen, [[9]] sich die "
                  "Rahmenbedingungen ändern sollten."),
                 ("section", "", "",
-                 "Die Auftraggeberin hat darauf verzichtet, __10__ in die Auswertung "
+                 "Die Auftraggeberin hat darauf verzichtet, [[10]] in die Auswertung "
                  "einzugreifen."),
                 ("section", "", "",
-                 "__11__ sich die Empfehlungen umsetzen lassen, hängt maßgeblich von den "
+                 "[[11]] sich die Empfehlungen umsetzen lassen, hängt maßgeblich von den "
                  "Ressourcen ab."),
                 ("section", "", "",
-                 "Der Bericht ist __12__ als abschließende Bewertung zu verstehen, sondern als "
+                 "Der Bericht ist [[12]] als abschließende Bewertung zu verstehen, sondern als "
                  "Grundlage weiterer Prüfung."),
             ],
             "pool": [

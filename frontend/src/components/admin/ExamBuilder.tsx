@@ -11,6 +11,7 @@ import type { AdminExam, ExamItem, ExamModule, ExamPart } from "@/lib/admin";
 import { MODULE_LABELS, PART_TYPE_LABELS } from "@/lib/admin";
 import { formatNumber } from "@/lib/format";
 
+import { PartContentEditor } from "./PartContentEditor";
 import { useAdmin } from "./useAdmin";
 import { Modal, Panel, Toast, TranslatedField } from "./ui";
 
@@ -35,6 +36,10 @@ export function ExamBuilder({
   const { busy, toast, notify, run, call } = useAdmin();
   const [exam, setExam] = useState(initial);
   const [editing, setEditing] = useState<{ module: number; part: number } | null>(null);
+  // The same Teil, opened on its text rather than its questions.
+  const [editingText, setEditingText] = useState<{ module: number; part: number } | null>(
+    null,
+  );
   const [items, setItems] = useState<ExamItem[]>([]);
 
   const modules = exam.modules ?? [];
@@ -101,6 +106,39 @@ export function ExamBuilder({
 
   const activePart =
     editing !== null ? modules[editing.module]?.parts[editing.part] : undefined;
+  const textPart =
+    editingText !== null ? modules[editingText.module]?.parts[editingText.part] : undefined;
+
+  async function savePartContent(payload: Record<string, unknown>) {
+    if (!editingText) return;
+    const saved = await run(
+      () =>
+        call<AdminExam>(
+          `${base}/modules/${editingText.module}/parts/${editingText.part}`,
+          { method: "PATCH", body: payload },
+        ),
+      { success: "متن بخش ذخیره شد" },
+    );
+    if (saved) {
+      setExam(saved);
+      setEditingText(null);
+    }
+  }
+
+  /** Upload one listening file and hand back the URL the player will use. */
+  async function uploadTrack(file: File) {
+    const body = new FormData();
+    body.append("file", file);
+    try {
+      const response = await fetch("/api/admin/upload?kind=audio", { method: "POST", body });
+      const payload = (await response.json()) as { url?: string; detail?: string };
+      if (!response.ok || !payload.url) throw new Error(payload.detail || "آپلود نشد");
+      return payload.url;
+    } catch (caught) {
+      notify((caught as Error).message, "error");
+      return null;
+    }
+  }
 
   function addItem() {
     if (!activePart) return;
@@ -225,11 +263,26 @@ export function ExamBuilder({
                       <span className="block truncate text-xs text-mist-600">
                         {PART_TYPE_LABELS[part.type] ?? part.type} ·{" "}
                         {formatNumber(part.items.length, locale)} سؤال
+                        {part.blocks.length
+                          ? ` · ${formatNumber(part.blocks.length, locale)} بلوک متن`
+                          : ""}
                         {part.options.length
                           ? ` · ${formatNumber(part.options.length, locale)} گزینه مشترک`
                           : ""}
+                        {part.audio.length
+                          ? ` · ${formatNumber(part.audio.length, locale)} فایل صوتی`
+                          : ""}
                       </span>
                     </span>
+                    <Button
+                      size="sm"
+                      variant="soft"
+                      onClick={() =>
+                        setEditingText({ module: module.index, part: part.index })
+                      }
+                    >
+                      متن
+                    </Button>
                     <Button size="sm" variant="soft" onClick={() => openItems(module, part)}>
                       سؤال‌ها
                     </Button>
@@ -257,6 +310,15 @@ export function ExamBuilder({
           icon="◇"
         />
       )}
+
+      <PartContentEditor
+        open={editingText !== null}
+        part={textPart}
+        busy={busy}
+        onClose={() => setEditingText(null)}
+        onSave={savePartContent}
+        onUpload={uploadTrack}
+      />
 
       {/* ------------------------------------------------------ item editor */}
       <Modal

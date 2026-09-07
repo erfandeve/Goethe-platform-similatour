@@ -598,7 +598,8 @@ def _mp4_duration(path):
 
 # -------------------------------------------------------------------- exams ---
 
-from apps.exams.models import (  # noqa: E402  (kept beside the exam endpoints)
+from apps.exams.models import (
+    AudioTrack,  # noqa: E402  (kept beside the exam endpoints)
     Exam,
     ExamAttempt,
     ExamItem,
@@ -831,6 +832,25 @@ def exam_part_detail(request, pk, index, part_index):
             )
             for block in payload["blocks"]
         ]
+
+    # Listening tracks: which file, how often it may be heard, and how long the
+    # learner reads before it starts.
+    if "audio" in payload and isinstance(payload["audio"], list):
+        part.audio = [
+            AudioTrack(
+                label=str(track.get("label", ""))[:120],
+                url=str(track.get("url", ""))[:400],
+                plays=max(1, min(3, int(track.get("plays") or 1))),
+                pre_read_seconds=max(0, min(300, int(track.get("pre_read_seconds") or 0))),
+                covers=[int(n) for n in (track.get("covers") or []) if str(n).strip().isdigit()],
+            )
+            for track in payload["audio"]
+            if str(track.get("url", "")).strip()
+        ]
+
+    if "min_words" in payload:
+        value = payload["min_words"]
+        part.min_words = max(0, _int(payload, "min_words", 0)) if value not in (None, "") else None
 
     exam.save()
     return Response(exam_detail(exam))

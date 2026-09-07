@@ -144,7 +144,13 @@ export interface ExamPart {
   stimulus_intro: string;
   blocks: { kind: string; label: string; title: string; text: string; author: string }[];
   options: ExamOption[];
-  audio: { label: string; url: string; plays: number; pre_read_seconds: number }[];
+  audio: {
+    label: string;
+    url: string;
+    plays: number;
+    pre_read_seconds: number;
+    covers: number[];
+  }[];
   items: ExamItem[];
   example_prompt: string;
   example_answer: string;

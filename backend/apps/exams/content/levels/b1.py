@@ -258,15 +258,15 @@ LESEN = {
             "blocks": [
                 ("section", "", "",
                  "§ 1 Die Benutzung der Bibliothek ist kostenlos. Für die Ausleihe ist "
-                 "__27__ ein gültiger Ausweis erforderlich."),
+                 "[[27]] ein gültiger Ausweis erforderlich."),
                 ("section", "", "",
                  "§ 2 Medien werden für vier Wochen ausgeliehen. Eine Verlängerung ist zweimal "
-                 "möglich, __28__ das Medium nicht von einer anderen Person vorgemerkt wurde."),
+                 "möglich, [[28]] das Medium nicht von einer anderen Person vorgemerkt wurde."),
                 ("section", "", "",
-                 "§ 3 Wird die Leihfrist überschritten, __29__ eine Gebühr von 0,20 Euro pro Tag "
+                 "§ 3 Wird die Leihfrist überschritten, [[29]] eine Gebühr von 0,20 Euro pro Tag "
                  "und Medium erhoben."),
                 ("section", "", "",
-                 "§ 4 Beschädigte Medien sind zu ersetzen. __30__ ein Ersatz nicht möglich ist, "
+                 "§ 4 Beschädigte Medien sind zu ersetzen. [[30]] ein Ersatz nicht möglich ist, "
                  "wird der Zeitwert berechnet."),
             ],
             "pool": [
