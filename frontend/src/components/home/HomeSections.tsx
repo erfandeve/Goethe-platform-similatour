@@ -178,6 +178,23 @@ function Block({ section, locale }: { section: HomeSection; locale: Locale }) {
   }
 }
 
+/** One editable section, ready to drop between two catalogue blocks. */
+export function HomeSectionBlock({
+  section,
+  locale,
+}: {
+  section: HomeSection;
+  locale: Locale;
+}) {
+  return (
+    <Section id={section.key}>
+      <Reveal>
+        <Block section={section} locale={locale} />
+      </Reveal>
+    </Section>
+  );
+}
+
 export function HomeSections({
   sections,
   locale,
@@ -188,11 +205,7 @@ export function HomeSections({
   return (
     <>
       {sections.map((section) => (
-        <Section key={section.key} id={section.key}>
-          <Reveal>
-            <Block section={section} locale={locale} />
-          </Reveal>
-        </Section>
+        <HomeSectionBlock key={section.key} section={section} locale={locale} />
       ))}
     </>
   );
