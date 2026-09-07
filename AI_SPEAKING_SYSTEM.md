@@ -1,7 +1,7 @@
 # AI German Speaking Teacher
 
 Video lessons paired with a spoken answer that an AI teacher transcribes, grades
-and corrects. Built into the existing GOTEH platform — it reuses the current
+and corrects. Built into the existing Lexora platform — it reuses the current
 accounts, course catalogue and purchase/enrolment logic rather than replacing
 any of it.
 
@@ -32,7 +32,7 @@ Result panel: score · corrections · grammar notes · feedback
 
 **The browser never talks to OpenAI and never sees the API key.** Both Next.js
 route handlers attach the learner's JWT from an httpOnly cookie; the OpenAI key
-exists only in `api/.env`, read through `django.conf.settings`.
+exists only in `backend/.env`, read through `django.conf.settings`.
 
 ### OpenAI endpoints used
 
@@ -205,7 +205,7 @@ from the MIME type with the filename extension as fallback, so Safari's
 
 ---
 
-## 8. Environment variables (`api/.env`)
+## 8. Environment variables (`backend/.env`)
 
 ```
 OPENAI_API_KEY=...              # server-side only

@@ -15,13 +15,13 @@ out/
 staticfiles/
 *.tsbuildinfo
 
-# runtime uploads; the copy the site ships lives in web/public/media
-api/media/
+# runtime uploads; the copy the site ships lives in frontend/public/media
+backend/media/
 
 # os
 .DS_Store
 
-# raw source footage — the encoded copies the site uses live in web/public/media
+# raw source footage — the encoded copies the site uses live in frontend/public/media
 Video/
 part 3/
 *.odt

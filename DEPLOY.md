@@ -4,8 +4,8 @@
 
 | بخش | چیست | کجا مستقر می‌شود |
 |---|---|---|
-| ریشهٔ ریپو | اپلیکیشن Next.js | **Vercel** |
-| `api/` | Django + DRF | **Railway** (ورسل نمی‌تواند جنگو را اجرا کند) |
+| `frontend/` | اپلیکیشن Next.js | **Vercel** |
+| `backend/` | Django + DRF | **Railway** (ورسل نمی‌تواند جنگو را اجرا کند) |
 | دیتابیس | MongoDB | **Railway** (در همان پروژه) |
 
 > ⚠️ **مکالمه با هوش مصنوعی بدون بک‌اند کار نمی‌کند.** کلید OpenAI فقط روی سرور
@@ -20,8 +20,8 @@ Railway هم جنگو را اجرا می‌کند و هم MongoDB می‌دهد�
 
 1. [railway.app](https://railway.app) → با گیت‌هاب وارد شوید.
 2. **New Project → Deploy from GitHub repo** → `Goethe-platform-similatour`.
-3. در تنظیمات سرویس، **Root Directory** را `api` بگذارید. (`api/railway.json` و
-   `api/Dockerfile` بقیه‌اش را خودشان می‌گویند.)
+3. در تنظیمات سرویس، **Root Directory** را `backend` بگذارید. (`backend/railway.json` و
+   `backend/Dockerfile` بقیه‌اش را خودشان می‌گویند.)
 4. داخل همان پروژه: **+ New → Database → Add MongoDB**.
 5. برو روی سرویس جنگو → تب **Variables** → این‌ها را اضافه کن:
 
@@ -58,7 +58,7 @@ Railway هم جنگو را اجرا می‌کند و هم MongoDB می‌دهد�
 اگر Railway را نمی‌خواهید: دیتابیس را روی [Atlas](https://cloud.mongodb.com)
 بسازید (کلاستر رایگان M0، در Network Access آی‌پی `0.0.0.0/0` را باز کنید) و
 سرویس را روی [Render](https://render.com) با **Root Directory = `api`** بالا
-بیاورید؛ `api/render.yaml` آماده است. همان متغیرهای بالا، فقط `MONGO_HOST` را
+بیاورید؛ `backend/render.yaml` آماده است. همان متغیرهای بالا، فقط `MONGO_HOST` را
 دستی با رشتهٔ اتصال Atlas پر کنید.
 
 ---
@@ -66,11 +66,11 @@ Railway هم جنگو را اجرا می‌کند و هم MongoDB می‌دهد�
 ## ۲) فرانت‌اند — Vercel
 
 1. [vercel.com/new](https://vercel.com/new) → همین ریپو.
-2. **Root Directory** را دست نزنید — اپ Next.js در ریشهٔ ریپو است، پس مقدار
-   پیش‌فرض (`./`) درست است. اگر از قبل روی `web` تنظیم شده، خالی‌اش کنید.
-3. Framework Preset خودش `Next.js` تشخیص داده می‌شود، و `vercel.json` ریشه هم
-   `buildCommand` را صریح `next build` می‌گذارد؛ پس هر Override قدیمی روی
-   پروژه (مثلاً `vite build`) بی‌اثر می‌شود.
+2. **Root Directory** را روی `frontend` بگذارید. **این تنها تنظیمی است که
+   باید دست بزنید** — بدون آن ورسل اپ Next.js را پیدا نمی‌کند.
+3. بعد از انتخاب `frontend`، Framework Preset خودش `Next.js` می‌شود و
+   `frontend/vercel.json` هم `buildCommand` را صریح `next build` می‌گذارد؛ پس
+   هر Override قدیمی روی پروژه (مثلاً `vite build`) بی‌اثر می‌شود.
 4. Environment Variables:
 
    ```
@@ -103,19 +103,19 @@ Railway هم جنگو را اجرا می‌کند و هم MongoDB می‌دهد�
 ## اجرای محلی
 
 ```bash
-# ویدیوها و صداها یک نسخه دارند و آن نسخه در public/media است.
+# ویدیوها و صداها یک نسخه دارند و آن نسخه در frontend/public/media است.
 # برای اینکه بک‌اند محلی هم بتواند سروشان کند:
-cp -R public/media api/media
+cp -R frontend/public/media backend/media
 
 # بک‌اند
-cd api
+cd backend
 python -m venv .venv && .venv/bin/pip install -r requirements.txt
 cp .env.example .env      # و OPENAI_API_KEY را داخلش بگذارید
 .venv/bin/python manage.py bootstrap
 .venv/bin/python manage.py runserver 8010
 
-# فرانت‌اند (ریشهٔ ریپو)
-cd ..
+# فرانت‌اند (در ترمینال دوم)
+cd frontend
 npm install
 cp .env.example .env.local
 npm run dev

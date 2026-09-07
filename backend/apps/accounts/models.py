@@ -130,7 +130,7 @@ class Message(Document):
     meta = {"collection": "messages", "indexes": ["user", "-created_at"]}
 
     user = ReferenceField(User, required=True, reverse_delete_rule=2)
-    sender_name = StringField(default="GOTEH Academy")
+    sender_name = StringField(default="Lexora")
     sender_role = StringField(choices=("staff", "teacher", "student"), default="staff")
     sender_avatar = StringField(default="")
     subject = StringField(default="")

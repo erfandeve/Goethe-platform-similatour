@@ -1,13 +1,12 @@
-# GOTEH Academy
+# Lexora — لکسورا
 
 Trilingual (Deutsch / English / فارسی) language-learning platform: courses, exam
 simulators, high-frequency exam banks and podcasts, with a personal student panel.
 
 ```
-goteh/
-├── api/   Django 5 + DRF + MongoEngine (MongoDB)          → http://localhost:8010
-└── src/   Next.js 16 (App Router) + Tailwind 4 + three.js → http://localhost:3000
-         (the Next app lives at the repo root so Vercel needs no Root Directory)
+lexora/
+├── backend/    Django 5 + DRF + MongoEngine (MongoDB)      → http://localhost:8010
+└── frontend/   Next.js 16 (App Router) + Tailwind 4 + three.js → http://localhost:3000
 ```
 
 ## Backend
@@ -63,7 +62,7 @@ Three faces, composed per glyph rather than per page:
 | --- | --- | --- |
 | `--font-bricolage` | Bricolage Grotesque | Latin display / headings |
 | `--font-manrope` | Manrope | Latin body, including `ä ö ü ß` |
-| `--font-yekan` | Yekan Bakh (variable, `src/app/fonts/`) | Persian |
+| `--font-yekan` | Yekan Bakh (variable, `frontend/src/app/fonts/`) | Persian |
 
 Yekan Bakh ships no accented Latin, and German words appear on every Persian
 page, so its `@font-face` is scoped with `unicode-range` to the Arabic blocks.
@@ -99,14 +98,14 @@ Exams come in two shapes and the runner picks one automatically from
   | `writing` | Schreiben 1–2 | free text with a live word count |
 
 `GOETHE-ZERTIFIKAT B2` is seeded from the published Modellsatz with
-`manage.py seed_b2` (content in `api/apps/exams/content/`). Modules are sat one
+`manage.py seed_b2` (content in `backend/apps/exams/content/`). Modules are sat one
 at a time, exactly as in the real exam: Lesen 65 min / 30 items, Hören 40 min /
 30 items, Schreiben 75 min / 2 tasks. Answer keys never reach the browser while
 an attempt is open — the runner is served without them and they are only
 returned in the review after submission. Writing tasks carry no automatic
 points and are flagged for teacher grading.
 
-The exam player (`src/components/exams/goethe/`) always renders
+The exam player (`frontend/src/components/exams/goethe/`) always renders
 left-to-right, in every locale: the design it mirrors is LTR and the exam
 material is entirely German. Persian interface labels inside it carry
 `dir="auto"`. It reproduces the Goethe digital test layout: dark header with the session number and remaining time,
@@ -117,20 +116,20 @@ number of times with the official reading time before it starts. It runs in its
 own light theme with the site chrome hidden (`body[data-mode="exam"]`).
 
 Listening audio in the demo is speech-synthesised from the Modellsatz
-transcripts (`api/media/exams/b2/hoeren/`); replace it with the licensed
+transcripts (`backend/media/exams/b2/hoeren/`); replace it with the licensed
 recordings before going live.
 
 ## AI speaking teacher
 
 Video lessons with a spoken answer that OpenAI transcribes and a German teacher
-persona grades. Lives in `api/apps/learning` and `src/components/learning`;
+persona grades. Lives in `backend/apps/learning` and `frontend/src/components/learning`;
 the classroom is at `/[locale]/learn/<course-slug>`.
 
 ```bash
 cd api && ./.venv/bin/python manage.py seed_speaking_course
 ```
 
-Needs `OPENAI_API_KEY` in `api/.env`. The key is server-side only — the browser
+Needs `OPENAI_API_KEY` in `backend/.env`. The key is server-side only — the browser
 talks to Django, Django talks to OpenAI. Full write-up in
 [AI_SPEAKING_SYSTEM.md](AI_SPEAKING_SYSTEM.md).
 
@@ -175,7 +174,7 @@ episode points at one generated German demo track
 (`api/media/podcasts/audio/demo.m4a`) — swap in real uploads when they exist.
 The B2 exam text is the Goethe-Institut Modellsatz: fine for practice, but
 licence it or replace it with in-house items before selling access. The exam
-player deliberately carries GOTEH branding — the Goethe-Institut logo is their
+player deliberately carries Lexora branding — the Goethe-Institut logo is their
 trademark and must not appear here.
 Checkout debits the wallet directly; a real payment gateway replaces
 `POST /api/checkout/` and `POST /api/auth/wallet/topup/` in the payment phase.

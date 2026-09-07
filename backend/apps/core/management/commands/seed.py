@@ -31,7 +31,7 @@ M = 1_000_000  # one million Rial, prices read better this way
 
 
 class Command(BaseCommand):
-    help = "Seed the GOTEH database with demo content."
+    help = "Seed the Lexora database with demo content."
 
     def add_arguments(self, parser):
         parser.add_argument("--flush", action="store_true", help="Drop existing data first.")
@@ -674,7 +674,7 @@ class Command(BaseCommand):
         for sender, role, subject, body in (
             ("Dr. Sara Ahmadi", "teacher", "بازخورد تکلیف نوشتاری",
              "متن شما را خواندم. ساختار جملات خیلی بهتر شده؛ فقط روی حروف اضافه با Dativ بیشتر تمرین کنید."),
-            ("GOTEH Academy", "staff", "برنامه کلاس زنده هفته آینده",
+            ("Lexora", "staff", "برنامه کلاس زنده هفته آینده",
              "کلاس مکالمه سه‌شنبه ساعت ۱۸:۰۰ برگزار می‌شود. لینک ورود در پنل شما فعال است."),
             ("Markus Weber", "teacher", "Feedback zur Aussprache",
              "Ihre Aussprache der Umlaute ist deutlich klarer geworden. Weiter so!"),
