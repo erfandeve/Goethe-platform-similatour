@@ -26,6 +26,38 @@ import type { HomePayload } from "@/lib/types";
 
 export const revalidate = 300;
 
+/** The phrases the home page is meant to rank for, per language. */
+const HOME_KEYWORDS: Record<string, string[]> = {
+  fa: [
+    "سیمیلیتور زبان آلمانی",
+    "لکسورا",
+    "Lexora",
+    "شبیه ساز آزمون گوته",
+    "آزمون آنلاین زبان آلمانی",
+    "آموزش زبان آلمانی",
+    "دوره زبان آلمانی A1 تا C1",
+    "سوالات پرتکرار B2",
+    "مکالمه با هوش مصنوعی آلمانی",
+    "آلمانی در محیط",
+  ],
+  en: [
+    "German language simulator",
+    "Lexora",
+    "Goethe exam simulator",
+    "German exam practice online",
+    "learn German A1 to C1",
+    "AI German speaking practice",
+  ],
+  de: [
+    "Deutsch-Simulator",
+    "Lexora",
+    "Goethe-Prüfungssimulator",
+    "Deutsch online üben",
+    "Deutsch lernen A1 bis C1",
+    "KI-Sprechtraining Deutsch",
+  ],
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -35,11 +67,13 @@ export async function generateMetadata({
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
   return buildMetadata({
-    title: `${dict.meta.siteName} — ${dict.meta.tagline}`,
+    title: `${dict.meta.siteName} | ${dict.meta.tagline}`,
+    absolute: true,
     description: dict.meta.description,
     path: "",
     locale,
     siteName: dict.meta.siteName,
+    keywords: HOME_KEYWORDS[locale],
   });
 }
 
@@ -56,11 +90,30 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const organization = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    name: dict.meta.siteName,
+    name: "Lexora",
+    alternateName: ["لکسورا", dict.meta.siteName],
     url: `${SITE_URL}/${locale}`,
     description: dict.meta.description,
     sameAs: [] as string[],
     address: { "@type": "PostalAddress", addressCountry: "DE" },
+    knowsLanguage: ["fa", "de", "en"],
+  };
+
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Lexora",
+    alternateName: dict.meta.siteName,
+    url: `${SITE_URL}/${locale}`,
+    inLanguage: locale,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/${locale}/courses?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
   };
 
   const courseList = {
@@ -77,7 +130,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       {!online && <OfflineNotice locale={locale} />}
-      <JsonLd data={[organization, courseList]} />
+      <JsonLd data={[organization, website, courseList]} />
 
       <Hero locale={locale} dict={dict} stats={data.stats} />
       <Marquee />

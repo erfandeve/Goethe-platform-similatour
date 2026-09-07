@@ -10,7 +10,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale, type Locale } from "@/i18n/config";
 import { apiFetch, getAccessToken } from "@/lib/api";
 import { compact, formatNumber, formatPrice } from "@/lib/format";
-import { buildMetadata, JsonLd, SITE_URL } from "@/lib/seo";
+import { breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL } from "@/lib/seo";
 import type { ExamDetail } from "@/lib/types";
 import { alpha } from "@/lib/utils";
 
@@ -50,7 +50,14 @@ export async function generateMetadata({
     path: `/exams/${slug}`,
     locale,
     siteName: dict.meta.siteName,
-    keywords: [exam.level, exam.exam_board, "Prüfung", "آزمون"],
+    image: exam.cover,
+    keywords: keywordsFor(locale, [
+      exam.title,
+      `${dict.common.level} ${exam.level}`,
+      exam.exam_board,
+      locale === "fa" ? `شبیه ساز آزمون ${exam.level}` : `${exam.level} exam simulator`,
+      "Prüfung",
+    ]),
   });
 }
 
@@ -80,7 +87,16 @@ export default async function ExamDetailPage({
 
   return (
     <>
-      <JsonLd data={jsonLd} />
+      <JsonLd
+        data={[
+          jsonLd,
+          breadcrumbs(locale, [
+            { name: dict.nav.home, path: "" },
+            { name: dict.nav.exams, path: "/exams" },
+            { name: exam.title, path: `/exams/${exam.slug}` },
+          ]),
+        ]}
+      />
 
       <div className="relative overflow-hidden">
         <div

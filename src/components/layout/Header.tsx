@@ -52,6 +52,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       badge: true,
     },
     { href: `/${locale}/plans`, label: dict.nav.plansNav },
+    { href: `/${locale}/articles`, label: dict.nav.articles },
   ];
 
   async function signOut() {

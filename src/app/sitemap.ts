@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { articles } from "@/content/articles";
 import { locales } from "@/i18n/config";
 import { apiFetch } from "@/lib/api";
 import { SITE_URL } from "@/lib/seo";
@@ -16,7 +17,7 @@ interface Feed {
   episodes: FeedEntry[];
 }
 
-const STATIC_PATHS = ["", "/courses", "/exams", "/podcasts"];
+const STATIC_PATHS = ["", "/courses", "/exams", "/podcasts", "/plans", "/about", "/contact", "/articles"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let feed: Feed = { courses: [], exams: [], podcasts: [], episodes: [] };
@@ -62,6 +63,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         });
       }
     }
+  }
+
+  /* Article bodies exist only in Persian, so only the /fa URLs are listed —
+     the other locales carry a canonical back here and stay out of the index. */
+  for (const article of articles) {
+    entries.push({
+      url: `${SITE_URL}/fa/articles/${article.slug}`,
+      lastModified: new Date(article.updated),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    });
   }
 
   return entries;

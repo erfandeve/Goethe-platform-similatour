@@ -24,12 +24,15 @@ export function SectionHeading({
   subtitle,
   action,
   align = "start",
+  as: Heading = "h2",
 }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
   action?: ReactNode;
   align?: "start" | "center";
+  /** A page whose heading IS the page title passes "h1". */
+  as?: "h1" | "h2";
 }) {
   return (
     <div
@@ -44,9 +47,9 @@ export function SectionHeading({
             {eyebrow}
           </p>
         ) : null}
-        <h2 className="font-display text-3xl leading-tight font-semibold text-balance md:text-5xl">
+        <Heading className="font-display text-3xl leading-tight font-semibold text-balance md:text-5xl">
           {title}
-        </h2>
+        </Heading>
         {subtitle ? <p className="text-muted mt-4 text-base md:text-lg">{subtitle}</p> : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}

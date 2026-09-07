@@ -21,7 +21,7 @@ import {
   formatNumber,
   formatPrice,
 } from "@/lib/format";
-import { buildMetadata, JsonLd, SITE_URL } from "@/lib/seo";
+import { breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL } from "@/lib/seo";
 import type { CourseDetail } from "@/lib/types";
 
 export const revalidate = 300;
@@ -58,7 +58,13 @@ export async function generateMetadata({
     locale,
     siteName: dict.meta.siteName,
     type: "article",
-    keywords: [...course.tags, course.level, "Deutschkurs"],
+    image: course.cover,
+    keywords: keywordsFor(locale, [
+      course.title,
+      ...course.tags,
+      `${dict.common.level} ${course.level}`,
+      "Deutschkurs",
+    ]),
   });
 }
 
@@ -128,7 +134,16 @@ export default async function CourseDetailPage({
 
   return (
     <>
-      <JsonLd data={jsonLd} />
+      <JsonLd
+        data={[
+          jsonLd,
+          breadcrumbs(locale, [
+            { name: dict.nav.home, path: "" },
+            { name: dict.nav.courses, path: "/courses" },
+            { name: course.title, path: `/courses/${course.slug}` },
+          ]),
+        ]}
+      />
 
       <div className="relative overflow-hidden">
         <div

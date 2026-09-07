@@ -6,7 +6,7 @@ import { Carousel } from "@/components/ui/Carousel";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale } from "@/i18n/config";
 import { apiFetch } from "@/lib/api";
-import { buildMetadata, JsonLd, SITE_URL } from "@/lib/seo";
+import { breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL } from "@/lib/seo";
 import type { ExamCard as ExamCardType } from "@/lib/types";
 
 // Short window so a cover or price edited in the back office shows up quickly.
@@ -31,7 +31,13 @@ export async function generateMetadata({
     path: "/exams",
     locale,
     siteName: dict.meta.siteName,
-    keywords: ["Goethe Prüfung", "A1 A2 B1 B2 C1", "آزمون آلمانی", "exam simulator"],
+    keywords: keywordsFor(locale, [
+      locale === "fa" ? "سیمیلیتور زبان آلمانی" : "German exam simulator",
+      locale === "fa" ? "شبیه ساز آزمون گوته" : "Goethe exam simulator",
+      locale === "fa" ? "آزمون آنلاین زبان آلمانی" : "German exam practice online",
+      "A1 A2 B1 B2 C1",
+      "Goethe Prüfung",
+    ]),
   });
 }
 

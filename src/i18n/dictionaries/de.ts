@@ -2,16 +2,19 @@ import type { Dictionary } from "./en";
 
 const de: Dictionary = {
   meta: {
-    siteName: "GOTEH Akademie",
+    siteName: "Lexora",
     tagline: "Deutsch, richtig gelernt.",
     description:
       "Deutsch lernen mit strukturierten Kursen von A1 bis C1, vollständigen Prüfungssimulatoren, Aufgabenbanken mit häufigen Fragen und zweisprachigen Podcasts.",
   },
   nav: {
     home: "Start",
+    about: "Über uns",
+    contact: "Kontakt",
+    articles: "Artikel",
     admin: "Verwaltung",
     plansNav: "Abos",
-    aiSpeaking: "KI-Sprechen",
+    aiSpeaking: "Deutsch im Kontext",
     courses: "Kurse",
     exams: "Prüfungen",
     podcasts: "Podcasts",
@@ -60,7 +63,7 @@ const de: Dictionary = {
       latest: "Neueste Folgen",
     },
     method: {
-      title: "So funktioniert GOTEH",
+      title: "So funktioniert Lexora",
       subtitle: "Vier Schritte, kein Rätselraten",
       steps: [
         { title: "Niveau bestimmen", body: "Kostenloser Einstufungstest mit GER-Einschätzung in 20 Minuten." },
@@ -438,6 +441,68 @@ const de: Dictionary = {
     students: "Lernende",
     off: "Rabatt",
     notFound: { title: "Seite nicht gefunden", body: "Diese Seite wurde verschoben oder hat nie existiert.", cta: "Zur Startseite" },
+  },
+  site: {
+    about: {
+      title: "Über Lexora",
+      subtitle: "Warum ein Deutsch-Simulator, und wer dahintersteht",
+      intro:
+        "Lexora ist eine dreisprachige Deutsch-Akademie mit einer einfachen Idee: Am Prüfungstag sollte man nicht erst herausfinden, ob man bereit ist. Man findet es vorher heraus — in einem Simulator, der sich genau wie das Original verhält.",
+      missionTitle: "Wofür wir da sind",
+      mission:
+        "Die meisten Lernenden scheitern an einer Goethe-Prüfung nicht am Deutsch, sondern am Format. Lexora nimmt diese Überraschung heraus. Jedes Modul — Lesen, Hören, Schreiben, Sprechen — ist Bildschirm für Bildschirm und Timer für Timer nachgebaut.",
+      storyTitle: "Wie Lexora entstand",
+      story:
+        "Lexora entstand aus einem Ärgernis: Kandidatinnen und Kandidaten zahlten für eine teure Prüfung, nur um dort zum ersten Mal die Oberfläche zu sehen. Wir haben den Simulator gebaut, den wir uns gewünscht hätten, und darum herum die Kurse, die Podcasts und den KI-Sprechpartner gestellt.",
+      valuesTitle: "Woran wir festhalten",
+      values: [
+        { title: "Echtes Format, keine Nachahmung", body: "Unsere Simulatoren folgen dem offiziellen Modellsatz Aufgabe für Aufgabe — mit denselben Regeln für Audiowiederholungen und Navigation." },
+        { title: "Rückmeldung, mit der man arbeiten kann", body: "Eine Punktzahl allein lehrt nichts. Zu jeder Antwort gehört eine Erklärung in Ihrer Sprache." },
+        { title: "Drei Sprachen, eine Akademie", body: "Persisch, Deutsch und Englisch überall — Oberfläche, Transkripte und KI-Feedback inklusive." },
+        { title: "Sprechen ist nicht optional", body: "„Deutsch im Kontext“ setzt Sie in eine echte Szene, nimmt Ihre Antwort auf und bewertet sie wie eine Prüferin." },
+      ],
+      statsTitle: "Lexora in Zahlen",
+      ctaTitle: "Testen Sie den Simulator, bevor Sie die Prüfung bezahlen",
+      ctaBody: "Beginnen Sie mit einer vollständigen B2-Sitzung und sehen Sie genau, wo Sie stehen.",
+      ctaButton: "Zu den Simulatoren",
+    },
+    contact: {
+      title: "Kontakt zu Lexora",
+      subtitle: "Fragen zu Kursen, Prüfungen oder Ihrem Konto",
+      intro:
+        "Schreiben Sie uns — es antwortet ein Mensch. In der Regel innerhalb eines Werktags.",
+      emailLabel: "E-Mail",
+      supportLabel: "Supportzeiten",
+      supportValue: "Samstag bis Donnerstag, 9:00–18:00 Uhr (Teheraner Zeit)",
+      responseLabel: "Antwortzeit",
+      responseValue: "Innerhalb eines Werktags",
+      formTitle: "Nachricht senden",
+      name: "Ihr Name",
+      email: "Ihre E-Mail",
+      subject: "Betreff",
+      message: "Nachricht",
+      send: "Nachricht senden",
+      sent: "Danke — Ihre Nachricht ist unterwegs.",
+      faqTitle: "Bevor Sie schreiben",
+      faq: [
+        { q: "Wie bekomme ich Zugang zu einem Prüfungssimulator?", a: "Kaufen Sie die Prüfung einmalig auf der Prüfungsseite oder nehmen Sie ein Abo, das alle Prüfungen und alle Prüfungscodes abdeckt." },
+        { q: "Kann ich einen Simulator wiederholen?", a: "Ja. Jeder Prüfungscode ist ein eigener Fragensatz, Sie können dieselbe Stufe also mehrfach ablegen, ohne Fragen zu wiederholen." },
+        { q: "Braucht der KI-Sprechlehrer ein Mikrofon?", a: "Ja — jedes Laptop- oder Handymikrofon genügt. Es wird nichts installiert; die Aufnahme läuft im Browser." },
+      ],
+    },
+    articles: {
+      title: "Artikel zum Deutschlernen",
+      subtitle: "Ausführliche Leitfäden zum Deutschlernen, zu Prüfungssimulatoren und zur Goethe-Anmeldung",
+      intro:
+        "Praktische, ausführliche Leitfäden vom Team, das die Lexora-Simulatoren baut.",
+      readingTime: "Min. Lesezeit",
+      updated: "Aktualisiert",
+      toc: "Inhalt",
+      related: "Weiterlesen",
+      faqTitle: "Häufige Fragen",
+      backToList: "Alle Artikel",
+      persianNote: "Dieser Leitfaden ist auf Persisch verfasst.",
+    },
   },
 };
 

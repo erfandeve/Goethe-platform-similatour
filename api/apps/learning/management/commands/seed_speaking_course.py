@@ -107,17 +107,18 @@ class Command(BaseCommand):
             slug="einreise-nach-deutschland"
         )
         course.title = tt(
-            "ورود به آلمان — مکالمه با معلم هوش مصنوعی",
-            "Entering Germany — Speaking with an AI Teacher",
-            "Einreise nach Deutschland — Sprechen mit KI-Lehrerin",
+            "آلمانی در محیط",
+            "German in Context — Speaking with an AI Teacher",
+            "Deutsch im Kontext — Sprechen mit KI-Lehrerin",
         )
         course.subtitle = tt(
-            "سناریوی واقعی کنترل مرزی؛ بعد از هر ویدیو خودت جواب می‌دهی",
+            "مکالمه با هوش مصنوعی در موقعیت واقعی؛ بعد از هر صحنه خودت جواب می‌دهی",
             "A real border-control scenario: after every scene you answer out loud",
             "Ein echtes Grenzkontroll-Szenario: Nach jeder Szene antworten Sie selbst",
         )
         course.description = tt(
-            "در این دوره صحنه‌به‌صحنه ورود به آلمان را می‌بینید و بعد از هر صحنه، پاسخ خود را "
+            "«آلمانی در محیط» تمرین مکالمه در موقعیت واقعی است: صحنه‌به‌صحنه ورود به آلمان را "
+            "می‌بینید و بعد از هر صحنه، پاسخ خود را "
             "با صدای خودتان می‌گویید. معلم هوش مصنوعی گفتار شما را متن می‌کند، آن را با معیار "
             "سطح زبانی‌تان بررسی می‌کند و نمره، تصحیح، توضیح گرامری و بازخورد می‌دهد.",
             "Watch the arrival in Germany scene by scene and answer each officer's question out "

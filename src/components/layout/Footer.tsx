@@ -21,9 +21,9 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     {
       title: dict.footer.company,
       links: [
-        { href: `/${locale}`, label: dict.footer.links.about },
-        { href: `/${locale}`, label: dict.footer.links.blog },
-        { href: `/${locale}`, label: dict.footer.links.contact },
+        { href: `/${locale}/about`, label: dict.footer.links.about },
+        { href: `/${locale}/articles`, label: dict.nav.articles },
+        { href: `/${locale}/contact`, label: dict.footer.links.contact },
       ],
     },
     {

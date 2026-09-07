@@ -1,16 +1,19 @@
 // Not `as const`: the literal widening keeps fa.ts / de.ts assignable to this shape.
 const en = {
   meta: {
-    siteName: "GOTEH Academy",
-    tagline: "German, learned properly.",
+    siteName: "Lexora",
+    tagline: "German exam simulator and A1–C1 courses",
     description:
-      "Learn German with structured A1–C1 courses, full exam simulators, high-frequency question banks and bilingual podcasts. English, German and Persian in one academy.",
+      "Lexora is a German language simulator that rebuilds the Goethe exam screen for screen, from A1 to C1 — plus structured courses, an AI speaking teacher and bilingual podcasts.",
   },
   nav: {
     home: "Home",
+    about: "About us",
+    contact: "Contact",
+    articles: "Articles",
     admin: "Admin panel",
     plansNav: "Plans",
-    aiSpeaking: "AI Speaking",
+    aiSpeaking: "German in Context",
     courses: "Courses",
     exams: "Exams",
     podcasts: "Podcasts",
@@ -59,7 +62,7 @@ const en = {
       latest: "Latest episodes",
     },
     method: {
-      title: "How GOTEH works",
+      title: "How Lexora works",
       subtitle: "Four steps, no guesswork",
       steps: [
         { title: "Find your level", body: "Take the free placement test and get a CEFR estimate in 20 minutes." },
@@ -127,7 +130,7 @@ const en = {
     },
   },
   exams: {
-    title: "Exams & simulators",
+    title: "German exam simulators",
     subtitle: "Rehearse under real conditions, then fix exactly what broke",
     simulators: { title: "Level simulators", body: "One full mock exam per CEFR level, A1 through C1." },
     frequent: { title: "High-frequency sets", body: "The questions that keep coming back — available for B2 and C1." },
@@ -437,6 +440,68 @@ const en = {
     students: "students",
     off: "off",
     notFound: { title: "Page not found", body: "The page you are looking for has moved or never existed.", cta: "Back home" },
+  },
+  site: {
+    about: {
+      title: "About Lexora",
+      subtitle: "Why a German simulator, and who builds it",
+      intro:
+        "Lexora is a trilingual German academy built around one idea: you do not find out whether you are ready on exam day. You find out beforehand, in a simulator that behaves exactly like the real thing.",
+      missionTitle: "What we are for",
+      mission:
+        "Most learners fail a Goethe exam not because their German is weak, but because the format surprises them. Lexora removes that surprise. Every module — Lesen, Hören, Schreiben, Sprechen — is rebuilt screen for screen, timer for timer.",
+      storyTitle: "How Lexora started",
+      story:
+        "Lexora grew out of a simple frustration: candidates were paying for an expensive exam sitting to discover how the interface worked. We built the simulator we wished we had had, then added the courses, the podcasts and the AI speaking partner around it.",
+      valuesTitle: "What we hold to",
+      values: [
+        { title: "Real format, not a lookalike", body: "Our simulators follow the official Modellsatz task by task, with the same rules on audio replays and navigation." },
+        { title: "Feedback you can act on", body: "A score alone teaches nothing. Every answer comes with an explanation in your own language." },
+        { title: "Three languages, one academy", body: "Persian, German and English throughout — including the interface, the transcripts and the AI feedback." },
+        { title: "Speaking is not optional", body: "German in Context puts you in a real scene, records your answer and grades it like an examiner would." },
+      ],
+      statsTitle: "Lexora in numbers",
+      ctaTitle: "Try the simulator before you pay for the exam",
+      ctaBody: "Start with a full B2 sitting and see exactly where you stand.",
+      ctaButton: "Open the simulators",
+    },
+    contact: {
+      title: "Contact Lexora",
+      subtitle: "Questions about courses, exams or your account",
+      intro:
+        "Write to us and a real person answers. We usually reply within one working day.",
+      emailLabel: "Email",
+      supportLabel: "Support hours",
+      supportValue: "Saturday to Thursday, 9:00–18:00 (Tehran time)",
+      responseLabel: "Response time",
+      responseValue: "Within one working day",
+      formTitle: "Send a message",
+      name: "Your name",
+      email: "Your email",
+      subject: "Subject",
+      message: "Message",
+      send: "Send message",
+      sent: "Thank you — your message is on its way.",
+      faqTitle: "Before you write",
+      faq: [
+        { q: "How do I get access to an exam simulator?", a: "Buy the exam once from the exams page, or take a subscription that covers every exam and every exam code." },
+        { q: "Can I retake a simulator?", a: "Yes. Each exam code is a separate question set, so you can sit the same level several times without repeating questions." },
+        { q: "Does the AI speaking teacher need a microphone?", a: "Yes — any laptop or phone microphone works. Nothing is installed; recording happens in the browser." },
+      ],
+    },
+    articles: {
+      title: "German learning articles",
+      subtitle: "Long-form guides on studying German, exam simulators and Goethe registration",
+      intro:
+        "Practical, detailed guides written by the team that builds the Lexora simulators.",
+      readingTime: "min read",
+      updated: "Updated",
+      toc: "On this page",
+      related: "Keep reading",
+      faqTitle: "Frequently asked questions",
+      backToList: "All articles",
+      persianNote: "This guide is written in Persian.",
+    },
   },
 };
 
