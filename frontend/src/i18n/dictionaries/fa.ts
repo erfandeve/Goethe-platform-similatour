@@ -63,7 +63,7 @@ const fa: Dictionary = {
       latest: "تازه‌ترین قسمت‌ها",
     },
     method: {
-      title: "گوته چطور کار می‌کند",
+      title: "لکسورا چطور کار می‌کند",
       subtitle: "چهار قدم، بدون حدس و گمان",
       steps: [
         { title: "سطحت را بسنج", body: "آزمون تعیین سطح رایگان و دریافت سطح تخمینی CEFR در ۲۰ دقیقه." },
@@ -501,7 +501,7 @@ const fa: Dictionary = {
       related: "ادامه بده",
       faqTitle: "پرسش‌های پرتکرار",
       backToList: "همه مقالات",
-      persianNote: "این راهنما به زبان فارسی نوشته شده است.",
+      wordsLabel: "کلمه",
     },
   },
 };

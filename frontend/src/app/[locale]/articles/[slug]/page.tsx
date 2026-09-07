@@ -5,16 +5,23 @@ import { notFound } from "next/navigation";
 import { ArticleBody } from "@/components/articles/ArticleBody";
 import { CoverArt } from "@/components/ui/CoverArt";
 import { Section } from "@/components/ui/Section";
-import { articles, getArticle, relatedArticles } from "@/content/articles";
-import { tableOfContents } from "@/content/types";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { isLocale, locales } from "@/i18n/config";
-import { JsonLd, SITE_URL } from "@/lib/seo";
+import { isLocale } from "@/i18n/config";
+import { apiFetch } from "@/lib/api";
+import { alternates, JsonLd, SITE_URL } from "@/lib/seo";
+import type { ArticleDetail } from "@/lib/types";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
-export function generateStaticParams() {
-  return locales.flatMap((locale) => articles.map((a) => ({ locale, slug: a.slug })));
+async function loadArticle(slug: string, locale: string) {
+  try {
+    return await apiFetch<ArticleDetail>(`/articles/${slug}/`, {
+      locale: locale as never,
+      revalidate: 300,
+    });
+  } catch {
+    return null;
+  }
 }
 
 export async function generateMetadata({
@@ -23,38 +30,33 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const article = getArticle(slug);
-  if (!isLocale(locale) || !article) return {};
+  if (!isLocale(locale)) return {};
+  const article = await loadArticle(slug, locale);
+  if (!article) return {};
 
-  /* The bodies are written in Persian. Other locales serve the same page so no
-     link 404s, but they point their canonical at /fa and stay out of the index
-     — that is what keeps this from reading as duplicate content. */
-  const canonical = `${SITE_URL}/fa/articles/${slug}`;
-  const isSource = locale === "fa";
+  const path = `/articles/${slug}`;
+  const url = `${SITE_URL}/${locale}${path}`;
 
   return {
-    title: { absolute: article.metaTitle },
-    description: article.metaDescription,
+    title: { absolute: article.meta_title },
+    description: article.meta_description,
     keywords: article.keywords,
-    alternates: { canonical, languages: { "fa-IR": canonical } },
-    robots: isSource
-      ? { index: true, follow: true, "max-image-preview": "large" }
-      : { index: false, follow: true },
+    alternates: alternates(path, locale),
+    robots: { index: true, follow: true, "max-image-preview": "large" },
     openGraph: {
       type: "article",
       title: article.title,
-      description: article.metaDescription,
-      url: canonical,
+      description: article.meta_description,
+      url,
       siteName: "Lexora",
-      locale: "fa_IR",
-      publishedTime: article.published,
-      modifiedTime: article.updated,
+      publishedTime: article.published_at ?? undefined,
+      modifiedTime: article.updated_at ?? undefined,
       images: [{ url: `${SITE_URL}/og-default.png`, width: 1200, height: 630, alt: article.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
-      description: article.metaDescription,
+      description: article.meta_description,
       images: [`${SITE_URL}/og-default.png`],
     },
   };
@@ -67,33 +69,31 @@ export default async function ArticlePage({
 }) {
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
-  const article = getArticle(slug);
+
+  const [dict, article] = await Promise.all([getDictionary(locale), loadArticle(slug, locale)]);
   if (!article) notFound();
 
-  const dict = await getDictionary(locale);
-  const toc = tableOfContents(article.body);
-  const related = relatedArticles(article);
-  const url = `${SITE_URL}/fa/articles/${article.slug}`;
+  const toc = article.body.filter((block) => block.type === "h2");
+  const url = `${SITE_URL}/${locale}/articles/${article.slug}`;
 
   const schema = [
     {
       "@context": "https://schema.org",
       "@type": "Article",
       headline: article.title,
-      description: article.metaDescription,
-      inLanguage: "fa-IR",
-      datePublished: article.published,
-      dateModified: article.updated,
+      description: article.meta_description,
+      inLanguage: locale,
+      datePublished: article.published_at,
+      dateModified: article.updated_at,
       wordCount: article.words,
       keywords: article.keywords.join(", "),
-      articleSection: "آموزش زبان آلمانی",
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
       image: [`${SITE_URL}/og-default.png`],
-      author: { "@type": "Organization", name: "Lexora", url: `${SITE_URL}/fa` },
+      author: { "@type": "Organization", name: "Lexora", url: `${SITE_URL}/${locale}` },
       publisher: {
         "@type": "Organization",
         name: "Lexora",
-        url: `${SITE_URL}/fa`,
+        url: `${SITE_URL}/${locale}`,
         logo: { "@type": "ImageObject", url: `${SITE_URL}/og-default.png` },
       },
     },
@@ -111,22 +111,26 @@ export default async function ArticlePage({
         { "@type": "ListItem", position: 3, name: article.title, item: url },
       ],
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: article.faq.map((item) => ({
-        "@type": "Question",
-        name: item.q,
-        acceptedAnswer: { "@type": "Answer", text: item.a },
-      })),
-    },
+    ...(article.faq.length
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: article.faq.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a },
+            })),
+          },
+        ]
+      : []),
   ];
 
   return (
     <>
       <JsonLd data={schema} />
 
-      <article dir="rtl" lang="fa">
+      <article>
         <Section className="pb-10">
           <nav aria-label="breadcrumb" className="mb-8 text-sm text-mist-500">
             <ol className="flex flex-wrap items-center gap-2">
@@ -150,14 +154,17 @@ export default async function ArticlePage({
             </h1>
             <p className="mt-6 text-lg leading-9 text-mist-300">{article.excerpt}</p>
             <p className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs text-mist-500">
+              {article.updated_at && (
+                <span>
+                  {dict.site.articles.updated}: {article.updated_at.slice(0, 10)}
+                </span>
+              )}
               <span>
-                {dict.site.articles.updated}: {article.updated}
+                {article.reading_minutes.toLocaleString(locale)} {dict.site.articles.readingTime}
               </span>
               <span>
-                {article.readingMinutes.toLocaleString(locale === "fa" ? "fa-IR" : locale)}{" "}
-                {dict.site.articles.readingTime}
+                {article.words.toLocaleString(locale)} {dict.site.articles.wordsLabel}
               </span>
-              <span>{article.words.toLocaleString("fa-IR")} کلمه</span>
             </p>
           </header>
 
@@ -166,7 +173,7 @@ export default async function ArticlePage({
               src={article.cover}
               alt={article.title}
               accent="#8b7dff"
-              label={article.focusKeyword}
+              label={article.focus_keyword}
               ratio="aspect-21/9"
             />
           </div>
@@ -177,32 +184,34 @@ export default async function ArticlePage({
             <div className="max-w-3xl">
               <ArticleBody body={article.body} locale={locale} />
 
-              <section className="mt-16">
-                <h2 className="font-display mb-6 text-2xl font-bold text-white">
-                  {dict.site.articles.faqTitle}
-                </h2>
-                <div className="flex flex-col gap-3">
-                  {article.faq.map((item) => (
-                    <details
-                      key={item.q}
-                      className="group rounded-2xl border border-white/10 bg-white/[0.02] px-6 py-4"
-                    >
-                      <summary className="cursor-pointer list-none font-semibold text-white marker:content-none">
-                        {item.q}
-                      </summary>
-                      <p className="mt-3 text-[16px] leading-8 text-mist-300">{item.a}</p>
-                    </details>
-                  ))}
-                </div>
-              </section>
+              {article.faq.length > 0 && (
+                <section className="mt-16">
+                  <h2 className="font-display mb-6 text-2xl font-bold text-white">
+                    {dict.site.articles.faqTitle}
+                  </h2>
+                  <div className="flex flex-col gap-3">
+                    {article.faq.map((item) => (
+                      <details
+                        key={item.q}
+                        className="rounded-2xl border border-white/10 bg-white/[0.02] px-6 py-4"
+                      >
+                        <summary className="cursor-pointer list-none font-semibold text-white marker:content-none">
+                          {item.q}
+                        </summary>
+                        <p className="mt-3 text-[16px] leading-8 text-mist-300">{item.a}</p>
+                      </details>
+                    ))}
+                  </div>
+                </section>
+              )}
 
-              {related.length > 0 && (
+              {article.related.length > 0 && (
                 <section className="mt-16">
                   <h2 className="font-display mb-6 text-2xl font-bold text-white">
                     {dict.site.articles.related}
                   </h2>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    {related.map((item) => (
+                    {article.related.map((item) => (
                       <Link
                         key={item.slug}
                         href={`/${locale}/articles/${item.slug}`}
@@ -230,16 +239,18 @@ export default async function ArticlePage({
                   {dict.site.articles.toc}
                 </p>
                 <ol className="flex flex-col gap-2.5">
-                  {toc.map((heading) => (
-                    <li key={heading.id}>
-                      <a
-                        href={`#${heading.id}`}
-                        className="text-sm leading-6 text-mist-400 transition hover:text-white"
-                      >
-                        {heading.text}
-                      </a>
-                    </li>
-                  ))}
+                  {toc.map((heading) =>
+                    heading.type === "h2" ? (
+                      <li key={heading.id}>
+                        <a
+                          href={`#${heading.id}`}
+                          className="text-sm leading-6 text-mist-400 transition hover:text-white"
+                        >
+                          {heading.text}
+                        </a>
+                      </li>
+                    ) : null,
+                  )}
                 </ol>
               </nav>
             </aside>

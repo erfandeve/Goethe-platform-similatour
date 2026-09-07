@@ -4,6 +4,7 @@
  * back instead of throwing the whole render away.
  */
 export const EMPTY_HOME = {
+  sections: [],
   featured_courses: [],
   newest_courses: [],
   simulators: [],

@@ -102,17 +102,23 @@ export function Modal({
 
 export function Panel({
   title,
+  description,
   action,
   children,
 }: {
   title: string;
+  /** One line under the heading, for panels whose rules are not obvious. */
+  description?: string;
   action?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <section className="glass rounded-3xl p-6">
-      <header className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="font-display text-lg font-semibold">{title}</h2>
+      <header className="mb-5 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="font-display text-lg font-semibold">{title}</h2>
+          {description ? <p className="mt-1 text-xs text-mist-500">{description}</p> : null}
+        </div>
         {action}
       </header>
       {children}

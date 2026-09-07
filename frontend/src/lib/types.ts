@@ -329,7 +329,60 @@ export interface Order {
   paid_at: string | null;
 }
 
+export interface SectionItem {
+  title: string;
+  body: string;
+  icon: string;
+}
+
+/** An editable block on the home page; `kind` decides how it is laid out. */
+export interface HomeSection {
+  key: string;
+  kind: "text_image" | "rich_text" | "features" | "stats" | "faq" | "cta";
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  paragraphs: string[];
+  items: SectionItem[];
+  image: string;
+  image_alt: string;
+  image_side: "start" | "end";
+  cta_label: string;
+  cta_href: string;
+  accent: string;
+}
+
+export interface ArticleCard {
+  slug: string;
+  title: string;
+  excerpt: string;
+  focus_keyword: string;
+  cover: string;
+  reading_minutes: number;
+  words: number;
+  published_at: string | null;
+  updated_at: string | null;
+}
+
+export type ArticleBlock =
+  | { type: "p" | "h3" | "quote"; text: string }
+  | { type: "h2"; text: string; id: string }
+  | { type: "ul" | "ol"; items: string[] }
+  | { type: "callout"; title: string; text: string }
+  | { type: "cta"; title: string; text: string; label: string; href: string }
+  | { type: "table"; head: string[]; rows: string[][]; caption?: string };
+
+export interface ArticleDetail extends ArticleCard {
+  meta_title: string;
+  meta_description: string;
+  keywords: string[];
+  body: ArticleBlock[];
+  faq: { q: string; a: string }[];
+  related: ArticleCard[];
+}
+
 export interface HomePayload {
+  sections: HomeSection[];
   featured_courses: CourseCard[];
   newest_courses: CourseCard[];
   simulators: ExamCard[];

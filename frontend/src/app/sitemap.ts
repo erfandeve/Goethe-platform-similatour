@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 
-import { articles } from "@/content/articles";
 import { locales } from "@/i18n/config";
 import { apiFetch } from "@/lib/api";
 import { SITE_URL } from "@/lib/seo";
@@ -11,6 +10,7 @@ interface FeedEntry {
 }
 
 interface Feed {
+  articles: FeedEntry[];
   courses: FeedEntry[];
   exams: FeedEntry[];
   podcasts: FeedEntry[];
@@ -20,7 +20,7 @@ interface Feed {
 const STATIC_PATHS = ["", "/courses", "/exams", "/podcasts", "/plans", "/about", "/contact", "/articles"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let feed: Feed = { courses: [], exams: [], podcasts: [], episodes: [] };
+  let feed: Feed = { articles: [], courses: [], exams: [], podcasts: [], episodes: [] };
   try {
     feed = await apiFetch<Feed>("/sitemap-feed/", { revalidate: 3600 });
   } catch {
@@ -49,6 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       [feed.exams, "/exams", 0.9],
       [feed.podcasts, "/podcasts", 0.7],
       [feed.episodes, "/podcasts/episodes", 0.6],
+      [feed.articles, "/articles", 0.85],
     ];
 
     for (const [items, prefix, priority] of groups) {
@@ -63,17 +64,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         });
       }
     }
-  }
-
-  /* Article bodies exist only in Persian, so only the /fa URLs are listed —
-     the other locales carry a canonical back here and stay out of the index. */
-  for (const article of articles) {
-    entries.push({
-      url: `${SITE_URL}/fa/articles/${article.slug}`,
-      lastModified: new Date(article.updated),
-      changeFrequency: "monthly",
-      priority: 0.85,
-    });
   }
 
   return entries;

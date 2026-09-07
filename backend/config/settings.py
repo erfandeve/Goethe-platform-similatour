@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     "apps.learning",
     "apps.adminpanel",
     "apps.billing",
+    "apps.cms",
 ]
 
 MIDDLEWARE = [

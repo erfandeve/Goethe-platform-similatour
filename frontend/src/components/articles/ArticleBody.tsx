@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-import type { Block } from "@/content/types";
 import type { Locale } from "@/i18n/config";
+import type { ArticleBlock } from "@/lib/types";
 
 /** Renders article blocks as semantic HTML — the structure search engines read. */
-export function ArticleBody({ body, locale }: { body: Block[]; locale: Locale }) {
+export function ArticleBody({ body, locale }: { body: ArticleBlock[]; locale: Locale }) {
   return (
     <div className="flex flex-col gap-6">
       {body.map((block, index) => {
@@ -52,7 +52,7 @@ export function ArticleBody({ body, locale }: { body: Block[]; locale: Locale })
                 {block.items.map((item, i) => (
                   <li key={i} className="flex gap-3 text-[17px] leading-8 text-mist-300">
                     <span className="mt-1 grid size-6 shrink-0 place-items-center rounded-lg bg-violet-500/15 text-xs font-semibold text-violet-300">
-                      {i + 1}
+                      {(i + 1).toLocaleString(locale)}
                     </span>
                     <span>{item}</span>
                   </li>
@@ -136,6 +136,9 @@ export function ArticleBody({ body, locale }: { body: Block[]; locale: Locale })
                 </Link>
               </div>
             );
+
+          default:
+            return null;
         }
       })}
     </div>

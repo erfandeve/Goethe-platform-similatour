@@ -8,6 +8,8 @@ from apps.exams.serializers import exam_card
 from apps.podcasts.models import Episode, Podcast
 from apps.podcasts.serializers import episode_card, podcast_card
 
+from apps.cms.views import published_sections
+
 from .utils import get_locale
 
 
@@ -29,6 +31,7 @@ def home(request):
 
     return Response(
         {
+            "sections": published_sections(locale),
             "featured_courses": [course_card(c, locale) for c in featured],
             "newest_courses": [course_card(c, locale) for c in newest],
             "simulators": [exam_card(e, locale) for e in exams if e.kind == "simulator"],
@@ -59,8 +62,14 @@ def home(request):
 @api_view(["GET"])
 def sitemap_feed(request):
     """Slugs + timestamps for the Next.js sitemap builder."""
+    from apps.cms.models import Article
+
     return Response(
         {
+            "articles": [
+                {"slug": a.slug, "updated": a.updated_at.isoformat() if a.updated_at else None}
+                for a in Article.objects(is_published=True).only("slug", "updated_at")
+            ],
             "courses": [
                 {"slug": c.slug, "updated": c.created_at.isoformat() if c.created_at else None}
                 for c in Course.objects(is_published=True).only("slug", "created_at")

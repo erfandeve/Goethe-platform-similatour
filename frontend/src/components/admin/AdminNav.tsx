@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 
 const ITEMS = [
   { href: "", label: "نمای کلی", labelDe: "Übersicht", icon: "M4 12h6V4H4v8Zm10 8h6v-8h-6v8ZM4 20h6v-5H4v5Zm10-11h6V4h-6v5Z" },
+  { href: "/sections", label: "صفحه اصلی", labelDe: "Startseite", icon: "M4 4h7v7H4V4Zm9 0h7v4h-7V4Zm0 6h7v10h-7V10ZM4 13h7v7H4v-7Z" },
+  { href: "/articles", label: "مقالات", labelDe: "Artikel", icon: "M5 4h11l3 3v13H5V4Zm3 6h8M8 14h8M8 18h5" },
   { href: "/courses", label: "دوره‌ها", labelDe: "Kurse", icon: "M4 5h9a3 3 0 0 1 3 3v11a3 3 0 0 0-3-3H4V5Zm16 0h-1a3 3 0 0 0-3 3v11a3 3 0 0 1 3-3h1V5Z" },
   { href: "/categories", label: "دسته‌بندی‌ها", labelDe: "Kategorien", icon: "M12 3 2 8l10 5 10-5-10-5Zm0 9L2 17l10 5 10-5-10-5Z" },
   { href: "/speaking", label: "مکالمه با AI", labelDe: "KI-Sprechen", icon: "M12 15a3.5 3.5 0 0 0 3.5-3.5v-5a3.5 3.5 0 1 0-7 0v5A3.5 3.5 0 0 0 12 15Zm6.5-3.5a6.5 6.5 0 0 1-13 0M12 18v3" },

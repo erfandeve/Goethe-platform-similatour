@@ -28,9 +28,9 @@ const en = {
     close: "Close",
   },
   hero: {
-    eyebrow: "A1 → C1 · Goethe-aligned",
-    titleTop: "Speak German",
-    titleAccent: "like you live there",
+    eyebrow: "Lexora · German exam simulator, A1 → C1",
+    titleTop: "A German exam simulator",
+    titleAccent: "that behaves like the real thing",
     subtitle:
       "Structured courses, real exam simulators and everyday podcasts — built by teachers who took these exams themselves.",
     primary: "Explore courses",
@@ -500,7 +500,7 @@ const en = {
       related: "Keep reading",
       faqTitle: "Frequently asked questions",
       backToList: "All articles",
-      persianNote: "This guide is written in Persian.",
+      wordsLabel: "words",
     },
   },
 };

@@ -1,9 +1,16 @@
 from django.urls import path
 
+from apps.cms import admin_views as cms_views
+
 from . import views
 
 urlpatterns = [
     path("admin/overview/", views.overview),
+    path("admin/sections/", cms_views.sections),
+    path("admin/sections/reorder/", cms_views.reorder_sections),
+    path("admin/sections/<str:pk>/", cms_views.section_detail),
+    path("admin/articles/", cms_views.articles),
+    path("admin/articles/<str:pk>/", cms_views.article_detail),
     path("admin/categories/", views.categories),
     path("admin/categories/<str:pk>/", views.category_detail),
     path("admin/instructors/", views.instructors),

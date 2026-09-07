@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CategoryGrid } from "@/components/home/CategoryGrid";
 import { CtaBanner } from "@/components/home/CtaBanner";
 import { Hero } from "@/components/home/Hero";
+import { HomeSections } from "@/components/home/HomeSections";
 import { Marquee } from "@/components/home/Marquee";
 import { MethodSteps } from "@/components/home/MethodSteps";
 import { Teachers } from "@/components/home/Teachers";
@@ -116,6 +117,22 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     },
   };
 
+  /* A cached payload from before sections existed has no `sections` key, and
+     an older API would not send one either — neither should take the page down. */
+  const sections = data.sections ?? [];
+  const faqSection = sections.find((section) => section.kind === "faq");
+  const faqSchema = faqSection
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqSection.items.map((entry) => ({
+          "@type": "Question",
+          name: entry.title,
+          acceptedAnswer: { "@type": "Answer", text: entry.body },
+        })),
+      }
+    : null;
+
   const courseList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -130,7 +147,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       {!online && <OfflineNotice locale={locale} />}
-      <JsonLd data={[organization, website, courseList]} />
+      <JsonLd data={[organization, website, courseList, ...(faqSchema ? [faqSchema] : [])]} />
 
       <Hero locale={locale} dict={dict} stats={data.stats} />
       <Marquee />
@@ -226,6 +243,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
       </Section>
+
+      <HomeSections sections={sections} locale={locale} />
 
       <MethodSteps dict={dict} />
       <Teachers instructors={data.instructors} locale={locale} dict={dict} />

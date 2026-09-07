@@ -3,9 +3,9 @@ import type { Dictionary } from "./en";
 const de: Dictionary = {
   meta: {
     siteName: "Lexora",
-    tagline: "Deutsch, richtig gelernt.",
+    tagline: "Deutsch-Simulator und Kurse von A1 bis C1",
     description:
-      "Deutsch lernen mit strukturierten Kursen von A1 bis C1, vollständigen Prüfungssimulatoren, Aufgabenbanken mit häufigen Fragen und zweisprachigen Podcasts.",
+      "Lexora ist ein Deutsch-Simulator, der die Goethe-Prüfung von A1 bis C1 Bildschirm für Bildschirm nachbaut — dazu strukturierte Kurse von A1 bis C1, eine KI-Sprechlehrerin und zweisprachige Podcasts.",
   },
   nav: {
     home: "Start",
@@ -29,9 +29,9 @@ const de: Dictionary = {
     close: "Schließen",
   },
   hero: {
-    eyebrow: "A1 → C1 · An Goethe orientiert",
-    titleTop: "Deutsch sprechen,",
-    titleAccent: "als wären Sie hier zu Hause",
+    eyebrow: "Lexora · Deutsch-Simulator, A1 → C1",
+    titleTop: "Ein Deutsch-Simulator,",
+    titleAccent: "der sich wie das Original verhält",
     subtitle:
       "Strukturierte Kurse, echte Prüfungssimulatoren und Alltagspodcasts — entwickelt von Lehrkräften, die diese Prüfungen selbst abgelegt haben.",
     primary: "Kurse entdecken",
@@ -131,7 +131,7 @@ const de: Dictionary = {
     },
   },
   exams: {
-    title: "Prüfungen & Simulatoren",
+    title: "Deutsch-Prüfungssimulatoren",
     subtitle: "Unter echten Bedingungen proben und gezielt nachbessern",
     simulators: { title: "Niveau-Simulatoren", body: "Eine vollständige Musterprüfung pro GER-Niveau, A1 bis C1." },
     frequent: { title: "Häufigkeitssets", body: "Die Aufgaben, die immer wiederkommen — für B2 und C1." },
@@ -501,7 +501,7 @@ const de: Dictionary = {
       related: "Weiterlesen",
       faqTitle: "Häufige Fragen",
       backToList: "Alle Artikel",
-      persianNote: "Dieser Leitfaden ist auf Persisch verfasst.",
+      wordsLabel: "Wörter",
     },
   },
 };
