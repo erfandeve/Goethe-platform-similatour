@@ -60,9 +60,11 @@ async function forward(request: Request, path: string[]) {
   }
 
   const text = await upstream.text();
-  const response = new NextResponse(text, {
+  // 204/304 carry no body, and constructing a Response with one throws.
+  const empty = upstream.status === 204 || upstream.status === 304;
+  const response = new NextResponse(empty ? null : text, {
     status: upstream.status,
-    headers: { "Content-Type": "application/json" },
+    ...(empty ? {} : { headers: { "Content-Type": "application/json" } }),
   });
   if (renewed) setSessionCookies(response, renewed);
   return response;
