@@ -48,6 +48,9 @@ export function ExamShell({
   const [contrast, setContrast] = useState<"normal" | "high">("normal");
   const [volume, setVolume] = useState(1);
   const [stacked, setStacked] = useState(false);
+  // Two panels do not fit a phone. Below md the learner sees one at a time and
+  // switches, the way the digital exam behaves on a small screen.
+  const [mobilePane, setMobilePane] = useState<"left" | "right">("left");
 
   // Exam mode takes over the window: the site header and footer step aside.
   useEffect(() => {
@@ -71,10 +74,10 @@ export function ExamShell({
       style={{ ["--exam-scale" as string]: scale, background: "var(--exam-page)" }}
     >
       <header
-        className="relative flex h-16 shrink-0 items-center px-5 text-white"
+        className="flex h-14 shrink-0 items-center gap-3 px-3 text-white sm:h-16 sm:px-5"
         style={{ background: "var(--exam-bar)" }}
       >
-        <span className="flex items-center gap-3">
+        <span className="flex shrink-0 items-center gap-3">
           <span
             className="grid size-9 place-items-center rounded-full border-2 text-[13px] font-bold"
             style={{ borderColor: "var(--exam-green)", color: "var(--exam-green)" }}
@@ -88,16 +91,17 @@ export function ExamShell({
           </span>
         </span>
 
-        <span className="absolute start-1/2 -translate-x-1/2 text-center rtl:translate-x-1/2">
-          <span className="tnum block text-sm font-semibold" dir="ltr">
+        <span className="min-w-0 flex-1 text-center">
+          <span className="tnum hidden text-xs font-semibold sm:block sm:text-sm" dir="ltr">
             {sessionId}
           </span>
-          <span className="block text-sm" dir="ltr">
-            verbleibende Zeit | <b>{minutesLeft} Minuten</b>
+          <span className="block text-xs whitespace-nowrap sm:text-sm" dir="ltr">
+            <span className="hidden sm:inline">verbleibende Zeit | </span>
+            <b>{minutesLeft} Min.</b>
           </span>
         </span>
 
-        <span className="ms-auto flex items-center gap-2">
+        <span className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           {audioBadge ? (
             <span className="me-2 hidden items-center gap-2 text-xs text-white/85 lg:flex">
               <svg viewBox="0 0 24 24" className="size-4" fill="currentColor" aria-hidden>
@@ -114,12 +118,14 @@ export function ExamShell({
             onPlus={() => setScale((value) => Math.min(1.5, +(value + 0.1).toFixed(2)))}
           />
           <Stepper
+            className="hidden sm:flex"
             icon="◐"
             label="Kontrast"
             onMinus={() => setContrast("normal")}
             onPlus={() => setContrast("high")}
           />
           <Stepper
+            className="hidden min-[420px]:flex"
             icon="🔊"
             label="Lautstärke"
             onMinus={() => setVolume((value) => Math.max(0, +(value - 0.2).toFixed(1)))}
@@ -141,22 +147,28 @@ export function ExamShell({
 
         <div
           className={cn(
-            "grid min-h-0 flex-1 gap-4 p-4",
-            stacked ? "grid-rows-2" : "md:grid-cols-2",
+            "grid min-h-0 flex-1 gap-4 p-2.5 pb-16 sm:p-4 md:pb-4",
+            stacked ? "md:grid-rows-2" : "md:grid-cols-2",
           )}
         >
           <section
-            className="exam-scroll min-h-0 rounded-sm p-6 md:p-8"
+            className={cn(
+              "exam-scroll min-w-0 rounded-sm p-4 sm:p-6 md:min-h-0 md:p-8",
+              mobilePane === "left" ? "min-h-0" : "hidden md:block",
+            )}
             style={{ background: "var(--exam-card)", border: "1px solid var(--exam-line)" }}
           >
             {left}
           </section>
 
           <section
-            className="exam-scroll relative min-h-0 rounded-sm p-6 md:p-8"
+            className={cn(
+              "exam-scroll relative min-w-0 rounded-sm p-4 sm:p-6 md:min-h-0 md:p-8",
+              mobilePane === "right" ? "min-h-0" : "hidden md:block",
+            )}
             style={{ background: "var(--exam-card)", border: "1px solid var(--exam-line)" }}
           >
-            <div className="mb-5 flex items-center justify-between border-b pb-3" style={{ borderColor: "var(--exam-line)" }}>
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-2 border-b pb-3" style={{ borderColor: "var(--exam-line)" }}>
               {workMinutes ? (
                 <span className="flex items-center gap-1.5 text-xs" style={{ color: "var(--exam-muted)" }}>
                   <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
@@ -178,6 +190,56 @@ export function ExamShell({
 
         <EdgeButton side="end" onClick={onNext} disabled={!canNext} label={nextLabel} />
 
+        {/* Phones get the pane switch and the page controls as a bottom bar,
+            because the edge arrows are desktop-sized hit areas. */}
+        <div
+          className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 border-t px-2.5 py-2 md:hidden"
+          style={{ background: "var(--exam-card)", borderColor: "var(--exam-line)" }}
+        >
+          <button
+            type="button"
+            onClick={onPrev}
+            disabled={!canPrev}
+            className="min-h-11 rounded-sm px-3 text-sm disabled:opacity-35"
+            style={{ background: "var(--exam-bar-soft)" }}
+            aria-label={prevLabel}
+          >
+            ←
+          </button>
+
+          <span
+            className="flex min-h-11 flex-1 items-center justify-center rounded-sm p-0.5 text-xs"
+            style={{ background: "var(--exam-bar-soft)" }}
+          >
+            {(["left", "right"] as const).map((side) => (
+              <button
+                key={side}
+                type="button"
+                onClick={() => setMobilePane(side)}
+                aria-pressed={mobilePane === side}
+                className={cn(
+                  "min-h-10 flex-1 rounded-sm px-2 transition",
+                  mobilePane === side ? "font-semibold text-white" : "",
+                )}
+                style={mobilePane === side ? { background: "var(--exam-green)" } : undefined}
+              >
+                {side === "left" ? "Text" : "Aufgaben"}
+              </button>
+            ))}
+          </span>
+
+          <button
+            type="button"
+            onClick={onNext}
+            disabled={!canNext}
+            className="min-h-11 rounded-sm px-3 text-sm disabled:opacity-35"
+            style={{ background: "var(--exam-bar-soft)" }}
+            aria-label={nextLabel}
+          >
+            →
+          </button>
+        </div>
+
         <div className="absolute end-3 bottom-3 hidden flex-col gap-1 md:flex">
           <LayoutToggle active={!stacked} onClick={() => setStacked(false)} orientation="cols" />
           <LayoutToggle active={stacked} onClick={() => setStacked(true)} orientation="rows" />
@@ -192,15 +254,17 @@ function Stepper({
   label,
   onMinus,
   onPlus,
+  className,
 }: {
   icon: string;
   label: string;
   onMinus: () => void;
   onPlus: () => void;
+  className?: string;
 }) {
   return (
     <span
-      className="flex items-center gap-1 rounded-sm px-1.5 py-1"
+      className={cn("flex items-center gap-1 rounded-sm px-1.5 py-1", className)}
       style={{ background: "var(--exam-bar-soft)" }}
       role="group"
       aria-label={label}
@@ -237,16 +301,13 @@ function EdgeButton({
       title={label}
       aria-label={label}
       className={cn(
-        "group absolute top-1/2 z-20 grid h-24 w-11 -translate-y-1/2 place-items-center text-white transition-colors",
+        "group absolute top-1/2 z-20 hidden h-24 w-11 -translate-y-1/2 place-items-center text-white transition-colors md:grid",
         side === "start" ? "start-0 rounded-e-md" : "end-0 rounded-s-md",
         disabled && "pointer-events-none opacity-0",
       )}
       style={{ background: "var(--exam-green)" }}
     >
-      <span
-        className={cn("text-xl leading-none", side === "start" ? "rtl:rotate-180" : "rtl:rotate-180")}
-        aria-hidden
-      >
+      <span className="text-xl leading-none" aria-hidden>
         {side === "start" ? "←" : "→"}
       </span>
     </button>

@@ -181,7 +181,9 @@ export default async function ArticlePage({
 
         <Section className="pt-0 pb-20">
           <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_280px]">
-            <div className="max-w-3xl">
+            {/* min-w-0: a grid item defaults to min-content width, so without it
+                the widest table stretches the column past the viewport. */}
+            <div className="min-w-0 max-w-3xl">
               <ArticleBody body={article.body} locale={locale} />
 
               {article.faq.length > 0 && (

@@ -28,7 +28,9 @@ export default async function AdminLayout({
 
   return (
     <div className="container-page grid gap-8 py-10 lg:grid-cols-[15rem_1fr]">
-      <div>
+      {/* min-w-0: the nav scrolls sideways on a phone, and without this the
+          column sizes to its content and drags the whole page wide. */}
+      <div className="min-w-0">
         <div className="mb-6">
           <p className="text-xs tracking-wider text-mist-600 uppercase">Admin</p>
           <p className="font-display mt-1 text-xl font-semibold">{user.full_name}</p>

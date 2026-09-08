@@ -249,8 +249,10 @@ export function LearningExperience({
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_25rem] xl:grid-cols-[1fr_28rem]">
-      <div className="space-y-5">
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_25rem] xl:grid-cols-[minmax(0,1fr)_28rem]">
+      {/* min-w-0: the transcript and the recorder both hold long unbroken
+          German, which would otherwise widen the column past the phone. */}
+      <div className="min-w-0 space-y-5">
         <div className="flex flex-wrap items-center gap-3">
           <span
             className="rounded-lg px-2.5 py-1 text-[11px] font-semibold"

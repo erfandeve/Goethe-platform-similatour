@@ -62,12 +62,14 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 <h3 className="mb-4 text-xs font-semibold tracking-[0.2em] text-mist-500 uppercase">
                   {column.title}
                 </h3>
-                <ul className="space-y-2.5">
+                <ul className="space-y-0.5">
                   {column.links.map((link, index) => (
                     <li key={`${link.href}-${index}`}>
+                      {/* A 24px tap target: a bare inline link is ~19px tall,
+                          which mobile audits flag as too small to hit. */}
                       <Link
                         href={link.href}
-                        className="text-sm text-mist-400 transition hover:text-mist-50"
+                        className="inline-flex min-h-9 items-center text-sm text-mist-400 transition hover:text-mist-50"
                       >
                         {link.label}
                       </Link>

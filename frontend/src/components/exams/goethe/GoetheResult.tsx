@@ -88,8 +88,10 @@ export function GoetheResult({
               </div>
             ) : (
               <>
-            <div className="mx-auto mt-6 grid size-40 place-items-center">
-              <svg viewBox="0 0 120 120" className="absolute size-40 -rotate-90" aria-hidden>
+            {/* `relative` matters: without it the ring anchors to the fixed
+                exam root and slides out of the card as the page scrolls. */}
+            <div className="relative mx-auto mt-6 grid size-40 place-items-center">
+              <svg viewBox="0 0 120 120" className="absolute inset-0 size-40 -rotate-90" aria-hidden>
                 <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e2de" strokeWidth="9" />
                 <circle
                   cx="60"
