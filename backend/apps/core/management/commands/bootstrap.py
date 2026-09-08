@@ -13,6 +13,7 @@ from apps.courses.models import Course
 STEPS = [
     ("seed", {"flush": True}),          # courses, podcasts, users, wallet
     ("seed_b2", {}),                    # the Goethe B2 simulator
+    ("make_a1_bilder", {}),             # the A1 Teil 1 picture options
     ("seed_levels", {}),                # A1, A2, B1, C1 and the high-frequency sets
     ("seed_speaking_course", {}),       # the AI speaking scenes
     ("seed_plans", {}),                 # the three subscription tiers

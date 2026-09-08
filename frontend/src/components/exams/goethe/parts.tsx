@@ -132,7 +132,9 @@ export function ItemBlock({
                 src={mediaUrl(option.image)}
                 alt={option.text || option.label || option.key}
                 loading="lazy"
-                className="mb-2 aspect-4/3 w-full rounded-sm object-cover"
+                // contain, not cover: these are line drawings, and cropping a
+                // clock face or a price tag changes the answer.
+                className="mb-2 aspect-4/3 w-full rounded-sm bg-white object-contain"
                 style={{ border: "1px solid var(--exam-line)" }}
               />
             ) : null}

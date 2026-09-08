@@ -21,6 +21,9 @@ wording is Lexora's own; only the format follows the Goethe model set.
 from ._build import TRUE_FALSE
 
 AUDIO = "/media/exams/a1/hoeren"
+# Teil 1 answers with three pictures per question, as the paper prints it.
+# `manage.py make_a1_bilder` draws them.
+BILD = "/media/exams/a1/bilder"
 
 # Lesen 2 shows small adverts; Lesen 3 shows signs. Both are pictures in the
 # real paper, and the back office can attach one to any block.
@@ -215,20 +218,29 @@ HOEREN = {
             "example_answer": "b",
             "items": [
                 (1, "Wann fährt der Zug nach Hamburg?",
-                 [("a", "Um 9.15 Uhr."), ("b", "Um 9.50 Uhr."), ("c", "Um 10.15 Uhr.")], "b", None),
+                 [("a", "Um 9.15 Uhr.", f"{BILD}/zug-0915.svg"),
+                  ("b", "Um 9.50 Uhr.", f"{BILD}/zug-0950.svg"),
+                  ("c", "Um 10.15 Uhr.", f"{BILD}/zug-1015.svg")], "b", None),
                 (2, "Was kostet die Fahrkarte hin und zurück?",
-                 [("a", "Zwölf Euro."), ("b", "Zwanzig Euro."), ("c", "Zweiundzwanzig Euro.")],
-                 "c", None),
+                 [("a", "Zwölf Euro.", f"{BILD}/preis-12.svg"),
+                  ("b", "Zwanzig Euro.", f"{BILD}/preis-20.svg"),
+                  ("c", "Zweiundzwanzig Euro.", f"{BILD}/preis-22.svg")], "c", None),
                 (3, "Wo ist die Apotheke?",
-                 [("a", "Neben der Bank."), ("b", "Hinter dem Bahnhof."),
-                  ("c", "Gegenüber der Post.")], "c", None),
+                 [("a", "Neben der Bank.", f"{BILD}/apo-bank.svg"),
+                  ("b", "Hinter dem Bahnhof.", f"{BILD}/apo-bahnhof.svg"),
+                  ("c", "Gegenüber der Post.", f"{BILD}/apo-post.svg")], "c", None),
                 (4, "Was möchte die Frau trinken?",
-                 [("a", "Tee."), ("b", "Kaffee."), ("c", "Wasser.")], "a", None),
+                 [("a", "Tee.", f"{BILD}/trinken-tee.svg"),
+                  ("b", "Kaffee.", f"{BILD}/trinken-kaffee.svg"),
+                  ("c", "Wasser.", f"{BILD}/trinken-wasser.svg")], "a", None),
                 (5, "Wie wird das Wetter am Sonntag?",
-                 [("a", "Es regnet."), ("b", "Es schneit."), ("c", "Die Sonne scheint.")],
-                 "a", None),
+                 [("a", "Es regnet.", f"{BILD}/wetter-regen.svg"),
+                  ("b", "Es schneit.", f"{BILD}/wetter-schnee.svg"),
+                  ("c", "Die Sonne scheint.", f"{BILD}/wetter-sonne.svg")], "a", None),
                 (6, "Wie viele Personen kommen zum Essen?",
-                 [("a", "Drei."), ("b", "Vier."), ("c", "Sechs.")], "b", None),
+                 [("a", "Drei.", f"{BILD}/leute-3.svg"),
+                  ("b", "Vier.", f"{BILD}/leute-4.svg"),
+                  ("c", "Sechs.", f"{BILD}/leute-6.svg")], "b", None),
             ],
         },
         {
