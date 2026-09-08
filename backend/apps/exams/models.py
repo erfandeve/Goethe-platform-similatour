@@ -216,9 +216,10 @@ class Exam(Document):
 class ExamCode(Document):
     """A sitting of an exam, the way candidates buy it.
 
-    A learner picks which code(s) to take. The exam's own price covers the first
-    one; each additional code costs `extra_price` on top. Every code carries its
-    own question set, so two people with different codes sit different papers.
+    A learner picks which code(s) to buy and may take any code they own as often
+    as they like. Every code carries its own question set, so two people with
+    different codes sit different papers — and its own price, so a newer sitting
+    can cost more than an older one.
     """
 
     meta = {"collection": "exam_codes", "indexes": [("exam", "order"), "code", "-created_at"]}
@@ -229,7 +230,8 @@ class ExamCode(Document):
     description = EmbeddedDocumentField(TranslatedText, default=TranslatedText)
     order = IntField(default=1)
 
-    # Zero means "included in the exam price"; the first chosen code is free.
+    # What this sitting costs on its own. Zero falls back to the exam's price,
+    # so a code added without a price still sells at the exam's rate.
     extra_price = IntField(default=0)
 
     modules = EmbeddedDocumentListField(ExamModule, default=list)
@@ -249,6 +251,13 @@ class ExamCode(Document):
             if part.part_type != "writing"
             for item in part.items
         )
+
+    @property
+    def effective_price(self):
+        """A code's own price, falling back to the exam's."""
+        if self.extra_price:
+            return self.extra_price
+        return self.exam.effective_price if self.exam else 0
 
 
 class ExamAccess(Document):

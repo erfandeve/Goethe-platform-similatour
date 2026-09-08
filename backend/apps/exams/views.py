@@ -107,6 +107,25 @@ def has_access(user, exam, code=None):
     return bool(ExamAccess.objects(**query).first())
 
 
+def _paper_for(exam, code):
+    """The modules a sitting actually uses.
+
+    A code carries its own paper; until one is written it falls back to the
+    exam's, so a freshly created code is still sittable.
+    """
+    return code.modules if (code and code.modules) else exam.modules
+
+
+def _resolve_code(exam, code_id):
+    """The requested sitting, checked against this exam."""
+    if not code_id:
+        return None
+    code = ExamCode.objects(id=code_id, exam=exam, is_published=True).first()
+    if not code:
+        raise ApiError("Exam code not found.", status_code=404)
+    return code
+
+
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def start_attempt(request, slug):
@@ -114,11 +133,14 @@ def start_attempt(request, slug):
     exam = Exam.objects(slug=slug, is_published=True).first()
     if not exam:
         raise ApiError("Exam not found.", status_code=404)
-    if not has_access(request.user, exam):
-        raise ApiError("Purchase this exam to start it.", code="no_access", status_code=403)
 
-    if exam.modules:
-        return start_module_attempt(request, exam, locale)
+    code = _resolve_code(exam, (request.data or {}).get("code"))
+    if not has_access(request.user, exam, code=code):
+        raise ApiError("Purchase this sitting to start it.", code="no_access", status_code=403)
+
+    paper = _paper_for(exam, code)
+    if paper:
+        return start_module_attempt(request, exam, locale, code=code, paper=paper)
 
     attempt = ExamAttempt.objects(user=request.user, exam=exam, status="in_progress").first()
     if not attempt:
@@ -136,23 +158,27 @@ def start_attempt(request, slug):
     )
 
 
-def start_module_attempt(request, exam, locale):
+def start_module_attempt(request, exam, locale, *, code=None, paper=None):
     """Open (or resume) an attempt at one module of a Goethe-format exam."""
-    skill = (request.data or {}).get("module") or exam.modules[0].skill
-    module = next((m for m in exam.modules if m.skill == skill), None)
+    paper = paper if paper is not None else exam.modules
+    skill = (request.data or {}).get("module") or paper[0].skill
+    module = next((m for m in paper if m.skill == skill), None)
     if not module:
         raise ApiError("Unknown exam module.", status_code=404)
     if module.skill == "sprechen":
         raise ApiError("The speaking module is held with an examiner.", code="offline_module")
 
+    # An unfinished attempt is only resumable on the same paper it was opened on.
+    code_id = str(code.id) if code else ""
     attempt = ExamAttempt.objects(
-        user=request.user, exam=exam, module=skill, status="in_progress"
+        user=request.user, exam=exam, module=skill, exam_code=code_id, status="in_progress"
     ).first()
     if not attempt:
         attempt = ExamAttempt(
             user=request.user,
             exam=exam,
             module=skill,
+            exam_code=code_id,
             max_score=module_max_points(module),
         )
         attempt.save()
@@ -211,7 +237,8 @@ def submit_attempt(request, pk):
         attempt.answers.update(answers)
 
     exam = attempt.exam
-    if exam.modules:
+    code = ExamCode.objects(id=attempt.exam_code).first() if attempt.exam_code else None
+    if _paper_for(exam, code):
         return submit_module_attempt(attempt, exam, locale, request.user)
 
     raw, maximum, correct = 0, 0, 0
@@ -269,7 +296,8 @@ def submit_module_attempt(attempt, exam, locale, user):
     """Grade one Goethe module: every item except free writing is auto-scored."""
     from .serializers import module_review
 
-    module = next((m for m in exam.modules if m.skill == attempt.module), None)
+    code = ExamCode.objects(id=attempt.exam_code).first() if attempt.exam_code else None
+    module = next((m for m in _paper_for(exam, code) if m.skill == attempt.module), None)
     if not module:
         raise ApiError("Unknown exam module.", status_code=404)
 
@@ -352,10 +380,12 @@ def attempt_detail(request, pk):
     if not attempt:
         raise ApiError("Attempt not found.", status_code=404)
     exam = attempt.exam
-    if exam.modules:
+    code = ExamCode.objects(id=attempt.exam_code).first() if attempt.exam_code else None
+    paper = _paper_for(exam, code)
+    if paper:
         from .serializers import module_review
 
-        module = next((m for m in exam.modules if m.skill == attempt.module), None)
+        module = next((m for m in paper if m.skill == attempt.module), None)
         return Response(
             {
                 **attempt_item(attempt, locale),

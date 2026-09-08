@@ -170,7 +170,10 @@ const de: Dictionary = {
     },
     sittings: {
       title: "Prüfungscode wählen",
-      hint: "Der Preis enthält einen Termin. Jeder weitere Code kostet extra.",
+      hint: "Jeder Code ist ein eigener Aufgabensatz mit eigenem Preis. Einen gekauften Code können Sie beliebig oft ablegen.",
+      selectAll: "Alle auswählen",
+      clearAll: "Auswahl aufheben",
+      questions: "Aufgaben",
       owned: "Gekauft",
       pickOne: "Wählen Sie mindestens einen Code.",
     },

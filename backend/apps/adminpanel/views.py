@@ -37,6 +37,7 @@ from .serializers import (
     instructor_row,
     part_row,
     read_translated,
+    translated,
     video_row,
 )
 
@@ -609,7 +610,7 @@ from apps.exams.models import (
     StimulusBlock,
 )
 
-from .serializers import exam_detail, exam_row  # noqa: E402
+from .serializers import exam_detail, exam_module_row, exam_row  # noqa: E402
 
 EXAM_KINDS = ("simulator", "frequent")
 PART_TYPES = (
@@ -781,21 +782,12 @@ def exam_parts(request, pk, index):
     return Response(exam_detail(exam), status=201)
 
 
-@api_view(["PATCH", "DELETE"])
-@permission_classes([IsStaff])
-def exam_part_detail(request, pk, index, part_index):
-    exam = Exam.objects(id=pk).first()
-    if not exam:
-        raise ApiError("Exam not found.", status_code=404)
-    module = _module_at(exam, index)
-    part = _part_at(module, part_index)
+def _apply_part_content(part, payload):
+    """Everything a Teil shows: its text, its option pool and its audio.
 
-    if request.method == "DELETE":
-        module.parts.remove(part)
-        exam.save()
-        return Response(exam_detail(exam))
-
-    payload = request.data or {}
+    Shared by the exam's own paper and each exam code's paper — they are the
+    same shape, and a sitting is only useful if its material can be written.
+    """
     for field in ("title", "instructions"):
         if field in payload:
             setattr(part, field, read_translated(payload[field], getattr(part, field)))
@@ -852,6 +844,23 @@ def exam_part_detail(request, pk, index, part_index):
         value = payload["min_words"]
         part.min_words = max(0, _int(payload, "min_words", 0)) if value not in (None, "") else None
 
+
+
+@api_view(["PATCH", "DELETE"])
+@permission_classes([IsStaff])
+def exam_part_detail(request, pk, index, part_index):
+    exam = Exam.objects(id=pk).first()
+    if not exam:
+        raise ApiError("Exam not found.", status_code=404)
+    module = _module_at(exam, index)
+    part = _part_at(module, part_index)
+
+    if request.method == "DELETE":
+        module.parts.remove(part)
+        exam.save()
+        return Response(exam_detail(exam))
+
+    _apply_part_content(part, request.data or {})
     exam.save()
     return Response(exam_detail(exam))
 
@@ -1282,17 +1291,25 @@ def exam_code_parts(request, pk, index):
     return Response(_code_row(code), status=201)
 
 
-@api_view(["DELETE"])
+@api_view(["PATCH", "DELETE"])
 @permission_classes([IsStaff])
 def exam_code_part_detail(request, pk, index, part_index):
     code = ExamCode.objects(id=pk).first()
     if not code:
         raise ApiError("Exam code not found.", status_code=404)
     module = _code_module_at(code, index)
+
     try:
-        module.parts.pop(int(part_index))
+        part = module.parts[int(part_index)]
     except (IndexError, ValueError):
         raise ApiError("Part not found.", status_code=404)
+
+    if request.method == "DELETE":
+        module.parts.remove(part)
+        code.save()
+        return Response(_code_row(code))
+
+    _apply_part_content(part, request.data or {})
     code.save()
     return Response(_code_row(code))
 

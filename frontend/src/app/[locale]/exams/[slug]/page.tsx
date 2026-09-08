@@ -247,7 +247,9 @@ export default async function ExamDetailPage({
                   {formatPrice(exam.effective_price, locale, dict.exams.card.free)}
                 </p>
 
-                {exam.has_access ? (
+                {/* With codes, each sitting starts from its own row in the
+                    picker — a bare start button would run the wrong paper. */}
+                {exam.has_access && !exam.codes?.length ? (
                   <ButtonLink
                     href={`/${locale}/exams/${exam.slug}/attempt`}
                     size="lg"
@@ -269,7 +271,6 @@ export default async function ExamDetailPage({
                   <SittingPicker
                     slug={exam.slug}
                     codes={exam.codes}
-                    basePrice={exam.base_price ?? exam.effective_price}
                     accent={exam.accent}
                     locale={locale}
                     dict={dict}

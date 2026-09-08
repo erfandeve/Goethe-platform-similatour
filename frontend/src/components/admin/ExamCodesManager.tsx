@@ -32,8 +32,8 @@ const blank = (): Draft => ({
 });
 
 /**
- * The sittings of one exam. Buyers pick between these; the exam's own price
- * covers the first, and `extra_price` is what each additional one adds.
+ * The sittings of one exam. Buyers tick the codes they want and pay each one's
+ * own price; a code left at zero sells at the exam's own price.
  */
 export function ExamCodesManager({
   exam,
@@ -88,9 +88,9 @@ export function ExamCodesManager({
         action={<Button onClick={() => setDraft(blank())}>+ کد جدید</Button>}
       >
         <p className="text-muted mb-4 text-xs">
-          خریدار در صفحه محصول یکی یا چند کد را انتخاب می‌کند. قیمت آزمون (
-          {formatPrice(exam.price, locale, "رایگان")}) شامل یک کد است و هر کد اضافه، مبلغ خودش را
-          به فاکتور اضافه می‌کند.
+          خریدار در صفحه محصول هر تعداد کد که بخواهد انتخاب می‌کند و قیمت هر کد جداگانه به فاکتور
+          اضافه می‌شود. هر کدی که بخرد، هر چند بار که بخواهد می‌تواند بدهد. کدی که قیمتش صفر بماند
+          با قیمت خود آزمون ({formatPrice(exam.price, locale, "رایگان")}) فروخته می‌شود.
         </p>
 
         {rows.length ? (
@@ -115,7 +115,9 @@ export function ExamCodesManager({
                 </span>
 
                 <span className="tnum text-xs text-mist-400">
-                  + {formatPrice(row.extra_price, locale, "رایگان")}
+                  {row.extra_price
+                    ? formatPrice(row.extra_price, locale, "رایگان")
+                    : formatPrice(exam.price, locale, "رایگان")}
                 </span>
                 <span
                   className={`rounded-full px-3 py-1.5 text-[11px] font-semibold ${
@@ -187,7 +189,10 @@ export function ExamCodesManager({
               value={draft.description}
               onChange={(description) => setDraft({ ...draft, description })}
             />
-            <Field label="هزینه اضافه (ریال)" hint="وقتی این کد به‌عنوان کد دوم به بعد انتخاب شود">
+            <Field
+              label="قیمت این کد (ریال)"
+              hint="صفر بگذاری، با قیمت خود آزمون فروخته می‌شود"
+            >
               <Input
                 type="number"
                 dir="ltr"

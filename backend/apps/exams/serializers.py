@@ -295,8 +295,16 @@ def code_item(code, locale, *, owned=False):
         "label": t(code.label, locale) or code.code,
         "description": t(code.description, locale),
         "order": code.order,
+        # What this sitting costs on its own; the picker adds them up.
+        "price": code.effective_price,
         "extra_price": code.extra_price,
         "items_count": code.items_count,
         "modules": [module.skill for module in code.modules],
+        # The paper this sitting actually runs: its own if it has one, else the
+        # exam's, so a code created without questions is still sittable.
+        "paper": [
+            module_item(module, locale)
+            for module in (code.modules or (code.exam.modules if code.exam else []))
+        ],
         "owned": owned,
     }

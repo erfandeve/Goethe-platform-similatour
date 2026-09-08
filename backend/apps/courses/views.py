@@ -185,23 +185,6 @@ def cart_view(request):
     return Response(cart_detail(get_cart(request.user), get_locale(request)))
 
 
-def _codes_in_cart(cart, exam):
-    """How many sittings of this exam are already in the basket."""
-    from apps.exams.models import ExamCode
-
-    ids = [item.item_id for item in cart.items if item.item_type == "exam_code"]
-    if not ids:
-        return 0
-    return ExamCode.objects(id__in=ids, exam=exam).count()
-
-
-def _owns_exam(user, exam):
-    from apps.exams.models import ExamAccess
-
-    return bool(ExamAccess.objects(user=user, exam=str(exam.id)).first())
-
-
-
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def cart_add(request):
@@ -233,11 +216,10 @@ def cart_add(request):
         obj = ExamCode.objects(id=data.get("id"), is_published=True).first()
         if not obj:
             raise ApiError("Exam code not found.", status_code=404)
-        # The first code of an exam rides on the exam's own price; extra
-        # sittings are what actually cost more.
+        # Each sitting is priced on its own, so buying a second code costs
+        # whatever that code is worth rather than a discount off the first.
         exam = obj.exam
-        already = _codes_in_cart(cart, exam) or _owns_exam(request.user, exam)
-        price = obj.extra_price if already else exam.effective_price
+        price = obj.effective_price
         cover, title = exam.cover, obj.label if obj.label.de or obj.label.fa else exam.title
 
     elif item_type == "plan":

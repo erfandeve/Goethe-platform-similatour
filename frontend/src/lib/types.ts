@@ -134,9 +134,13 @@ export interface ExamSitting {
   label: string;
   description: string;
   order: number;
+  /** What this sitting costs on its own. */
+  price: number;
   extra_price: number;
   items_count: number;
   modules: string[];
+  /** The modules this sitting runs — its own paper, or the exam's. */
+  paper: ExamModuleSummary[];
   owned: boolean;
 }
 

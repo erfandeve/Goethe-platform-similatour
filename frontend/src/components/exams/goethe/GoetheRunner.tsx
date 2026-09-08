@@ -63,12 +63,15 @@ function sessionNumber(attemptId: string) {
 export function GoetheRunner({
   slug,
   moduleSkill,
+  /** Which sitting to run; empty means the exam's own paper. */
+  codeId = "",
   locale,
   dict,
   brand,
 }: {
   slug: string;
   moduleSkill: string;
+  codeId?: string;
   locale: Locale;
   dict: Dictionary;
   brand: string;
@@ -92,7 +95,7 @@ export function GoetheRunner({
       try {
         const data = await callApi<StartResponse>(`exams/${slug}/start`, {
           method: "POST",
-          body: { module: moduleSkill },
+          body: { module: moduleSkill, ...(codeId ? { code: codeId } : {}) },
           locale,
         });
         if (cancelled) return;
@@ -112,7 +115,7 @@ export function GoetheRunner({
     return () => {
       cancelled = true;
     };
-  }, [slug, moduleSkill, locale]);
+  }, [slug, moduleSkill, codeId, locale]);
 
   const submit = useCallback(async () => {
     if (submitted.current) return;

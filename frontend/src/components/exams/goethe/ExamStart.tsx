@@ -30,6 +30,8 @@ export function ExamStart({
   level,
   board,
   modules,
+  codeId = "",
+  codeLabel = "",
   locale,
   dict,
   brand,
@@ -39,6 +41,9 @@ export function ExamStart({
   level: string;
   board: string;
   modules: ModuleSummary[];
+  /** The sitting being taken; its questions differ per code. */
+  codeId?: string;
+  codeLabel?: string;
   locale: Locale;
   dict: Dictionary;
   brand: string;
@@ -132,7 +137,9 @@ export function ExamStart({
                       </span>
                     ) : (
                       <Link
-                        href={`/${locale}/exams/${slug}/attempt?module=${module.skill}`}
+                        href={`/${locale}/exams/${slug}/attempt?module=${module.skill}${
+                          codeId ? `&code=${codeId}` : ""
+                        }`}
                         className="px-6 py-2.5 text-sm font-semibold text-white transition"
                         style={{ background: "var(--exam-green)" }}
                       >

@@ -169,7 +169,10 @@ const en = {
     },
     sittings: {
       title: "Choose your sitting",
-      hint: "The price covers one sitting. Each extra code costs a little more.",
+      hint: "Each code is a separate question set with its own price. Any code you buy, you may sit as often as you like.",
+      selectAll: "Select all",
+      clearAll: "Clear selection",
+      questions: "questions",
       owned: "Owned",
       pickOne: "Pick at least one sitting.",
     },

@@ -44,7 +44,14 @@ export default async function ExamAttemptPage({
 
   const query = await searchParams;
   const requested = typeof query.module === "string" ? query.module : "";
-  const selected = exam.modules.find((entry) => entry.skill === requested);
+  const codeId = typeof query.code === "string" ? query.code : "";
+
+  // A sitting runs its own paper, so the module list depends on which code the
+  // learner picked; without one the exam's own paper is used.
+  const sitting = codeId ? exam.codes?.find((entry) => entry.id === codeId) : undefined;
+  if (codeId && !sitting) notFound();
+  const paper = sitting?.paper ?? exam.modules;
+  const selected = paper.find((entry) => entry.skill === requested);
 
   if (!selected) {
     return (
@@ -53,7 +60,9 @@ export default async function ExamAttemptPage({
         title={exam.title}
         level={exam.level}
         board={exam.exam_board}
-        modules={exam.modules}
+        modules={paper}
+        codeId={codeId}
+        codeLabel={sitting?.label ?? ""}
         locale={locale}
         dict={dict}
         brand={dict.meta.siteName}
@@ -65,6 +74,7 @@ export default async function ExamAttemptPage({
     <GoetheRunner
       slug={slug}
       moduleSkill={selected.skill}
+      codeId={codeId}
       locale={locale}
       dict={dict}
       brand={dict.meta.siteName}
