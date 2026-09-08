@@ -37,6 +37,8 @@ const en = {
     secondary: "Take a free placement test",
     trust: "Trusted by learners in 14 countries",
     scroll: "Scroll",
+    imageAlt:
+      "A learner with headphones at her desk: a German A2 coursebook, notes, a Goethe certificate checklist and Berlin through the window",
     stats: {
       students: "Active learners",
       courses: "Courses",

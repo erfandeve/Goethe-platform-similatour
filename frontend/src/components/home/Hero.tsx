@@ -1,6 +1,7 @@
+import Image from "next/image";
+
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
-import { SceneMount } from "@/components/three/SceneMount";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { compact } from "@/lib/format";
@@ -71,25 +72,22 @@ export function Hero({
           </Reveal>
         </div>
 
-        <div className="relative h-[26rem] w-full lg:h-[38rem]">
-          <SceneMount className="absolute inset-0" />
-          {/* Floating CEFR chips orbiting the 3D core */}
-          <div className="pointer-events-none absolute inset-0 hidden lg:block">
-            {[
-              { label: "A1", top: "12%", start: "8%", delay: "0s" },
-              { label: "B2", top: "68%", start: "4%", delay: "1.2s" },
-              { label: "C1", top: "22%", start: "78%", delay: "0.6s" },
-              { label: "ß", top: "78%", start: "72%", delay: "1.8s" },
-            ].map((chip) => (
-              <span
-                key={chip.label}
-                className="glass animate-float tnum absolute rounded-2xl px-3.5 py-2 text-sm font-semibold"
-                style={{ top: chip.top, insetInlineStart: chip.start, animationDelay: chip.delay }}
-              >
-                {chip.label}
-              </span>
-            ))}
-          </div>
+        <div className="relative h-[26rem] w-full overflow-hidden rounded-[2rem] lg:h-[38rem]">
+          {/* The largest thing on the page, so it loads eagerly and is sized
+              for the two column widths it actually renders at. */}
+          <Image
+            src="/media/hero/lexora-hero.jpg"
+            alt={dict.hero.imageAlt}
+            fill
+            priority
+            sizes="(min-width: 1024px) 46vw, 100vw"
+            className="object-cover"
+            style={{ objectPosition: "72% 34%" }}
+          />
+          <div
+            className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink-950/45 via-transparent to-transparent"
+            aria-hidden
+          />
         </div>
       </div>
 

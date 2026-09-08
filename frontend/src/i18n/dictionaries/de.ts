@@ -38,6 +38,8 @@ const de: Dictionary = {
     secondary: "Kostenlosen Einstufungstest starten",
     trust: "Lernende in 14 Ländern vertrauen uns",
     scroll: "Scrollen",
+    imageAlt:
+      "Eine Lernende mit Kopfhörern am Schreibtisch: ein deutsches A2-Lehrbuch, Notizen, eine Goethe-Zertifikat-Checkliste und Berlin im Fenster",
     stats: {
       students: "Aktive Lernende",
       courses: "Kurse",
