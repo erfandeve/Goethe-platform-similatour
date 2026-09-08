@@ -25,18 +25,29 @@ def opts(pairs):
 
 
 def choice(pairs):
-    """`[("richtig", "Richtig"), …]` → options that show their own wording."""
-    return [ExamOption(key=key, label=label, text=label) for key, label in pairs]
+    """`[("richtig", "Richtig"), …]` → options that show their own wording.
+
+    A third element is the option's picture, which A1 tasks lean on.
+    """
+    return [
+        ExamOption(
+            key=row[0], label=row[1], text=row[1], image=row[2] if len(row) > 2 else ""
+        )
+        for row in pairs
+    ]
 
 
 def _blocks(rows):
-    """`(kind, label, title, text)` rows, with author optional as a 5th field."""
+    """`(kind, label, title, text)` rows; author 5th, image 6th, both optional."""
     out = []
     for row in rows:
         kind, label, title, text = row[:4]
         author = row[4] if len(row) > 4 else ""
+        image = row[5] if len(row) > 5 else ""
         out.append(
-            StimulusBlock(kind=kind, label=label, title=title, text=text, author=author)
+            StimulusBlock(
+                kind=kind, label=label, title=title, text=text, author=author, image=image
+            )
         )
     return out
 
@@ -70,6 +81,7 @@ def build_part(spec, number):
         stimulus_title=spec.get("stimulus_title", ""),
         stimulus_subtitle=spec.get("stimulus_subtitle", ""),
         stimulus_intro=spec.get("stimulus_intro", ""),
+        stimulus_image=spec.get("stimulus_image", ""),
         blocks=_blocks(spec.get("blocks", [])),
         options=opts(spec["pool"]) if spec.get("pool") else [],
         items=_items(spec.get("items", []), spec.get("pool")),

@@ -183,6 +183,7 @@ def exam_option_row(option):
         "label": option.label,
         "text": option.text,
         "author": option.author,
+        "image": option.image,
     }
 
 
@@ -210,6 +211,7 @@ def exam_part_row(part, index):
         "stimulus_title": part.stimulus_title,
         "stimulus_subtitle": part.stimulus_subtitle,
         "stimulus_intro": part.stimulus_intro,
+        "stimulus_image": part.stimulus_image,
         "blocks": [
             {
                 "kind": block.kind,
@@ -217,6 +219,7 @@ def exam_part_row(part, index):
                 "title": block.title,
                 "text": block.text,
                 "author": block.author,
+                "image": block.image,
             }
             for block in part.blocks
         ],

@@ -792,7 +792,7 @@ def _apply_part_content(part, payload):
         if field in payload:
             setattr(part, field, read_translated(payload[field], getattr(part, field)))
     for field in ("stimulus_title", "stimulus_subtitle", "stimulus_intro",
-                  "example_prompt", "example_answer"):
+                  "stimulus_image", "example_prompt", "example_answer"):
         if field in payload:
             setattr(part, field, str(payload[field])[:4000])
     if "work_minutes" in payload:
@@ -808,6 +808,8 @@ def _apply_part_content(part, payload):
                 label=str(option.get("label", ""))[:200],
                 text=str(option.get("text", ""))[:2000],
                 author=str(option.get("author", ""))[:200],
+                # A1 answers a picture as often as a sentence.
+                image=str(option.get("image", ""))[:400],
             )
             for option in payload["options"]
             if str(option.get("key", "")).strip()
@@ -821,6 +823,8 @@ def _apply_part_content(part, payload):
                 title=str(block.get("title", ""))[:200],
                 text=str(block.get("text", ""))[:8000],
                 author=str(block.get("author", ""))[:200],
+                # A sign, an advert or a photo the question is about.
+                image=str(block.get("image", ""))[:400],
             )
             for block in payload["blocks"]
         ]
@@ -886,6 +890,7 @@ def exam_items(request, pk, index, part_index):
                 key=str(option.get("key", ""))[:20],
                 label=str(option.get("label", ""))[:200],
                 text=str(option.get("text", ""))[:2000],
+                image=str(option.get("image", ""))[:400],
             )
             for option in (raw.get("options") or [])
             if str(option.get("key", "")).strip()
@@ -1344,6 +1349,7 @@ def _build_items(incoming, part):
                 key=str(option.get("key", ""))[:20],
                 label=str(option.get("label", ""))[:200],
                 text=str(option.get("text", ""))[:2000],
+                image=str(option.get("image", ""))[:400],
             )
             for option in (raw.get("options") or [])
             if str(option.get("key", "")).strip()

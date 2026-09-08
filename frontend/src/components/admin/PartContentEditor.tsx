@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field, Input, Select, Textarea } from "@/components/ui/Field";
 import type { ExamPart } from "@/lib/admin";
+import { mediaUrl } from "@/lib/utils";
 import { PART_TYPE_LABELS } from "@/lib/admin";
 
 import { Modal, TranslatedField } from "./ui";
@@ -40,7 +41,60 @@ const RECIPES: Record<string, string> = {
     "صورت تکلیف را در «متن مقدمه» بنویس و نکته‌هایی که باید پوشش داده شوند را به‌صورت بلوک «مورد فهرست» اضافه کن.",
 };
 
-const EMPTY_BLOCK: Block = { kind: "paragraph", label: "", title: "", text: "", author: "" };
+const EMPTY_BLOCK: Block = { kind: "paragraph", label: "", title: "", text: "", author: "", image: "" };
+
+/** Upload or clear one picture, with a thumbnail once it is set. */
+function PictureField({
+  label,
+  value,
+  onChange,
+  onUpload,
+}: {
+  label: string;
+  value: string;
+  onChange: (url: string) => void;
+  onUpload: (file: File) => Promise<string | null>;
+}) {
+  return (
+    <div>
+      <span className="mb-2 block text-xs font-medium tracking-wide text-mist-400">{label}</span>
+      <div className="flex flex-wrap items-center gap-3">
+        <label className="cursor-pointer rounded-full border border-white/15 px-4 py-2 text-xs transition hover:bg-white/5">
+          {value ? "تغییر عکس" : "آپلود عکس"}
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={async (event) => {
+              const file = event.target.files?.[0];
+              if (!file) return;
+              const url = await onUpload(file);
+              if (url) onChange(url);
+              event.target.value = "";
+            }}
+          />
+        </label>
+        {value ? (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={mediaUrl(value)}
+              alt=""
+              className="h-14 w-20 rounded-lg border border-white/10 object-cover"
+            />
+            <button
+              type="button"
+              onClick={() => onChange("")}
+              className="rounded-full px-3 py-1.5 text-xs text-rose-400 transition hover:bg-rose-400/10"
+            >
+              حذف عکس
+            </button>
+          </>
+        ) : null}
+      </div>
+    </div>
+  );
+}
 
 export function PartContentEditor({
   open,
@@ -49,6 +103,7 @@ export function PartContentEditor({
   onSave,
   busy,
   onUpload,
+  onUploadImage,
 }: {
   open: boolean;
   part: ExamPart | undefined;
@@ -56,6 +111,7 @@ export function PartContentEditor({
   onSave: (payload: Record<string, unknown>) => void;
   busy: boolean;
   onUpload: (file: File) => Promise<string | null>;
+  onUploadImage: (file: File) => Promise<string | null>;
 }) {
   const [draft, setDraft] = useState<ExamPart | null>(null);
 
@@ -146,6 +202,12 @@ export function PartContentEditor({
               />
             </Field>
           </div>
+          <PictureField
+            label="عکس کل بخش (بالای متن نمایش داده می‌شود)"
+            value={draft.stimulus_image ?? ""}
+            onChange={(stimulus_image) => patch({ stimulus_image })}
+            onUpload={onUploadImage}
+          />
           <Field label="متن مقدمه (اختیاری — بالای بلوک‌ها می‌آید)">
             <Textarea
               dir="ltr"
@@ -253,6 +315,12 @@ export function PartContentEditor({
                   onChange={(e) => patchBlock(index, { author: e.target.value })}
                 />
               </Field>
+              <PictureField
+                label="عکس این بلوک (تابلو، آگهی، تصویر)"
+                value={block.image ?? ""}
+                onChange={(image) => patchBlock(index, { image })}
+                onUpload={onUploadImage}
+              />
             </div>
           ))}
 
@@ -327,6 +395,14 @@ export function PartContentEditor({
               >
                 حذف
               </button>
+              <div className="w-full">
+                <PictureField
+                  label="عکس گزینه (برای تسک‌های تصویری A1)"
+                  value={option.image ?? ""}
+                  onChange={(image) => patchOption(index, { image })}
+                  onUpload={onUploadImage}
+                />
+              </div>
             </div>
           ))}
         </section>
@@ -484,6 +560,7 @@ export function PartContentEditor({
                 stimulus_title: draft.stimulus_title,
                 stimulus_subtitle: draft.stimulus_subtitle,
                 stimulus_intro: draft.stimulus_intro,
+                stimulus_image: draft.stimulus_image,
                 blocks: draft.blocks,
                 options: draft.options,
                 audio: draft.audio,

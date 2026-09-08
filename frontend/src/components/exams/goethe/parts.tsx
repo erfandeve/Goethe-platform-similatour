@@ -2,7 +2,7 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+import { cn, mediaUrl } from "@/lib/utils";
 
 import { AudioRing } from "./AudioRing";
 import type { ExamItem, ExamPart, Answers } from "./types";
@@ -35,19 +35,43 @@ export function PartHeading({ title }: { title: string }) {
 }
 
 /** Radio row styled like the exam player: blue dot, generous hit area. */
+/** A block's own picture — a sign, an advert, a photo the question is about. */
+function BlockImage({ src, alt }: { src?: string; alt?: string }) {
+  if (!src) return null;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={mediaUrl(src)}
+      alt={alt || ""}
+      loading="lazy"
+      className="mb-3 w-full rounded-sm object-contain"
+      style={{ border: "1px solid var(--exam-line)" }}
+    />
+  );
+}
+
 function Choice({
   name,
   checked,
   onChange,
   children,
+  /** Picture options put the radio under the image rather than beside it. */
+  stacked = false,
 }: {
   name: string;
   checked: boolean;
   onChange: () => void;
   children: ReactNode;
+  stacked?: boolean;
 }) {
   return (
-    <label className="flex cursor-pointer items-start gap-3 py-1.5" dir="ltr">
+    <label
+      className={cn(
+        "flex cursor-pointer gap-3 py-1.5",
+        stacked ? "flex-col-reverse items-center text-center" : "items-start",
+      )}
+      dir="ltr"
+    >
       <span className="relative mt-0.5 grid size-4 shrink-0 place-items-center">
         <input
           type="radio"
@@ -65,7 +89,7 @@ function Choice({
           }}
         />
       </span>
-      <span className="exam-body leading-snug">{children}</span>
+      <span className="exam-body w-full leading-snug">{children}</span>
     </label>
   );
 }
@@ -80,23 +104,38 @@ export function ItemBlock({
   item: ExamItem;
   answers: Answers;
   setAnswer: (key: string, value: string) => void;
-  options: { key: string; label: string; text?: string; author?: string }[];
+  options: { key: string; label: string; text?: string; author?: string; image?: string }[];
   showNumber?: boolean;
 }) {
+  // A1 answers a picture as often as a sentence, so picture options lay out
+  // side by side instead of as a stacked list.
+  const pictorial = options.some((option) => option.image);
+
   return (
     <div className="border-b py-5 first:pt-0 last:border-0" style={{ borderColor: "var(--exam-line)" }}>
       <p className="exam-lead mb-3 font-bold" dir="ltr">
         {showNumber ? `${item.number}. ` : ""}
         {item.prompt}
       </p>
-      <div className="ps-1">
+      <div className={pictorial ? "grid grid-cols-1 gap-3 sm:grid-cols-3" : "ps-1"}>
         {options.map((option) => (
           <Choice
             key={option.key}
             name={item.key}
             checked={answers[item.key] === option.key}
             onChange={() => setAnswer(item.key, option.key)}
+            stacked={pictorial}
           >
+            {option.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={mediaUrl(option.image)}
+                alt={option.text || option.label || option.key}
+                loading="lazy"
+                className="mb-2 aspect-4/3 w-full rounded-sm object-cover"
+                style={{ border: "1px solid var(--exam-line)" }}
+              />
+            ) : null}
             {option.text ? (
               <>
                 <b className="me-1.5">{option.key}</b>
@@ -314,10 +353,13 @@ export function ArticleStimulus({ part }: { part: ExamPart }) {
       ) : null}
       <div className="space-y-4">
         {part.stimulus.blocks.map((block, index) => (
-          <p key={index} className="exam-body text-justify" dir="ltr">
-            {block.label ? <b className="me-2">{block.label}</b> : null}
-            {block.text}
-          </p>
+          <div key={index} dir="ltr">
+            <BlockImage src={block.image} alt={block.title || block.label} />
+            <p className="exam-body text-justify">
+              {block.label ? <b className="me-2">{block.label}</b> : null}
+              {block.text}
+            </p>
+          </div>
         ))}
       </div>
     </>
@@ -339,13 +381,19 @@ export function StatementBoxes({ part }: { part: ExamPart }) {
             style={{ borderColor: "var(--exam-line)" }}
             dir="ltr"
           >
+            <BlockImage src={block.image} alt={block.title || block.label} />
+            {block.title ? (
+              <p className="exam-body mb-1 font-bold">{block.title}</p>
+            ) : null}
             <p className="exam-body">
-              <b className="me-2 text-base">{block.label}</b>
+              {block.label ? <b className="me-2 text-base">{block.label}</b> : null}
               {block.text}
             </p>
-            <p className="mt-3 text-end text-xs italic" style={{ color: "var(--exam-muted)" }}>
-              {block.author}
-            </p>
+            {block.author ? (
+              <p className="mt-3 text-end text-xs italic" style={{ color: "var(--exam-muted)" }}>
+                {block.author}
+              </p>
+            ) : null}
           </article>
         ))}
       </div>

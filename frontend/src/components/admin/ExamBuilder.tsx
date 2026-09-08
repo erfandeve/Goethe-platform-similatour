@@ -125,12 +125,12 @@ export function ExamBuilder({
     }
   }
 
-  /** Upload one listening file and hand back the URL the player will use. */
-  async function uploadTrack(file: File) {
+  /** Upload one file and hand back the URL the player will use. */
+  async function upload(file: File, kind: "audio" | "image") {
     const body = new FormData();
     body.append("file", file);
     try {
-      const response = await fetch("/api/admin/upload?kind=audio", { method: "POST", body });
+      const response = await fetch(`/api/admin/upload?kind=${kind}`, { method: "POST", body });
       const payload = (await response.json()) as { url?: string; detail?: string };
       if (!response.ok || !payload.url) throw new Error(payload.detail || "آپلود نشد");
       return payload.url;
@@ -317,7 +317,8 @@ export function ExamBuilder({
         busy={busy}
         onClose={() => setEditingText(null)}
         onSave={savePartContent}
-        onUpload={uploadTrack}
+        onUpload={(file) => upload(file, "audio")}
+        onUploadImage={(file) => upload(file, "image")}
       />
 
       {/* ------------------------------------------------------ item editor */}

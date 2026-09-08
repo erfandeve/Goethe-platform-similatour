@@ -120,6 +120,8 @@ export interface ExamOption {
   label: string;
   text: string;
   author?: string;
+  /** A1 tasks answer with a picture as often as with a sentence. */
+  image?: string;
 }
 
 export interface ExamItem {
@@ -142,7 +144,15 @@ export interface ExamPart {
   stimulus_title: string;
   stimulus_subtitle: string;
   stimulus_intro: string;
-  blocks: { kind: string; label: string; title: string; text: string; author: string }[];
+  stimulus_image: string;
+  blocks: {
+    kind: string;
+    label: string;
+    title: string;
+    text: string;
+    author: string;
+    image: string;
+  }[];
   options: ExamOption[];
   audio: {
     label: string;
