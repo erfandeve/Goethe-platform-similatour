@@ -25,7 +25,7 @@ export function Hero({
 
   return (
     <section className="relative overflow-hidden">
-      <div className="container-page relative grid min-h-[86vh] items-center gap-12 py-16 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="container-page relative grid min-h-[86vh] items-center gap-10 py-16 lg:grid-cols-[0.72fr_1.28fr]">
         <div className="relative z-10">
           <Reveal>
             <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium tracking-wide text-mist-200">
@@ -35,7 +35,7 @@ export function Hero({
           </Reveal>
 
           <Reveal delay={0.08}>
-            <h1 className="font-display mt-7 text-5xl leading-[1.05] font-semibold text-balance sm:text-6xl lg:text-7xl">
+            <h1 className="font-display mt-7 text-5xl leading-[1.45] font-semibold text-balance sm:text-6xl lg:text-7xl lg:leading-[1.4]">
               {dict.hero.titleTop}
               <span className="text-gradient block">{dict.hero.titleAccent}</span>
             </h1>
@@ -72,21 +72,19 @@ export function Hero({
           </Reveal>
         </div>
 
-        <div className="relative h-[26rem] w-full overflow-hidden rounded-[2rem] lg:h-[38rem]">
-          {/* The largest thing on the page, so it loads eagerly and is sized
-              for the two column widths it actually renders at. */}
+        <div className="relative h-[26rem] w-full sm:h-[32rem] lg:h-[44rem]">
+          {/* A cut-out on transparency: contained rather than cropped, and no
+              frame of its own. `unoptimized` keeps the alpha channel — the
+              optimiser falls back to JPEG for browsers that do not advertise
+              WebP, and JPEG turns the transparent edge solid black. */}
           <Image
-            src="/media/hero/lexora-hero.jpg"
+            src="/media/hero/lexora-hero.webp"
             alt={dict.hero.imageAlt}
             fill
             priority
-            sizes="(min-width: 1024px) 46vw, 100vw"
-            className="object-cover"
-            style={{ objectPosition: "72% 34%" }}
-          />
-          <div
-            className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink-950/45 via-transparent to-transparent"
-            aria-hidden
+            unoptimized
+            sizes="(min-width: 1024px) 55vw, 100vw"
+            className="object-contain"
           />
         </div>
       </div>
