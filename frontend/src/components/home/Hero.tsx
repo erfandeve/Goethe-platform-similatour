@@ -25,7 +25,7 @@ export function Hero({
 
   return (
     <section className="relative overflow-hidden">
-      <div className="container-page relative grid min-h-[86vh] items-center gap-10 py-16 lg:grid-cols-[0.72fr_1.28fr]">
+      <div className="container-page relative grid min-h-[86vh] items-center gap-10 py-16 lg:grid-cols-[1.12fr_0.88fr]">
         <div className="relative z-10">
           <Reveal>
             <span className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium tracking-wide text-mist-200">
@@ -42,7 +42,7 @@ export function Hero({
           </Reveal>
 
           <Reveal delay={0.16}>
-            <p className="text-muted mt-7 max-w-xl text-lg leading-relaxed">{dict.hero.subtitle}</p>
+            <p className="text-muted mt-7 max-w-2xl text-lg leading-relaxed">{dict.hero.subtitle}</p>
           </Reveal>
 
           <Reveal delay={0.24}>
@@ -72,7 +72,7 @@ export function Hero({
           </Reveal>
         </div>
 
-        <div className="relative h-[26rem] w-full sm:h-[32rem] lg:h-[44rem]">
+        <div className="relative h-[22rem] w-full sm:h-[28rem] lg:h-[32rem]">
           {/* A cut-out on transparency: contained rather than cropped, and no
               frame of its own. `unoptimized` keeps the alpha channel — the
               optimiser falls back to JPEG for browsers that do not advertise
@@ -83,7 +83,7 @@ export function Hero({
             fill
             priority
             unoptimized
-            sizes="(min-width: 1024px) 55vw, 100vw"
+            sizes="(min-width: 1024px) 42vw, 100vw"
             className="object-contain"
           />
         </div>

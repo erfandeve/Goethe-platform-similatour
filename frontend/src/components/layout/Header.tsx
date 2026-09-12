@@ -53,6 +53,8 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     },
     { href: `/${locale}/plans`, label: dict.nav.plansNav },
     { href: `/${locale}/articles`, label: dict.nav.articles },
+    { href: `/${locale}/about`, label: dict.nav.about },
+    { href: `/${locale}/contact`, label: dict.nav.contact },
   ];
 
   async function signOut() {
@@ -77,7 +79,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         >
           <Logo locale={locale} label={dict.meta.siteName} />
 
-          <nav className="ms-6 hidden items-center gap-1 lg:flex">
+          <nav className="ms-6 hidden items-center gap-1 xl:flex">
             {links.map((link) => {
               const active = pathname.startsWith(link.href);
               return (
@@ -203,7 +205,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             <button
               type="button"
               onClick={() => setOpen((value) => !value)}
-              className="glass grid size-10 place-items-center rounded-full lg:hidden"
+              className="glass grid size-10 place-items-center rounded-full xl:hidden"
               aria-label={open ? dict.nav.close : dict.nav.menu}
             >
               <svg viewBox="0 0 24 24" className="size-4.5" fill="none" aria-hidden>
@@ -218,7 +220,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         </div>
 
         {open ? (
-          <nav className="glass-strong mt-2 flex flex-col gap-1 rounded-3xl p-3 lg:hidden">
+          <nav className="glass-strong mt-2 flex flex-col gap-1 rounded-3xl p-3 xl:hidden">
             {links.map((link) => (
               <Link
                 key={link.href}
