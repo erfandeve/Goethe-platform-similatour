@@ -17,7 +17,7 @@ from apps.core.i18n import TranslatedText
 LEVELS = ("A1", "A2", "B1", "B2", "C1")
 
 # Labels that belong to the task format rather than to a particular paper.
-GENERIC_LABELS = {"richtig", "falsch", "ja", "nein", "moderator", "0"}
+GENERIC_LABELS = {"richtig", "falsch", "ja", "nein", "moderator", "anderer stock", "0", "x"}
 
 
 def source_modules(level):
@@ -40,10 +40,13 @@ def source_modules(level):
 
 
 def _keep_label(label, key):
-    """Format words stay; a person's name or an advert's title does not."""
+    """Format words and bare letters stay; a name, a floor or a caption does not.
+
+    Length is no test: "EG" is as much content as "3. Stock".
+    """
     if not label:
         return key
-    if label.lower() in GENERIC_LABELS or len(label) <= 2:
+    if label == key or label.lower() in GENERIC_LABELS:
         return label
     return key
 

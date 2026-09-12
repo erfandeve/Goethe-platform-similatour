@@ -61,7 +61,8 @@ export function ExampleRow({ part }: { part: ExamPart }) {
       option?.text && option.text !== option.key
         ? `${option.key}) ${option.text}`
         : option?.label || part.example.answer;
-    line = `${prompt} → ${shown.charAt(0).toUpperCase()}${shown.slice(1)}`;
+    // "richtig" reads as "Richtig"; a lone letter stays a letter.
+    line = `${prompt} → ${shown.length > 2 ? shown.charAt(0).toUpperCase() + shown.slice(1) : shown}`;
   }
 
   return (
@@ -441,8 +442,14 @@ export function ArticleStimulus({ part }: { part: ExamPart }) {
       ) : null}
       <StimulusIntro text={part.stimulus.intro} />
       <div className="space-y-4">
-        {part.stimulus.blocks.map((block, index) =>
-          block.kind === "statement" ? (
+        {part.stimulus.blocks.map((block, index, blocks) =>
+          block.kind === "row" ? (
+            // A run of rows is one board (a store directory, a timetable); it is
+            // drawn once, at its first row.
+            blocks[index - 1]?.kind === "row" ? null : (
+              <DirectoryBoard key={index} rows={blocks.slice(index)} />
+            )
+          ) : block.kind === "statement" ? (
             // reader comments and posts sit in their own boxes, signed
             <article
               key={index}
@@ -479,6 +486,33 @@ export function ArticleStimulus({ part }: { part: ExamPart }) {
         )}
       </div>
     </>
+  );
+}
+
+/** Label-and-text rows read as a sign board: floor on the left, what's there on the right. */
+function DirectoryBoard({ rows }: { rows: ExamPart["stimulus"]["blocks"] }) {
+  const end = rows.findIndex((block) => block.kind !== "row");
+  const run = end === -1 ? rows : rows.slice(0, end);
+  return (
+    <table className="exam-body w-full border-collapse" dir="ltr" style={{ border: "2px solid var(--exam-band)" }}>
+      <tbody>
+        {run.map((row, index) => (
+          <tr key={index} className="border-b last:border-0" style={{ borderColor: "var(--exam-line)" }}>
+            <th
+              scope="row"
+              className="w-24 px-3 py-2.5 text-start align-top font-bold whitespace-nowrap text-white"
+              style={{ background: "var(--exam-band)" }}
+            >
+              {row.label}
+            </th>
+            <td className="px-3 py-2.5 align-top">
+              {row.title ? <b className="me-1">{row.title}</b> : null}
+              {row.text}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
 
@@ -530,19 +564,77 @@ export function ListeningStimulus({
   onPlay?: () => void;
 }) {
   const track = part.audio[trackIndex];
+  const pictures = part.stimulus.blocks.filter((block) => block.kind === "picture");
   return (
     <>
       {/* The listening screens open straight with the instruction band. */}
       <InstructionBand text={part.instructions_de} />
       <StimulusIntro text={part.stimulus.intro} />
       {track?.url ? (
-        <AudioRing key={track.url} track={track} onPlay={onPlay} />
+        <AudioRing
+          key={track.url}
+          track={track}
+          onPlay={onPlay}
+          prompt={pictures.length ? "Sehen Sie sich jetzt die Bilder an." : undefined}
+        />
       ) : track ? (
         <p className="exam-body mt-6 text-center" dir="ltr" style={{ color: "var(--exam-muted)" }}>
           Für diesen Teil ist noch keine Aufnahme vorhanden.
         </p>
       ) : null}
+      {pictures.length ? <PictureGallery part={part} pictures={pictures} /> : null}
     </>
+  );
+}
+
+/**
+ * The lettered pictures a matching task answers with (A2 Hören 2: which
+ * picture goes with which day). The example's letter is struck through, as on
+ * the paper, because it can't be chosen again.
+ */
+function PictureGallery({
+  part,
+  pictures,
+}: {
+  part: ExamPart;
+  pictures: ExamPart["stimulus"]["blocks"];
+}) {
+  return (
+    <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3" dir="ltr">
+      {pictures.map((block) => {
+        const used = block.label === part.example?.answer;
+        return (
+          <figure
+            key={block.label}
+            className="relative overflow-hidden rounded-sm border bg-white"
+            style={{ borderColor: "var(--exam-line)" }}
+          >
+            <span
+              className={cn(
+                "absolute top-1.5 left-1.5 grid size-6 place-items-center border bg-white text-xs font-bold",
+                used && "line-through",
+              )}
+              style={{ borderColor: "var(--exam-line)", color: used ? "var(--exam-muted)" : undefined }}
+            >
+              {block.label}
+            </span>
+            {block.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={mediaUrl(block.image)}
+                alt={block.title || block.label}
+                loading="lazy"
+                className={cn("aspect-[12/11] w-full object-contain", used && "opacity-45")}
+              />
+            ) : (
+              <div className="grid aspect-[12/11] place-items-center text-xs" style={{ color: "var(--exam-muted)" }}>
+                {block.title || "Bild fehlt"}
+              </div>
+            )}
+          </figure>
+        );
+      })}
+    </div>
   );
 }
 

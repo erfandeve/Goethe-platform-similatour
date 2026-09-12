@@ -102,63 +102,133 @@ SCRIPTS = {
         ],
     },
     "a2": {
-        "teil1": [
-            ("Anna", "Teil eins. Sie hören fünf kurze Gespräche, jedes zweimal."),
-            ("Sandy", "So ein Mist. Ich glaube, ich habe mein Handy zu Hause liegen lassen."),
-            ("Markus", "Den Schlüssel hast du? Gut, dann ist es halb so schlimm."),
-            ("Anna", "Nummer zwei. Treffen wir uns im Büro oder im Restaurant?"),
-            ("Markus", "Weder noch. Die Besprechung findet online statt, ich schicke dir den "
-                       "Link."),
-            ("Anna", "Nummer drei. Wie lange fahren wir denn?"),
-            ("Sandy", "Nur eine halbe Stunde. Mit dem Zug wäre es eine Stunde."),
-            ("Anna", "Nummer vier. Suchen Sie eine Jacke?"),
-            ("Markus", "Nein, eine Hose. Größe zweiundfünfzig, am liebsten in Dunkelblau."),
-            ("Anna", "Nummer fünf. Kommt Lena mit ins Konzert?"),
-            ("Sandy", "Nein, sie muss arbeiten. Ihre Kollegin ist krank und sie übernimmt die "
-                      "Spätschicht."),
+        # Teil 1: five texts, one file each, so each can be replayed on its own.
+        "teil1-1": [
+            ("Anna", "Text eins."),
+            ("Sandy", "Achtung an Gleis drei: Der ICE nach München fährt heute nicht von "
+                      "Gleis drei, sondern von Gleis sieben ab. Der Zug hat etwa zehn Minuten "
+                      "Verspätung. Die Regionalbahn nach Augsburg fährt wie geplant von Gleis "
+                      "zwölf."),
+        ],
+        "teil1-2": [
+            ("Anna", "Text zwei."),
+            ("Shelley", "Hallo Jonas, hier ist Mia. Wegen morgen Abend: Getränke haben wir "
+                        "genug, die hat Paul schon gekauft. Kannst du vielleicht einen Salat "
+                        "machen? Brot bringt meine Schwester mit. Bis morgen!"),
+        ],
+        "teil1-3": [
+            ("Anna", "Text drei."),
+            ("Sandy", "Guten Tag, Herr Schulz, hier ist die Praxis Doktor Lehner. Ihr Termin "
+                      "am Dienstag um neun Uhr muss leider ausfallen, die Ärztin ist krank. "
+                      "Können Sie am Mittwoch kommen? Um neun ist schon besetzt, aber um elf "
+                      "Uhr ist noch frei. Bitte rufen Sie uns kurz zurück."),
+        ],
+        "teil1-4": [
+            ("Anna", "Text vier."),
+            ("Markus", "Und nun das Wetter für das Wochenende. Am Freitag regnet es noch in "
+                       "ganz Deutschland, und es bleibt kühl. Am Samstag scheint dann überall "
+                       "die Sonne, bei Temperaturen bis dreiundzwanzig Grad. Am Sonntag wird "
+                       "es im Norden windig, in den Bergen ist sogar Schnee möglich."),
+        ],
+        "teil1-5": [
+            ("Anna", "Text fünf."),
+            ("Reed", "Am Samstag ist wieder Stadtfest auf dem Marktplatz! Es gibt Musik, "
+                     "Essen und viele Spiele. Für alle Kinder unter zehn Jahren ist die Fahrt "
+                     "mit dem Riesenrad kostenlos. Die ersten hundert Besucher bekommen ein "
+                     "T-Shirt, aber nur mit einem Online-Ticket. Und Eis gibt es am Stand vom "
+                     "Café Venezia zum halben Preis."),
         ],
         "teil2": [
-            ("Anna", "Teil zwei. Sie hören ein Interview. Sie hören es nur einmal."),
-            ("Sandy", "Herr Nowak, Sie sind Bäcker. Wie lange machen Sie das schon?"),
-            ("Markus", "Seit dreiundzwanzig Jahren. Ich habe mit sechzehn angefangen, direkt "
-                       "nach der Schule."),
-            ("Sandy", "Und wann beginnt Ihr Arbeitstag?"),
-            ("Markus", "Ich stehe jeden Tag um drei Uhr auf. Um vier bin ich in der Backstube."),
-            ("Sandy", "Auch am Wochenende?"),
-            ("Markus", "Gerade am Wochenende. Samstag und Sonntag sind unsere stärksten Tage, "
-                       "da haben wir bis mittags geöffnet."),
-            ("Sandy", "Haben Sie ein Lieblingsbrot?"),
-            ("Markus", "Ganz klar das Roggenbrot. Das braucht Zeit, und Zeit schmeckt man."),
-            ("Sandy", "Würden Sie noch einmal etwas anderes machen?"),
-            ("Markus", "Nein, auf keinen Fall. Der Beruf ist hart, aber ich würde ihn wieder "
-                       "wählen."),
+            ("Anna", "Teil zwei. Sie hören ein Gespräch. Sie hören den Text einmal."),
+            ("Markus", "Jana, ich freue mich so auf die Woche bei dir! Was machen wir denn am "
+                       "Montag, wenn ich ankomme?"),
+            ("Sandy", "Am Montag soll das Wetter schlecht sein. Da gehen wir ins Museum, das "
+                      "neue Technikmuseum ist super."),
+            ("Markus", "Gut. Und am Dienstag? Ich möchte unbedingt mal ins Schwimmbad."),
+            ("Sandy", "Dienstags ist das Schwimmbad geschlossen. Aber am Dienstag wird es warm, "
+                      "da können wir eine Radtour an den See machen. Ich habe ein zweites "
+                      "Fahrrad für dich."),
+            ("Markus", "Super. Und Schwimmen geht dann am Mittwoch?"),
+            ("Sandy", "Nein, am Mittwoch bin ich bis zum Abend im Büro. Du kannst ja allein in "
+                      "die Stadt gehen. Aber abends koche ich für uns – dein Lieblingsessen!"),
+            ("Markus", "Toll. Am Donnerstag gibt es doch ein Fußballspiel, oder?"),
+            ("Sandy", "Ja, aber das sehen wir nicht. Am Donnerstag spielt meine Lieblingsband "
+                      "im Park, die Karten habe ich schon gekauft."),
+            ("Markus", "Ein Konzert, sehr gut! Aber am Freitag möchte ich endlich schwimmen "
+                       "gehen."),
+            ("Sandy", "Okay, am Freitag gehen wir ins Schwimmbad. Versprochen. Danach könnten "
+                      "wir noch ins Kino gehen."),
+            ("Markus", "Ach nein, ins Kino gehe ich zu Hause schon so oft. Lieber nicht."),
+            ("Sandy", "Wie du willst. Und am Samstag ist morgens Markt auf dem Domplatz. Da "
+                      "kaufen wir Käse und Obst für deine Reise."),
+            ("Markus", "Und danach machen wir noch eine Wanderung?"),
+            ("Sandy", "Dafür haben wir keine Zeit. Dein Zug fährt doch schon um zwei."),
         ],
-        "teil3": [
-            ("Anna", "Teil drei. Sie hören fünf Nachrichten und Durchsagen, jede zweimal."),
-            ("Sandy", "Guten Tag, Sprachschule Horizont. Ihr Kurs beginnt nicht wie geplant am "
-                      "zweiten, sondern erst am zwölften September."),
-            ("Markus", "Liebe Besucher, das Konzert heute Abend fällt nicht aus, es wird auf "
-                       "nächsten Freitag verschoben. Ihre Karten bleiben gültig."),
-            ("Sandy", "Guten Tag, hier ist Frau Adam. Ich hätte gern einen Termin für nächste "
-                      "Woche, am liebsten am Vormittag."),
-            ("Markus", "Achtung, eine Durchsage. Der Regionalzug nach Fulda fährt heute "
-                       "ausnahmsweise von Gleis fünf und nicht wie gewohnt von Gleis zwei."),
-            ("Sandy", "Guten Tag, Paketdienst. Wir haben Sie nicht angetroffen. Ihr Paket ist "
-                      "bei Ihrem Nachbarn, Herrn Vogel, in Wohnung zwölf."),
+        # Teil 3: five conversations, one file each, heard once.
+        "teil3-1": [
+            ("Anna", "Gespräch eins."),
+            ("Sandy", "Nimmst du wieder die Pizza?"),
+            ("Markus", "Nein, heute nicht. Ich hätte gern einen Salat."),
+            ("Sandy", "Der Salat ist leider schon aus, tut mir leid."),
+            ("Markus", "Schade. Dann nehme ich eben die Suppe."),
+        ],
+        "teil3-2": [
+            ("Anna", "Gespräch zwei."),
+            ("Reed", "Wie gefällt Ihnen dieser Rucksack?"),
+            ("Shelley", "Der ist schön, aber zu groß für die Arbeit. Und für die Reise habe "
+                        "ich schon einen Koffer. Haben Sie die schwarze Handtasche auch in "
+                        "Braun?"),
+            ("Reed", "Ja, hier ist sie."),
+            ("Shelley", "Prima. Die nehme ich."),
+        ],
+        "teil3-3": [
+            ("Anna", "Gespräch drei."),
+            ("Sandy", "Guten Tag. Ich habe gestern im Zug nach Köln etwas liegen lassen."),
+            ("Markus", "Einen Regenschirm? Davon haben wir hier sehr viele."),
+            ("Sandy", "Nein, den habe ich hier. Und meinen Schlüssel habe ich zum Glück auch "
+                      "wiedergefunden. Es ist meine Brille, in einem blauen Etui."),
+            ("Markus", "Moment … ja, hier ist eine."),
+        ],
+        "teil3-4": [
+            ("Anna", "Gespräch vier."),
+            ("Markus", "Treffen wir uns um sieben vor dem Kino?"),
+            ("Sandy", "Um sieben schaffe ich es nicht, ich arbeite bis halb sieben. Sagen wir "
+                      "halb acht?"),
+            ("Markus", "Der Film fängt um acht an. Gut, halb acht."),
+        ],
+        "teil3-5": [
+            ("Anna", "Gespräch fünf."),
+            ("Shelley", "Fährst du immer noch mit dem Auto ins Büro?"),
+            ("Reed", "Nein, das Parken ist viel zu teuer. Eine Zeit lang bin ich mit dem Bus "
+                     "gefahren, aber jetzt nehme ich das Fahrrad – das ist sogar schneller."),
         ],
         "teil4": [
-            ("Anna", "Teil vier. Sie hören ein Gespräch, zweimal."),
-            ("Sandy", "Also, wohin fahren wir im Mai?"),
-            ("Markus", "Ich hätte Lust auf die Berge. Fliegen ist mir zu teuer und mit dem Auto "
-                       "stehen wir nur im Stau. Nehmen wir den Zug."),
-            ("Sandy", "Einverstanden. Und wo schlafen wir?"),
-            ("Markus", "Ich habe ein kleines Hotel direkt am See gefunden. Nicht im Zentrum, "
-                       "aber dafür ruhig."),
-            ("Sandy", "Wie viele Tage?"),
-            ("Markus", "Freitag bis Sonntag, also drei Tage. Mehr Urlaub habe ich nicht."),
-            ("Sandy", "Und was nehmen wir mit?"),
-            ("Markus", "Die Wanderschuhe auf jeden Fall, der Regenschirm schadet auch nicht. "
-                       "Aber den Laptop lassen wir zu Hause. Wirklich, dieses Mal."),
+            ("Anna", "Teil vier. Sie hören ein Interview. Sie hören den Text zweimal."),
+            ("Reed", "Heute ist Lina Park bei uns im Studio. Frau Park, Sie sind in Korea "
+                     "geboren, richtig?"),
+            ("Sandy", "Nein, ich bin in Frankfurt geboren. Meine Eltern kommen aus Korea, sie "
+                      "sind vor dreißig Jahren nach Deutschland gekommen."),
+            ("Reed", "Sie arbeiten als Tierpflegerin im Tierpark. Wollten Sie das schon als "
+                     "Kind werden?"),
+            ("Sandy", "Oh ja! Wir hatten zu Hause immer Tiere, zwei Katzen und einen Hund. "
+                      "Mit zwölf habe ich schon im Tierheim geholfen."),
+            ("Reed", "Und wie sind Sie zum Tierpark gekommen?"),
+            ("Sandy", "Nach der Schule habe ich zuerst Biologie studiert. Aber das war mir zu "
+                      "theoretisch. Nach einem Jahr habe ich aufgehört. Ein Freund hat mir "
+                      "dann von der Ausbildung im Tierpark erzählt, und ich habe mich sofort "
+                      "beworben."),
+            ("Reed", "Wie sieht Ihr Arbeitstag aus?"),
+            ("Sandy", "Ich fange um sieben Uhr an. Zuerst mache ich die Ställe sauber, dann "
+                      "bekommen die Tiere ihr Futter. Am Nachmittag erkläre ich Schulklassen, "
+                      "wie wir mit den Tieren arbeiten. Das mache ich am liebsten."),
+            ("Reed", "Arbeiten Sie auch am Wochenende?"),
+            ("Sandy", "Ja, jedes zweite Wochenende. Die Tiere haben ja auch am Sonntag Hunger! "
+                      "Dafür habe ich dann in der Woche frei."),
+            ("Reed", "Und was sind Ihre Pläne für die Zukunft?"),
+            ("Sandy", "Nächstes Jahr gehe ich für drei Monate nach Kanada, in einen Park für "
+                      "Bären. Darauf freue ich mich sehr."),
+            ("Reed", "Dann alles Gute, Frau Park, und vielen Dank für das Gespräch."),
+            ("Sandy", "Gern."),
         ],
     },
     "b1": {

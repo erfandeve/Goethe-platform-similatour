@@ -77,7 +77,9 @@ export interface Page {
 export function buildPages(module: ExamModule): Page[] {
   const pages: Page[] = [];
   for (const part of module.parts) {
-    if (part.type === "listening_mixed" && part.audio.length) {
+    // Any Teil with recordings is paged one recording at a time, whatever its
+    // task type: A2 Hören 1 and 3 are plain a/b/c items over five tracks.
+    if (part.audio.length) {
       // An item belongs to the track that names it in `covers`, then to its own
       // audio_index, and otherwise to the first track. Without that fallback a
       // part whose items carry no index renders every page empty.

@@ -217,6 +217,11 @@ export function GoetheRunner({
   const listening = module.skill === "hoeren";
 
   const left = (() => {
+    // A recording drives the screen whatever the task type — a/b/c items,
+    // Ja/Nein, or matching days to pictures.
+    if (part.audio.length && part.type !== "writing") {
+      return <ListeningStimulus part={part} trackIndex={trackIndex ?? 0} />;
+    }
     switch (part.type) {
       case "match_person":
         return <MatchPersonStimulus part={part} />;
@@ -226,14 +231,6 @@ export function GoetheRunner({
         return <StatementBoxes part={part} />;
       case "writing":
         return <WritingStimulus part={part} />;
-      case "listening_mixed":
-      case "mcq":
-        if (part.audio.length) {
-          return (
-            <ListeningStimulus part={part} trackIndex={trackIndex ?? 0} />
-          );
-        }
-        return <ArticleStimulus part={part} />;
       default:
         return <ArticleStimulus part={part} />;
     }

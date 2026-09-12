@@ -15,10 +15,13 @@ export function AudioRing({
   track,
   onPlay,
   onFinished,
+  prompt = "Lesen Sie jetzt die Aufgaben.",
 }: {
   track: AudioTrack;
   onPlay?: () => void;
   onFinished?: () => void;
+  /** What to do during the reading time; picture tasks look at the pictures instead. */
+  prompt?: string;
 }) {
   const audio = useRef<HTMLAudioElement>(null);
   const [progress, setProgress] = useState(0);
@@ -119,7 +122,7 @@ export function AudioRing({
 
       <p className="mt-1 max-w-md text-center text-xs" style={{ color: "var(--exam-muted)" }} dir="ltr">
         {state === "reading"
-          ? `Lesen Sie jetzt die Aufgaben. Der Text startet in ${countdown} Sekunden.`
+          ? `${prompt} Der Text startet in ${countdown} Sekunden.`
           : state === "playing"
             ? track.plays > 1
               ? `Sie hören den Text ${track.plays}× · Durchgang ${pass + 1}`

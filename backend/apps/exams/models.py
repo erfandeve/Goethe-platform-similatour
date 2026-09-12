@@ -93,7 +93,11 @@ class StimulusBlock(EmbeddedDocument):
     """One unit of the reading/listening material shown on the left panel."""
 
     kind = StringField(
-        choices=("paragraph", "person", "statement", "heading", "section", "bullet"),
+        # row: one line of a sign board ("3. Stock" | departments);
+        # picture: a lettered picture a matching task answers with
+        choices=(
+            "paragraph", "person", "statement", "heading", "section", "bullet", "row", "picture",
+        ),
         default="paragraph",
     )
     label = StringField(default="")           # "a", "§ 28"

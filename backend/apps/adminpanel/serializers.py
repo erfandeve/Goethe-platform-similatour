@@ -238,7 +238,10 @@ def exam_part_row(part, index):
         if part.part_type == "writing"
         else sum(1 for item in part.items if not item.answer),
         "missing_audio": sum(1 for track in part.audio if not track.url),
-        "empty_blocks": sum(1 for block in part.blocks if not block.text.strip()),
+        # a picture block is filled by its image, not by text
+        "empty_blocks": sum(
+            1 for block in part.blocks if not block.text.strip() and not block.image
+        ),
     }
 
 
