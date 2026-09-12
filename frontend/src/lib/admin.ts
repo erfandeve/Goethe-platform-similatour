@@ -165,6 +165,10 @@ export interface ExamPart {
   example_prompt: string;
   example_answer: string;
   min_words: number | null;
+  /** Readiness: what still has to be filled in before learners sit this Teil. */
+  missing_answers?: number;
+  missing_audio?: number;
+  empty_blocks?: number;
 }
 
 export interface ExamModule {
@@ -273,6 +277,7 @@ export interface AdminExamCode {
   items_count: number;
   modules: ExamModule[];
   exam: string | null;
+  exam_level?: string;
 }
 
 export interface AdminPlan {

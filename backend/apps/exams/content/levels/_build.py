@@ -90,6 +90,12 @@ def build_part(spec, number):
         min_words=spec.get("min_words"),
     )
     if spec.get("tracks"):
+        # The player pages a listening part track by track, grouping items by
+        # audio_index; derive it from each track's `covers`.
+        for index, (_label, _url, _plays, _pre, covers) in enumerate(spec["tracks"]):
+            for item in part.items:
+                if item.number in covers:
+                    item.audio_index = index
         part.audio = [
             AudioTrack(
                 label=label,

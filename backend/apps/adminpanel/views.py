@@ -840,8 +840,10 @@ def _apply_part_content(part, payload):
                 pre_read_seconds=max(0, min(300, int(track.get("pre_read_seconds") or 0))),
                 covers=[int(n) for n in (track.get("covers") or []) if str(n).strip().isdigit()],
             )
+            # A track may be saved before its file is uploaded: the replay count
+            # and reading time are part of the paper, not of the recording.
             for track in payload["audio"]
-            if str(track.get("url", "")).strip()
+            if isinstance(track, dict)
         ]
 
     if "min_words" in payload:
@@ -1133,6 +1135,46 @@ def upload_audio(request):
     )
 
 
+# -------------------------------------------------------- level templates ---
+
+from apps.exams.content.templates import LEVELS as TEMPLATE_LEVELS  # noqa: E402
+from apps.exams.content.templates import outline, template_modules  # noqa: E402
+
+
+@api_view(["GET"])
+@permission_classes([IsStaff])
+def exam_templates(request):
+    """The official paper shape of every level, for the builder to preview."""
+    return Response({"results": [outline(level) for level in TEMPLATE_LEVELS]})
+
+
+def _apply_template(target, payload):
+    """Give an exam or a code the blank paper of a level."""
+    level = str(payload.get("level", "")).strip().upper()
+    if level not in TEMPLATE_LEVELS:
+        raise ApiError("Unknown level.", code="invalid", fields={"level": "Unknown level."})
+    if target.modules and not payload.get("replace"):
+        raise ApiError(
+            "This paper already has modules. Send replace=true to overwrite them.",
+            code="has_modules",
+            status_code=409,
+        )
+    target.modules = template_modules(level)
+
+
+@api_view(["POST"])
+@permission_classes([IsStaff])
+def exam_apply_template(request, pk):
+    exam = Exam.objects(id=pk).first()
+    if not exam:
+        raise ApiError("Exam not found.", status_code=404)
+    _apply_template(exam, request.data or {})
+    exam.sections = []  # the modules replace any flat placeholder questions
+    exam.duration_minutes = sum(module.duration_minutes for module in exam.modules)
+    exam.save()
+    return Response(exam_detail(exam))
+
+
 # ------------------------------------------------------------- exam codes ---
 
 from apps.exams.models import ExamCode  # noqa: E402
@@ -1150,6 +1192,8 @@ def _code_row(code):
         "items_count": code.items_count,
         "modules": [exam_module_row(m, i) for i, m in enumerate(code.modules)],
         "exam": str(code.exam.id) if code.exam else None,
+        # the level decides which official paper a new code starts from
+        "exam_level": code.exam.level if code.exam else "",
     }
 
 
@@ -1184,6 +1228,17 @@ def exam_codes(request, pk):
 
     codes = ExamCode.objects(exam=exam).order_by("order")
     return Response({"exam": exam_row(exam), "results": [_code_row(c) for c in codes]})
+
+
+@api_view(["POST"])
+@permission_classes([IsStaff])
+def code_apply_template(request, pk):
+    code = ExamCode.objects(id=pk).first()
+    if not code:
+        raise ApiError("Exam code not found.", status_code=404)
+    _apply_template(code, request.data or {})
+    code.save()
+    return Response(_code_row(code))
 
 
 @api_view(["GET", "PATCH", "DELETE"])

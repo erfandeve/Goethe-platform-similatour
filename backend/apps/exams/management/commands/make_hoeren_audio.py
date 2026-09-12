@@ -13,9 +13,22 @@ import tempfile
 from pathlib import Path
 
 from django.conf import settings
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 from apps.exams.content.levels._audio import SCRIPTS
+
+# The scripts name speakers briefly; `say` needs the exact German voice. Bare
+# names are dangerous: "Sandy" exists in fifteen languages and "Markus" not at
+# all, and `say` silently falls back to another voice instead of failing —
+# German read with an English accent.
+VOICES = {
+    "Anna": "Anna",
+    "Sandy": "Sandy (German (Germany))",
+    "Markus": "Eddy (German (Germany))",
+    "Reed": "Reed (German (Germany))",
+    "Flo": "Flo (German (Germany))",
+    "Shelley": "Shelley (German (Germany))",
+}
 
 # A short pause between turns, so items stay tellable apart.
 GAP_SECONDS = 0.7
@@ -56,6 +69,7 @@ class Command(BaseCommand):
                     continue
 
                 self.stdout.write(f"  rendering {level}/{stem} …")
+                self._check_voices(lines)
                 self._render(lines, target)
                 made += 1
                 self.stdout.write(
@@ -65,6 +79,12 @@ class Command(BaseCommand):
                 )
 
         self.stdout.write(self.style.SUCCESS(f"Audio: {made} rendered, {kept} already present."))
+
+    @staticmethod
+    def _check_voices(lines):
+        unknown = sorted({voice for voice, _ in lines if voice not in VOICES})
+        if unknown:
+            raise CommandError(f"No German voice mapped for: {', '.join(unknown)}")
 
     def _render(self, lines, target):
         """One WAV per turn, concatenated, then converted to m4a.
@@ -82,7 +102,7 @@ class Command(BaseCommand):
                 spoken = f"{text} [[slnc {int(GAP_SECONDS * 1000)}]]"
                 subprocess.run(
                     [
-                        "say", "-v", voice, "-r", str(RATE),
+                        "say", "-v", VOICES.get(voice, voice), "-r", str(RATE),
                         "--data-format=LEI16@22050", "-o", str(piece), spoken,
                     ],
                     check=True,

@@ -34,6 +34,7 @@ export default async function AdminExamCodePage({
   const asExam = {
     id: code.exam ?? "",
     slug: code.code,
+    level: code.exam_level ?? "",
     title: code.label,
     questions_count: code.items_count,
     modules: code.modules,

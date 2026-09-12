@@ -10,6 +10,7 @@ import { ExamShell } from "./ExamShell";
 import { GoetheResult } from "./GoetheResult";
 import {
   ArticleStimulus,
+  ExampleRow,
   GapDragOptions,
   GapDragStimulus,
   ItemBlock,
@@ -247,6 +248,8 @@ export function GoetheRunner({
     }
     return (
       <div>
+        {/* The Beispiel opens a Teil once — on its first page, not every track. */}
+        {!trackIndex ? <ExampleRow part={part} /> : null}
         {items.map((item) => (
           <ItemBlock
             key={item.key}

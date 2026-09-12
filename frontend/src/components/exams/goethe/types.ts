@@ -78,11 +78,20 @@ export function buildPages(module: ExamModule): Page[] {
   const pages: Page[] = [];
   for (const part of module.parts) {
     if (part.type === "listening_mixed" && part.audio.length) {
-      part.audio.forEach((track, trackIndex) => {
+      // An item belongs to the track that names it in `covers`, then to its own
+      // audio_index, and otherwise to the first track. Without that fallback a
+      // part whose items carry no index renders every page empty.
+      const trackOf = (item: ExamItem) => {
+        const byCover = part.audio.findIndex((track) => (track.covers ?? []).includes(item.number));
+        if (byCover >= 0) return byCover;
+        if (item.audio_index != null && part.audio[item.audio_index]) return item.audio_index;
+        return 0;
+      };
+      part.audio.forEach((_track, trackIndex) => {
         pages.push({
           part,
           trackIndex,
-          items: part.items.filter((item) => item.audio_index === trackIndex),
+          items: part.items.filter((item) => trackOf(item) === trackIndex),
         });
       });
       continue;

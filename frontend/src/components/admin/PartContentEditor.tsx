@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { Field, Input, Select, Textarea } from "@/components/ui/Field";
@@ -113,12 +113,14 @@ export function PartContentEditor({
   onUpload: (file: File) => Promise<string | null>;
   onUploadImage: (file: File) => Promise<string | null>;
 }) {
-  const [draft, setDraft] = useState<ExamPart | null>(null);
+  const [draft, setDraft] = useState<ExamPart | null>(() => (part ? structuredClone(part) : null));
+  const [loaded, setLoaded] = useState(part);
 
   // Reload whenever a different Teil is opened, so edits never leak across parts.
-  useEffect(() => {
+  if (part !== loaded) {
+    setLoaded(part);
     setDraft(part ? structuredClone(part) : null);
-  }, [part]);
+  }
 
   if (!draft) return null;
 

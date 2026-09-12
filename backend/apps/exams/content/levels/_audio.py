@@ -162,73 +162,92 @@ SCRIPTS = {
         ],
     },
     "b1": {
-        "teil1": [
-            ("Anna", "Teil eins. Sie hören fünf kurze Texte. Sie hören jeden Text nur einmal."),
-            ("Markus", "Autohaus Riedel, guten Tag. Ihr Wagen ist fertig, allerdings erst "
-                       "morgen abholbereit, weil die Rechnung noch geschrieben wird. Ab neun "
-                       "Uhr können Sie kommen."),
+        # Teil 1: one file per text, so the player can replay each one on its own.
+        "teil1-1": [
+            ("Anna", "Text eins."),
+            ("Markus", "Guten Tag, Herr Baum, hier ist das Autohaus Riedel. Ihr Wagen ist "
+                       "fertig, allerdings erst morgen abholbereit, weil die Rechnung noch "
+                       "geschrieben wird. Ab neun Uhr können Sie gerne vorbeikommen."),
+        ],
+        "teil1-2": [
+            ("Anna", "Text zwei."),
             ("Sandy", "Liebe Gäste, wegen des Regens findet das Sommerfest heute nicht im Park "
                       "statt, sondern in der Aula der Schule. Die Turnhalle wird gerade "
-                      "renoviert."),
-            ("Anna", "Guten Tag, hier spricht Frau Ritter. Ich hatte mich um einen "
-                     "Praktikumsplatz beworben und wollte fragen, ob meine Unterlagen "
-                     "angekommen sind."),
-            ("Markus", "Volkshochschule Süd. Der Kurs Fotografie für Anfänger ist bereits "
-                       "ausgebucht. Sie können sich aber gern auf die Warteliste setzen "
-                       "lassen, es wird fast immer ein Platz frei."),
-            ("Sandy", "Achtung, eine Verkehrsmeldung. Die Ringstraße ist wegen einer Baustelle "
-                      "gesperrt, voraussichtlich zwei Wochen lang. Bitte umfahren Sie den "
-                      "Bereich über die Uferstraße."),
+                      "renoviert. Das Programm beginnt wie geplant um fünfzehn Uhr."),
+        ],
+        "teil1-3": [
+            ("Anna", "Text drei."),
+            ("Sandy", "Guten Tag, hier spricht Frau Ritter. Ich hatte mich vor zwei Wochen um "
+                      "einen Praktikumsplatz bei Ihnen beworben und wollte fragen, ob meine "
+                      "Unterlagen angekommen sind. Sie erreichen mich unter null eins sieben "
+                      "sechs, vier vier drei, zwei eins null."),
+        ],
+        "teil1-4": [
+            ("Anna", "Text vier."),
+            ("Markus", "Volkshochschule Süd, Anmeldung. Der Kurs Fotografie für Anfänger ist "
+                       "leider bereits voll. Sie können sich aber gern auf die Warteliste "
+                       "setzen lassen – es wird fast immer noch ein Platz frei."),
+        ],
+        "teil1-5": [
+            ("Anna", "Text fünf."),
+            ("Sandy", "Und nun die Verkehrsmeldungen. Die Ringstraße ist wegen einer Baustelle "
+                      "gesperrt, voraussichtlich zwei Wochen lang. Bitte fahren Sie über die "
+                      "Uferstraße. Auf der A vier gibt es zurzeit keine Staus."),
         ],
         "teil2": [
-            ("Anna", "Teil zwei. Sie hören einen kurzen Vortrag, zweimal."),
-            ("Sandy", "Herzlich willkommen zur Führung. Das Gebäude, in dem wir stehen, war bis "
-                      "neunzehnhundertachtundsiebzig eine Textilfabrik. Danach stand es fast "
-                      "dreißig Jahre leer.\n"
+            ("Anna", "Teil zwei. Sie hören einen Text. Sie hören den Text einmal."),
+            ("Sandy", "Herzlich willkommen zu unserer Führung durch die Alte Tuchfabrik. Das "
+                      "Gebäude, in dem wir stehen, war bis neunzehnhundertachtundsiebzig eine "
+                      "Textilfabrik. Danach stand es fast dreißig Jahre leer.\n"
                       "Die Renovierung hat vier Jahre gedauert, deutlich länger als geplant, "
                       "vor allem wegen des Daches.\n"
                       "Heute finden Sie hier Büros und Ateliers, insgesamt vierzig Einheiten. "
-                      "Ein Museum war ursprünglich geplant, ließ sich aber nicht finanzieren.\n"
+                      "Ein Museum war am Anfang geplant, ließ sich aber nicht finanzieren.\n"
                       "Unsere Führung dauert insgesamt neunzig Minuten, mit einer kurzen Pause "
                       "nach etwa einer Stunde.\n"
                       "Und noch ein Hinweis: Fotografieren ist nur im Innenhof erlaubt, in den "
                       "Ateliers bitte nicht."),
         ],
         "teil3": [
-            ("Anna", "Teil drei. Sie hören ein Gespräch. Sie hören es nur einmal."),
+            ("Anna", "Teil drei. Sie hören ein Gespräch. Sie hören das Gespräch einmal."),
             ("Markus", "Lena! Das ist ja eine Überraschung. Seit dem Studium haben wir uns "
                        "nicht mehr gesehen."),
-            ("Sandy", "Stimmt, sieben Jahre. Ich habe letzten Monat eine neue Stelle "
+            ("Sandy", "Markus! Stimmt, sieben Jahre. Ich habe letzten Monat eine neue Stelle "
                       "angefangen, bei einem Verlag hier in der Stadt."),
-            ("Markus", "Und wie ist es?"),
-            ("Sandy", "Deutlich besser. Vorher bin ich jeden Tag eine Stunde gependelt, jetzt "
-                      "sind es fünfzehn Minuten mit dem Rad. Und ich verdiene auch etwas mehr "
-                      "als vorher."),
+            ("Markus", "Und, wie ist es?"),
+            ("Sandy", "Viel besser. Vorher bin ich jeden Tag eine Stunde gependelt, jetzt sind "
+                      "es fünfzehn Minuten mit dem Rad. Und ich verdiene auch etwas mehr als "
+                      "vorher."),
             ("Markus", "Und der Chef?"),
             ("Sandy", "Sehr angenehm, wirklich. Er lässt einen arbeiten. Ich überlege sogar, "
-                      "nebenbei den Master zu machen, die Firma würde das unterstützen."),
+                      "nebenbei den Master zu machen – die Firma würde das unterstützen."),
             ("Markus", "Das klingt gut. Wollen wir nächste Woche mal einen Kaffee trinken?"),
             ("Sandy", "Gern. Donnerstag nach der Arbeit?"),
             ("Markus", "Donnerstag passt."),
         ],
         "teil4": [
-            ("Anna", "Teil vier. Sie hören eine Diskussion, zweimal. Frau Klein und Herr Adler "
-                     "sprechen über Hausaufgaben."),
-            ("Sandy", "Ich bin überzeugt, dass Hausaufgaben wichtig sind. Was man nicht "
-                      "wiederholt, vergisst man innerhalb weniger Tage. Ein völliges Verbot "
-                      "wäre der falsche Weg."),
-            ("Markus", "Da widerspreche ich. Kinder sitzen sechs Stunden in der Schule und "
-                       "sollen danach weitermachen. Sie brauchen nachmittags freie Zeit. "
+            ("Anna", "Teil vier. Sie hören eine Diskussion. Sie hören die Diskussion zweimal."),
+            ("Reed", "Guten Abend und willkommen bei Thema am Abend. Heute geht es um eine "
+                     "Frage, die fast alle Familien betrifft: Brauchen Kinder Hausaufgaben? "
+                     "Bei mir sind die Lehrerin Sabine Klein und der Vater Jonas Adler. Frau "
+                     "Klein, Sie sind für Hausaufgaben?"),
+            ("Sandy", "Ja, eindeutig. Was man nicht wiederholt, vergisst man innerhalb weniger "
+                      "Tage. Hausaufgaben helfen den Kindern, den Stoff zu wiederholen."),
+            ("Reed", "Herr Adler, Sie sehen das anders."),
+            ("Markus", "Ganz anders. Kinder sitzen sechs Stunden in der Schule und sollen "
+                       "danach weitermachen. Sie brauchen am Nachmittag mehr freie Zeit. "
                        "Ganztagsschulen, in denen alles in der Schule passiert, wären die "
                        "bessere Lösung."),
-            ("Sandy", "Ein Punkt eint uns aber: Eltern helfen oft zu viel. Dann übt nicht das "
-                      "Kind, sondern die Mutter."),
-            ("Markus", "Absolut, das sehe ich genauso. Und entscheidend ist ohnehin die Menge, "
-                       "nicht die Frage, ob überhaupt."),
-            ("Sandy", "Auch da stimme ich zu. Wenn vier Fächer am selben Tag Aufgaben geben, "
-                      "läuft etwas falsch."),
-            ("Markus", "Die Lehrkräfte müssten sich einfach besser absprechen."),
-            ("Sandy", "Genau. Aber abschaffen? Nein."),
+            ("Sandy", "Ein Problem sehe ich allerdings auch: Viele Eltern helfen zu viel. "
+                      "Dann übt nicht das Kind, sondern die Mutter."),
+            ("Reed", "Interessant ist übrigens, dass es in manchen Ländern kaum Hausaufgaben "
+                     "gibt – und die Ergebnisse dort sind trotzdem gut."),
+            ("Markus", "Genau. Und wenn vier Fächer am selben Tag Aufgaben geben, läuft etwas "
+                       "falsch. Die Lehrkräfte sollten sich besser absprechen."),
+            ("Sandy", "Das kann ich verstehen. Aber Hausaufgaben ganz abzuschaffen, wäre "
+                      "falsch."),
+            ("Reed", "Liebe Hörerinnen und Hörer, was meinen Sie? Rufen Sie uns an – die "
+                     "Nummer finden Sie auf unserer Webseite."),
         ],
     },
     "c1": {

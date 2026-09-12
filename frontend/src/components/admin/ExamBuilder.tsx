@@ -12,6 +12,7 @@ import { MODULE_LABELS, PART_TYPE_LABELS } from "@/lib/admin";
 import { formatNumber } from "@/lib/format";
 
 import { PartContentEditor } from "./PartContentEditor";
+import { TemplatePicker } from "./TemplatePicker";
 import { useAdmin } from "./useAdmin";
 import { Modal, Panel, Toast, TranslatedField } from "./ui";
 
@@ -215,6 +216,17 @@ export function ExamBuilder({
         </div>
       </header>
 
+      <TemplatePicker
+        base={base}
+        defaultLevel={exam.level}
+        hasModules={modules.length > 0}
+        busy={busy}
+        locale={locale}
+        run={run}
+        call={call}
+        onApplied={(saved) => setExam(saved)}
+      />
+
       {modules.length ? (
         modules.map((module) => (
           <Panel
@@ -273,6 +285,25 @@ export function ExamBuilder({
                           ? ` · ${formatNumber(part.audio.length, locale)} فایل صوتی`
                           : ""}
                       </span>
+                      {part.missing_answers || part.missing_audio || part.empty_blocks ? (
+                        <span className="mt-1 flex flex-wrap gap-1.5">
+                          {part.empty_blocks ? (
+                            <span className="rounded-md bg-amber-400/10 px-1.5 py-0.5 text-[10px] text-amber-300">
+                              {formatNumber(part.empty_blocks, locale)} متن خالی
+                            </span>
+                          ) : null}
+                          {part.missing_audio ? (
+                            <span className="rounded-md bg-amber-400/10 px-1.5 py-0.5 text-[10px] text-amber-300">
+                              {formatNumber(part.missing_audio, locale)} فایل صوتی آپلود نشده
+                            </span>
+                          ) : null}
+                          {part.missing_answers ? (
+                            <span className="rounded-md bg-rose-400/10 px-1.5 py-0.5 text-[10px] text-rose-300">
+                              {formatNumber(part.missing_answers, locale)} سؤال بی‌جواب
+                            </span>
+                          ) : null}
+                        </span>
+                      ) : null}
                     </span>
                     <Button
                       size="sm"

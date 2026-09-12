@@ -233,6 +233,12 @@ def exam_part_row(part, index):
         "example_prompt": part.example_prompt,
         "example_answer": part.example_answer,
         "min_words": part.min_words,
+        # What still has to be filled in before learners can sit this Teil.
+        "missing_answers": 0
+        if part.part_type == "writing"
+        else sum(1 for item in part.items if not item.answer),
+        "missing_audio": sum(1 for track in part.audio if not track.url),
+        "empty_blocks": sum(1 for block in part.blocks if not block.text.strip()),
     }
 
 

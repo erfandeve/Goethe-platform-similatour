@@ -35,6 +35,49 @@ export function PartHeading({ title }: { title: string }) {
 }
 
 /** Radio row styled like the exam player: blue dot, generous hit area. */
+/** The situation line the paper prints above a task ("Sie nehmen an …"). */
+function StimulusIntro({ text }: { text?: string }) {
+  if (!text) return null;
+  return (
+    <p className="exam-body mb-5 italic" dir="ltr" style={{ color: "var(--exam-muted)" }}>
+      {text}
+    </p>
+  );
+}
+
+/**
+ * The worked example (Beispiel 0) that opens every Teil on the paper. Shown
+ * already answered and greyed, so it reads as a model rather than a question.
+ */
+export function ExampleRow({ part }: { part: ExamPart }) {
+  const prompt = part.example?.prompt?.trim();
+  if (!prompt) return null;
+
+  let line = prompt;
+  if (!prompt.includes("→") && part.example.answer) {
+    const pool = [...part.options, ...(part.items[0]?.options ?? [])];
+    const option = pool.find((o) => o.key === part.example.answer);
+    const shown =
+      option?.text && option.text !== option.key
+        ? `${option.key}) ${option.text}`
+        : option?.label || part.example.answer;
+    line = `${prompt} → ${shown.charAt(0).toUpperCase()}${shown.slice(1)}`;
+  }
+
+  return (
+    <div
+      className="mb-5 rounded-sm border border-dashed px-4 py-3"
+      style={{ borderColor: "var(--exam-line)", background: "var(--exam-page)", opacity: 0.85 }}
+      dir="ltr"
+    >
+      <p className="mb-1 text-xs font-bold tracking-wide uppercase" style={{ color: "var(--exam-muted)" }}>
+        Beispiel
+      </p>
+      <p className="exam-body">{line}</p>
+    </div>
+  );
+}
+
 /** A block's own picture — a sign, an advert, a photo the question is about. */
 function BlockImage({ src, alt }: { src?: string; alt?: string }) {
   if (!src) return null;
@@ -110,6 +153,46 @@ export function ItemBlock({
   // A1 answers a picture as often as a sentence, so picture options lay out
   // side by side instead of as a stacked list.
   const pictorial = options.some((option) => option.image);
+  // Matching tasks offer a–j plus 0: eleven radio lines per question would
+  // bury the page, so single-letter pools become a row of keys.
+  const compact =
+    !pictorial && options.length > 5 && options.every((option) => (option.label || option.key).length <= 2);
+
+  if (compact) {
+    return (
+      <div className="border-b py-4 first:pt-0 last:border-0" style={{ borderColor: "var(--exam-line)" }}>
+        <p className="exam-lead mb-3 font-bold" dir="ltr">
+          {showNumber ? `${item.number}. ` : ""}
+          {item.prompt}
+        </p>
+        <div className="flex flex-wrap gap-2" dir="ltr" role="radiogroup" aria-label={item.prompt}>
+          {options.map((option) => {
+            const checked = answers[item.key] === option.key;
+            return (
+              <label
+                key={option.key}
+                className="grid size-10 cursor-pointer place-items-center rounded-sm border text-sm font-bold transition"
+                style={{
+                  borderColor: checked ? "var(--exam-radio)" : "#b9b9b5",
+                  background: checked ? "var(--exam-radio)" : "#fff",
+                  color: checked ? "#fff" : "inherit",
+                }}
+              >
+                <input
+                  type="radio"
+                  name={item.key}
+                  checked={checked}
+                  onChange={() => setAnswer(item.key, option.key)}
+                  className="sr-only"
+                />
+                {option.label || option.key}
+              </label>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="border-b py-5 first:pt-0 last:border-0" style={{ borderColor: "var(--exam-line)" }}>
@@ -140,7 +223,10 @@ export function ItemBlock({
             ) : null}
             {option.text ? (
               <>
-                <b className="me-1.5">{option.key}</b>
+                {/* a/b/c lead their sentence; "richtig"/"ja" are the answer itself. */}
+                {option.key.toLowerCase() !== option.text.toLowerCase() ? (
+                  <b className="me-1.5">{option.key}</b>
+                ) : null}
                 {option.text}
               </>
             ) : (
@@ -353,16 +439,44 @@ export function ArticleStimulus({ part }: { part: ExamPart }) {
           {part.stimulus.subtitle}
         </p>
       ) : null}
+      <StimulusIntro text={part.stimulus.intro} />
       <div className="space-y-4">
-        {part.stimulus.blocks.map((block, index) => (
-          <div key={index} dir="ltr">
-            <BlockImage src={block.image} alt={block.title || block.label} />
-            <p className="exam-body text-justify">
-              {block.label ? <b className="me-2">{block.label}</b> : null}
-              {block.text}
-            </p>
-          </div>
-        ))}
+        {part.stimulus.blocks.map((block, index) =>
+          block.kind === "statement" ? (
+            // reader comments and posts sit in their own boxes, signed
+            <article
+              key={index}
+              className="rounded-md border p-4"
+              style={{ borderColor: "var(--exam-line)" }}
+              dir="ltr"
+            >
+              <BlockImage src={block.image} alt={block.title || block.label} />
+              <p className="exam-body whitespace-pre-line">
+                {block.label ? <b className="me-2">{block.label}</b> : null}
+                {block.text}
+              </p>
+              {block.title || block.author ? (
+                <p className="mt-2 text-end text-xs italic" style={{ color: "var(--exam-muted)" }}>
+                  {block.title || block.author}
+                </p>
+              ) : null}
+            </article>
+          ) : (
+            <div key={index} dir="ltr">
+              <BlockImage src={block.image} alt={block.title || block.label} />
+              {block.label && block.label.length > 3 ? (
+                <p className="mb-1 text-xs font-bold tracking-wide" style={{ color: "var(--exam-muted)" }}>
+                  {block.label}
+                </p>
+              ) : null}
+              {block.title ? <p className="exam-body mb-1 font-bold">{block.title}</p> : null}
+              <p className="exam-body text-justify whitespace-pre-line">
+                {block.label && block.label.length <= 3 ? <b className="me-2">{block.label}</b> : null}
+                {block.text}
+              </p>
+            </div>
+          ),
+        )}
       </div>
     </>
   );
@@ -375,6 +489,7 @@ export function StatementBoxes({ part }: { part: ExamPart }) {
     <>
       <PartHeading title={part.title_de || part.title} />
       <InstructionBand text={part.instructions_de} />
+      <StimulusIntro text={part.stimulus.intro} />
       <div className="grid gap-4 sm:grid-cols-2">
         {part.stimulus.blocks.map((block) => (
           <article
@@ -419,7 +534,14 @@ export function ListeningStimulus({
     <>
       {/* The listening screens open straight with the instruction band. */}
       <InstructionBand text={part.instructions_de} />
-      {track ? <AudioRing key={track.url} track={track} onPlay={onPlay} /> : null}
+      <StimulusIntro text={part.stimulus.intro} />
+      {track?.url ? (
+        <AudioRing key={track.url} track={track} onPlay={onPlay} />
+      ) : track ? (
+        <p className="exam-body mt-6 text-center" dir="ltr" style={{ color: "var(--exam-muted)" }}>
+          Für diesen Teil ist noch keine Aufnahme vorhanden.
+        </p>
+      ) : null}
     </>
   );
 }
@@ -433,7 +555,7 @@ export function WritingStimulus({ part }: { part: ExamPart }) {
       {part.stimulus.image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={part.stimulus.image}
+          src={mediaUrl(part.stimulus.image)}
           alt=""
           className="mx-auto mb-6 max-h-72 w-auto"
           onError={(event) => {
@@ -444,16 +566,40 @@ export function WritingStimulus({ part }: { part: ExamPart }) {
       <p className="exam-body mb-4" dir="ltr">
         {part.instructions_de}
       </p>
-      <ul className="mb-5 space-y-1.5 ps-6" dir="ltr">
-        {part.stimulus.blocks.map((block, index) => (
-          <li key={index} className="exam-body list-disc">
-            {block.text}
-          </li>
+      {part.stimulus.intro ? (
+        <p className="exam-body mb-4" dir="ltr">
+          {part.stimulus.intro}
+        </p>
+      ) : null}
+      {part.stimulus.blocks.some((block) => block.kind !== "statement") ? (
+        <ul className="mb-5 space-y-1.5 ps-6" dir="ltr">
+          {part.stimulus.blocks
+            .filter((block) => block.kind !== "statement")
+            .map((block, index) => (
+              <li key={index} className="exam-body list-disc">
+                {block.text}
+              </li>
+            ))}
+        </ul>
+      ) : null}
+      {part.stimulus.blocks
+        .filter((block) => block.kind === "statement")
+        .map((block, index) => (
+          // a guestbook post or message the learner is answering
+          <blockquote
+            key={index}
+            className="mb-4 rounded-md border p-4"
+            style={{ borderColor: "var(--exam-line)", background: "var(--exam-page)" }}
+            dir="ltr"
+          >
+            <p className="exam-body whitespace-pre-line">{block.text}</p>
+            {block.title ? (
+              <p className="mt-2 text-end text-xs italic" style={{ color: "var(--exam-muted)" }}>
+                {block.title}
+              </p>
+            ) : null}
+          </blockquote>
         ))}
-      </ul>
-      <p className="exam-body" dir="ltr">
-        {part.stimulus.intro}
-      </p>
     </>
   );
 }
