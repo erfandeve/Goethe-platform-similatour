@@ -32,15 +32,15 @@ export function CategoryGrid({
         title={dict.home.categories.title}
         subtitle={dict.home.categories.subtitle}
       />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
         {categories.map((category, index) => (
           <Reveal key={category.id} delay={index * 0.05}>
             <Link
               href={`/${locale}/courses?category=${category.slug}`}
-              className="glass group flex h-full items-start gap-4 rounded-3xl p-6 transition-all duration-500 hover:-translate-y-1 hover:border-white/20"
+              className="glass group flex h-full flex-col items-start gap-3 rounded-2xl p-4 transition-all duration-500 hover:-translate-y-1 hover:border-white/20 sm:flex-row sm:gap-4 sm:rounded-3xl sm:p-6"
             >
               <span
-                className="grid size-12 shrink-0 place-items-center rounded-2xl transition-transform duration-500 group-hover:scale-110"
+                className="grid size-10 shrink-0 place-items-center rounded-xl transition-transform duration-500 group-hover:scale-110 sm:size-12 sm:rounded-2xl"
                 style={{ background: alpha(category.color, 0.14), color: category.color }}
                 aria-hidden
               >
@@ -49,13 +49,13 @@ export function CategoryGrid({
                 </svg>
               </span>
               <span className="min-w-0">
-                <span className="font-display block text-base font-semibold">{category.title}</span>
+                <span className="font-display block text-sm leading-6 font-semibold sm:text-base">{category.title}</span>
                 <span className="tnum mt-1 block text-xs text-mist-500">
                   {category.count ?? 0} {dict.courses.filters.results}
                 </span>
               </span>
               <span
-                className="flip-x ms-auto text-mist-600 transition-transform group-hover:translate-x-1"
+                className="flip-x ms-auto hidden text-mist-600 transition-transform group-hover:translate-x-1 sm:inline"
                 aria-hidden
               >
                 →

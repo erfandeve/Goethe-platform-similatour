@@ -8,7 +8,6 @@ import { Hero } from "@/components/home/Hero";
 import { HomeSectionBlock } from "@/components/home/HomeSections";
 import { Marquee } from "@/components/home/Marquee";
 import { MethodSteps } from "@/components/home/MethodSteps";
-import { Teachers } from "@/components/home/Teachers";
 import { Testimonials } from "@/components/home/Testimonials";
 import { CourseCard } from "@/components/courses/CourseCard";
 import { ExamCard } from "@/components/exams/ExamCard";
@@ -16,7 +15,6 @@ import { EpisodeCard } from "@/components/podcasts/EpisodeCard";
 import { PodcastCard } from "@/components/podcasts/PodcastCard";
 import { ButtonLink } from "@/components/ui/Button";
 import { Carousel } from "@/components/ui/Carousel";
-import { Reveal } from "@/components/ui/Reveal";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale } from "@/i18n/config";
@@ -157,13 +155,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </ButtonLink>
         }
       />
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {data.featured_courses.slice(0, 6).map((course, index) => (
-          <Reveal key={course.id} delay={index * 0.06}>
-            <CourseCard course={course} locale={locale} dict={dict} />
-          </Reveal>
+      <Carousel
+        label={dict.home.featured.title}
+        grid="md:grid-cols-2 lg:grid-cols-3"
+        autoplay={3000}
+      >
+        {data.featured_courses.slice(0, 6).map((course) => (
+          <CourseCard key={course.id} course={course} locale={locale} dict={dict} />
         ))}
-      </div>
+      </Carousel>
     </Section>
   );
 
@@ -221,25 +221,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </ButtonLink>
         }
       />
-      <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr]">
-        <div className="grid gap-5 sm:grid-cols-2">
-          {data.podcasts.map((podcast, index) => (
-            <Reveal key={podcast.id} delay={index * 0.06}>
-              <PodcastCard podcast={podcast} locale={locale} dict={dict} />
-            </Reveal>
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <Carousel label={dict.home.podcasts.title} grid="md:grid-cols-2" autoplay={3000}>
+          {data.podcasts.map((podcast) => (
+            <PodcastCard key={podcast.id} podcast={podcast} locale={locale} dict={dict} />
           ))}
-        </div>
-        <div>
+        </Carousel>
+        <div className="min-w-0">
           <h3 className="mb-4 text-sm font-semibold tracking-[0.2em] text-mist-500 uppercase">
             {dict.home.podcasts.latest}
           </h3>
-          <div className="space-y-3">
-            {data.latest_episodes.slice(0, 6).map((episode, index) => (
-              <Reveal key={episode.id} delay={index * 0.05}>
-                <EpisodeCard episode={episode} locale={locale} dict={dict} />
-              </Reveal>
+          <Carousel label={dict.home.podcasts.latest} grid="md:grid-cols-1 md:gap-3">
+            {data.latest_episodes.slice(0, 6).map((episode) => (
+              <EpisodeCard key={episode.id} episode={episode} locale={locale} dict={dict} />
             ))}
-          </div>
+          </Carousel>
         </div>
       </div>
     </Section>
@@ -273,7 +269,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {interleaved}
 
       <MethodSteps dict={dict} />
-      <Teachers instructors={data.instructors} locale={locale} dict={dict} />
       <Testimonials dict={dict} />
       <CtaBanner locale={locale} dict={dict} />
     </>
