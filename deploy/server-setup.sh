@@ -29,10 +29,13 @@ if ! command -v node >/dev/null || [ "$(node -p 'process.versions.node.split("."
 fi
 node --version
 
-log "MongoDB 7 (listening on 127.0.0.1 only)"
+log "MongoDB 7.0 (listening on 127.0.0.1 only)"
 if ! command -v mongod >/dev/null; then
+  # Every MongoDB 8.x either refuses to start or crashes on Linux ≥ 6.19
+  # (SERVER-121912) — Ubuntu 26.04 ships 7.0. The 7.0 series runs fine there;
+  # its Ubuntu 22.04 packages install cleanly on newer releases.
   curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg --dearmor --yes -o /usr/share/keyrings/mongodb-7.gpg
-  echo "deb [signed-by=/usr/share/keyrings/mongodb-7.gpg] https://repo.mongodb.org/apt/ubuntu ${VERSION_CODENAME}/mongodb-org/7.0 multiverse" \
+  echo "deb [signed-by=/usr/share/keyrings/mongodb-7.gpg] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" \
     > /etc/apt/sources.list.d/mongodb-org-7.list
   apt-get update -q && apt-get install -y -q mongodb-org || {
     echo "!! MongoDB repository unreachable from this server. Upload the .deb packages and dpkg -i them."; exit 1; }
@@ -42,8 +45,9 @@ systemctl enable --now mongod
 
 log "Python for the API"
 PY=python3
-if ! python3 -c 'import sys; sys.exit(sys.version_info < (3, 11))'; then
-  # Older Ubuntu: a standalone 3.13 in a path the service user can read.
+if ! python3 -c 'import sys; sys.exit(not ((3, 11) <= sys.version_info[:2] < (3, 14)))'; then
+  # Too old, or too new for the pinned wheels (Pillow 11.1 has none for 3.14):
+  # a standalone 3.13 in a path the service user can read.
   curl -LsSf https://astral.sh/uv/install.sh | sh
   export UV_PYTHON_INSTALL_DIR=/opt/uv-python
   ~/.local/bin/uv python install 3.13 && chmod -R a+rX /opt/uv-python

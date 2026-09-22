@@ -3,6 +3,11 @@
 #   SERVER=root@1.2.3.4 bash deploy/push.sh
 # Retries on its own: links to Iranian servers drop mid-transfer.
 set -euo pipefail
+# SSH_KEY=~/.ssh/some_key picks the key without touching ~/.ssh/config.
+SSH_OPTS=(-o ServerAliveInterval=20 ${SSH_KEY:+-i "$SSH_KEY"})
+ssh() { command ssh "${SSH_OPTS[@]}" "$@"; }
+scp() { command scp "${SSH_OPTS[@]}" "$@"; }
+export RSYNC_RSH="ssh ${SSH_OPTS[*]}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 : "${SERVER:?Set SERVER=user@host}"
 [ -d "$ROOT/deploy/out/web" ] || { echo "Run deploy/build.sh first"; exit 1; }

@@ -6,6 +6,11 @@
 # Refuses to run if the server database already has users, so it can never
 # overwrite a live site.
 set -euo pipefail
+# SSH_KEY=~/.ssh/some_key picks the key without touching ~/.ssh/config.
+SSH_OPTS=(-o ServerAliveInterval=20 ${SSH_KEY:+-i "$SSH_KEY"})
+ssh() { command ssh "${SSH_OPTS[@]}" "$@"; }
+scp() { command scp "${SSH_OPTS[@]}" "$@"; }
+export RSYNC_RSH="ssh ${SSH_OPTS[*]}"
 : "${SERVER:?Set SERVER=user@host}"; : "${ADMIN_EMAIL:?}"; : "${ADMIN_PASSWORD:?}"
 SRC_DB="${SRC_DB:-goteh}"
 CONTENT="articles categories courses episodes exam_codes exams home_sections instructors lesson_videos parts plans podcasts reviews coupons"
@@ -16,12 +21,13 @@ fi
 
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 for c in $CONTENT; do mongodump --quiet --db "$SRC_DB" --collection "$c" --out "$TMP"; done
-tar -czf "$TMP/content.tgz" -C "$TMP" "$SRC_DB"
+# COPYFILE_DISABLE: macOS tar otherwise adds ._ AppleDouble files mongorestore rejects.
+COPYFILE_DISABLE=1 tar --no-xattrs -czf "$TMP/content.tgz" -C "$TMP" "$SRC_DB"
 scp -q "$TMP/content.tgz" "$SERVER:/tmp/lexart-content.tgz"
 
 ssh "$SERVER" "set -e
   cd /tmp && rm -rf lexart-content && mkdir lexart-content && tar -xzf lexart-content.tgz -C lexart-content
-  mongorestore --quiet --drop --nsFrom '$SRC_DB.*' --nsTo 'lexart.*' lexart-content
+  mongorestore --drop --nsFrom '$SRC_DB.*' --nsTo 'lexart.*' lexart-content
   rm -rf lexart-content lexart-content.tgz
   cd /var/www/lexart/backend
   sudo -u www-data .venv/bin/python manage.py prepare_production \
