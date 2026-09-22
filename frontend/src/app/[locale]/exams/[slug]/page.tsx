@@ -10,7 +10,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale, type Locale } from "@/i18n/config";
 import { apiFetch, getAccessToken } from "@/lib/api";
 import { compact, formatNumber, formatPrice } from "@/lib/format";
-import { breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL, snippet } from "@/lib/seo";
+import { brandRef, breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL, snippet } from "@/lib/seo";
 import type { ExamDetail } from "@/lib/types";
 import { alpha } from "@/lib/utils";
 
@@ -82,7 +82,7 @@ export default async function ExamDetailPage({
     educationalLevel: exam.level,
     inLanguage: exam.language,
     numberOfQuestions: exam.questions_count,
-    provider: { "@type": "EducationalOrganization", name: dict.meta.siteName },
+    provider: brandRef(),
   };
 
   return (

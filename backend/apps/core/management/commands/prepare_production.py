@@ -35,6 +35,11 @@ class Command(BaseCommand):
             help="At least 12 characters. Omit to keep an existing admin's password.",
         )
         parser.add_argument(
+            "--keep-empty-courses",
+            action="store_true",
+            help="Leave courses with no lessons published.",
+        )
+        parser.add_argument(
             "--keep-stats",
             action="store_true",
             help="Leave ratings and counters alone (only remove the demo account).",
@@ -49,6 +54,8 @@ class Command(BaseCommand):
         self.remove_demo_accounts()
         if not options["keep_stats"]:
             self.reset_invented_numbers()
+        if not options["keep_empty_courses"]:
+            self.hide_empty_courses()
         if email:
             self.ensure_admin(email, password)
         elif not User.objects(is_staff=True).count():
@@ -118,6 +125,27 @@ class Command(BaseCommand):
         self.stdout.write(
             f"Removed {removed} seeded reviews; ratings and counters now reflect real activity."
         )
+
+    def hide_empty_courses(self):
+        """A course with nothing playable would be sold with nothing inside.
+
+        Unpublished, not deleted: it stays in the back office as a draft and
+        goes live again with one click once its lessons are uploaded.
+        """
+        from apps.courses.models import Course
+        from apps.learning.models import LessonVideo
+
+        hidden = []
+        for course in Course.objects(is_published=True):
+            # An outline of lesson titles is not content: something must be playable.
+            playable = any(lesson.asset for section in course.curriculum for lesson in section.lessons)
+            if not playable and not LessonVideo.objects(course=course).count():
+                course.is_published = False
+                course.is_featured = False
+                course.save()
+                hidden.append(course.slug)
+        if hidden:
+            self.stdout.write(f"Unpublished {len(hidden)} courses with no lessons yet: {', '.join(hidden)}")
 
     def ensure_admin(self, email, password):
         user = User.objects(email=email).first()

@@ -15,7 +15,7 @@ from .utils import get_locale
 
 @api_view(["GET"])
 def health(request):
-    return Response({"status": "ok", "service": "goteh-api"})
+    return Response({"status": "ok", "service": "lexart-api"})
 
 
 @api_view(["GET"])

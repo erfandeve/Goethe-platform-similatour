@@ -243,6 +243,7 @@ const en = {
     success: { title: "Payment complete", body: "Everything you bought is now in your panel.", cta: "Go to my panel" },
   },
   auth: {
+    errors: { invalid_credentials: "Email or password is incorrect.", locked: "Too many attempts. Please try again in 15 minutes.", disabled: "This account has been disabled." },
     loginTitle: "Welcome back",
     loginSubtitle: "Continue where you left off.",
     registerTitle: "Create your account",
@@ -301,7 +302,7 @@ const en = {
     },
     courses: { progress: "progress", lastActivity: "Last activity", certificate: "Certificate", resume: "Resume", browse: "Find a course" },
     exams: { score: "Score", date: "Date", status: "Status", inProgress: "In progress", view: "View report", empty: "You have not taken an exam yet." },
-    wallet: { title: "Wallet", balance: "Current balance", topup: "Top up", amount: "Amount (Rial)", history: "Transaction history", kinds: { topup: "Top-up", purchase: "Purchase", refund: "Refund", bonus: "Bonus", withdraw: "Withdrawal" }, empty: "No transactions yet." },
+    wallet: { title: "Wallet", balance: "Current balance", topup: "Top up", amount: "Amount (Rial)", history: "Transaction history", kinds: { topup: "Top-up", purchase: "Purchase", refund: "Refund", bonus: "Bonus", withdraw: "Withdrawal" }, unavailable: "Online payment is coming soon. Please contact support to purchase.", empty: "No transactions yet." },
     orders: { code: "Order", date: "Date", total: "Total", status: "Status", empty: "No orders yet.", statuses: { paid: "Paid", pending: "Pending", failed: "Failed", refunded: "Refunded" } },
     notifications: { markAll: "Mark all as read", empty: "You are all caught up.", unread: "unread" },
     messages: { empty: "No messages yet.", reply: "Write a message", subject: "Subject", body: "Message", send: "Send", sent: "Message sent." },

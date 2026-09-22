@@ -260,10 +260,12 @@ def transcribe_view(request):
     if size < MIN_AUDIO_BYTES:
         raise ApiError("The recording is too short.", code="audio_too_short")
 
-    # A video id is optional here, but when present it must be one the learner owns.
+    # Every transcription costs money, so it is only for a lesson the learner owns.
     video_id = request.data.get("video_id")
-    if video_id:
-        require_video(request.user, video_id)
+    if not video_id:
+        raise ApiError("A lesson is required.", code="no_video")
+    require_video(request.user, video_id)
+    _spend_ai_quota(request.user)
 
     mime = (audio.content_type or "audio/webm").split(";")[0].strip().lower()
     suffix = ALLOWED_AUDIO_SUFFIX.get(mime)
@@ -302,6 +304,32 @@ def transcribe_view(request):
     )
 
 
+def _spend_ai_quota(user):
+    """Count one AI call against the learner's daily allowance.
+
+    A generous cap for real practice that stops a script (or a shared login)
+    from running up the OpenAI bill. Counted per API worker, so the effective
+    ceiling is a small multiple of the setting — fine for a safety net.
+    """
+    from django.core.cache import cache
+
+    limit = settings.AI_DAILY_LIMIT
+    if not limit:
+        return
+    key = f"ai-quota:{user.id}:{datetime.utcnow():%Y%m%d}"
+    used = cache.get_or_set(key, 0, timeout=60 * 60 * 26)
+    if used >= limit:
+        raise ApiError(
+            "You have reached today's speaking practice limit. Please continue tomorrow.",
+            code="ai_quota",
+            status_code=429,
+        )
+    try:
+        cache.incr(key)
+    except ValueError:
+        cache.set(key, 1, timeout=60 * 60 * 26)
+
+
 def _store_audio(user, payload, suffix):
     folder = Path(settings.MEDIA_ROOT) / "speaking" / str(user.id)
     folder.mkdir(parents=True, exist_ok=True)
@@ -324,6 +352,7 @@ def analyze_view(request):
         course_id=data.get("course_id"),
         part_id=data.get("part_id"),
     )
+    _spend_ai_quota(request.user)
 
     if not video.has_speaking_task:
         raise ApiError("This lesson has no speaking task.", code="no_task")

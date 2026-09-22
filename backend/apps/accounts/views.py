@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 
+from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
@@ -73,11 +74,22 @@ def register(request):
 
 @api_view(["POST"])
 def login(request):
+    from django.core.cache import cache
+
     data = request.data or {}
     email = (data.get("email") or "").strip().lower()
+    # Guessing one account's password: 10 misses lock it for 15 minutes. (nginx
+    # separately limits how fast any one address may try, across accounts.)
+    failures_key = f"login-fail:{email}"
+    if cache.get(failures_key, 0) >= 10:
+        raise ApiError(
+            "Too many failed attempts. Try again in 15 minutes.", code="locked", status_code=429
+        )
     user = User.objects(email=email).first()
     if not user or not user.check_password(data.get("password") or ""):
+        cache.set(failures_key, cache.get(failures_key, 0) + 1, timeout=15 * 60)
         raise ApiError("Email or password is incorrect.", code="invalid_credentials", status_code=401)
+    cache.delete(failures_key)
     if not user.is_active:
         raise ApiError("This account is disabled.", code="disabled", status_code=403)
 
@@ -174,6 +186,10 @@ def wallet(request):
 @permission_classes([IsAuthenticated])
 def wallet_topup(request):
     """Mock gateway: real PSP callback replaces this in the payment phase."""
+    if not settings.MOCK_PAYMENTS:
+        raise ApiError(
+            "Online payment is not available yet.", code="payments_unavailable", status_code=503
+        )
     try:
         amount = int((request.data or {}).get("amount", 0))
     except (TypeError, ValueError):

@@ -39,7 +39,7 @@ const fa: Dictionary = {
   hero: {
     eyebrow: "لکس آرت · سیمیلیتور زبان آلمانی A1 تا C1",
     titleTop: "سیمیلیتور زبان آلمانی",
-    titleAccent: "تزدیک ترین تجربه به آزمون گوته!!",
+    titleAccent: "نزدیک‌ترین تجربه به آزمون گوته!!",
     subtitle:
       "همان رابط، همان تایمر، همان قوانین. در لکس آرت قبل از آزمون واقعی، آزمون را تجربه کن — به‌همراه دوره‌های A1 تا C1، مکالمه با هوش مصنوعی و پادکست‌های دوزبانه.",
     primary: "دیدن دوره‌ها",
@@ -244,6 +244,7 @@ const fa: Dictionary = {
     success: { title: "پرداخت انجام شد", body: "همه خریدهایت الان در پنل شخصی توست.", cta: "رفتن به پنل" },
   },
   auth: {
+    errors: { invalid_credentials: "ایمیل یا رمز عبور اشتباه است.", locked: "تعداد تلاش‌ها زیاد بود. ۱۵ دقیقه دیگر دوباره امتحان کنید.", disabled: "این حساب غیرفعال شده است." },
     loginTitle: "خوش برگشتی",
     loginSubtitle: "از همان‌جایی که رها کردی ادامه بده.",
     registerTitle: "ساخت حساب کاربری",
@@ -302,7 +303,7 @@ const fa: Dictionary = {
     },
     courses: { progress: "پیشرفت", lastActivity: "آخرین فعالیت", certificate: "گواهی پایان دوره", resume: "ادامه دوره", browse: "پیدا کردن دوره" },
     exams: { score: "نمره", date: "تاریخ", status: "وضعیت", inProgress: "در حال انجام", view: "دیدن کارنامه", empty: "هنوز آزمونی نداده‌ای." },
-    wallet: { title: "کیف پول", balance: "موجودی فعلی", topup: "شارژ کیف پول", amount: "مبلغ (ریال)", history: "تاریخچه تراکنش‌ها", kinds: { topup: "شارژ", purchase: "خرید", refund: "بازگشت وجه", bonus: "هدیه", withdraw: "برداشت" }, empty: "هنوز تراکنشی نداری." },
+    wallet: { title: "کیف پول", balance: "موجودی فعلی", topup: "شارژ کیف پول", amount: "مبلغ (ریال)", history: "تاریخچه تراکنش‌ها", kinds: { topup: "شارژ", purchase: "خرید", refund: "بازگشت وجه", bonus: "هدیه", withdraw: "برداشت" }, unavailable: "پرداخت آنلاین به‌زودی فعال می‌شود. برای خرید با پشتیبانی تماس بگیرید.", empty: "هنوز تراکنشی نداری." },
     orders: { code: "سفارش", date: "تاریخ", total: "مبلغ", status: "وضعیت", empty: "هنوز سفارشی ثبت نکرده‌ای.", statuses: { paid: "پرداخت‌شده", pending: "در انتظار", failed: "ناموفق", refunded: "بازگشت‌داده‌شده" } },
     notifications: { markAll: "خواندن همه", empty: "همه اعلان‌ها را خوانده‌ای.", unread: "خوانده‌نشده" },
     messages: { empty: "هنوز پیامی نداری.", reply: "نوشتن پیام", subject: "موضوع", body: "متن پیام", send: "ارسال", sent: "پیام ارسال شد." },

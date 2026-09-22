@@ -18,7 +18,7 @@ sync() {
 ssh "$SERVER" 'mkdir -p /var/www/lexart/web /var/www/lexart/backend /var/www/lexart/deploy'
 sync "$ROOT/deploy/out/web/" "$SERVER:/var/www/lexart/web/"
 sync --exclude out --exclude frontend.env "$ROOT/deploy/" "$SERVER:/var/www/lexart/deploy/"
-sync --exclude .venv --exclude media --exclude .env --exclude __pycache__ \
+sync --exclude .venv --exclude media --exclude .env --exclude .cache --exclude __pycache__ \
   "$ROOT/backend/" "$SERVER:/var/www/lexart/backend/"
 
 ssh "$SERVER" 'set -e

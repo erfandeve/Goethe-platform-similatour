@@ -72,6 +72,11 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# The wallet top-up is a stand-in for a payment gateway: it credits whatever
+# amount is asked for. Anywhere real, that would make every course free, so it
+# is off unless explicitly enabled (local development has it on).
+MOCK_PAYMENTS = config("MOCK_PAYMENTS", default=DEBUG, cast=bool)
+
 if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = "DENY"
@@ -96,6 +101,17 @@ CORS_ALLOWED_ORIGINS = config(
 )
 CORS_ALLOW_CREDENTIALS = True
 
+# Login lockouts and the daily AI allowance are counted here. A file cache is
+# shared by every gunicorn worker on the machine (the default in-memory one is
+# per worker, which would quietly multiply each limit by the worker count).
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": config("CACHE_DIR", default=str(BASE_DIR / ".cache")),
+        "TIMEOUT": 60 * 60 * 26,
+    }
+}
+
 # --- MongoDB -----------------------------------------------------------------
 MONGO_HOST = config("MONGO_HOST", default="mongodb://localhost:27017/goteh")
 MONGO_DB = config("MONGO_DB", default="goteh")
@@ -113,6 +129,8 @@ OPENAI_TRANSCRIPTION_MODEL = config("OPENAI_TRANSCRIPTION_MODEL", default="gpt-t
 MAX_AUDIO_DURATION = config("MAX_AUDIO_DURATION", default=60, cast=int)
 STORE_AUDIO = config("STORE_AUDIO", default=False, cast=bool)
 AI_MAX_RETRIES = config("AI_MAX_RETRIES", default=2, cast=int)
+# Transcriptions + analyses per learner per day; 0 turns the cap off.
+AI_DAILY_LIMIT = config("AI_DAILY_LIMIT", default=120, cast=int)
 
 # Recorded answers are small; this ceiling keeps a bad client from filling memory.
 DATA_UPLOAD_MAX_MEMORY_SIZE = 16 * 1024 * 1024

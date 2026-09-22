@@ -21,7 +21,7 @@ import {
   formatNumber,
   formatPrice,
 } from "@/lib/format";
-import { breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL, snippet } from "@/lib/seo";
+import { brandRef, breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL, snippet } from "@/lib/seo";
 import type { CourseDetail } from "@/lib/types";
 
 export const revalidate = 300;
@@ -91,11 +91,7 @@ export default async function CourseDetailPage({
     url: `${SITE_URL}/${locale}/courses/${course.slug}`,
     inLanguage: course.language,
     educationalLevel: course.level,
-    provider: {
-      "@type": "EducationalOrganization",
-      name: dict.meta.siteName,
-      url: `${SITE_URL}/${locale}`,
-    },
+    provider: brandRef(),
     ...(course.reviews_count
       ? {
           aggregateRating: {

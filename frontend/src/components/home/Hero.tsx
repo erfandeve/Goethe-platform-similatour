@@ -1,4 +1,3 @@
-import Image from "next/image";
 
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
@@ -75,17 +74,21 @@ export function Hero({
 
         <div className="relative h-[22rem] w-full sm:h-[28rem] lg:h-[32rem]">
           {/* A cut-out on transparency: contained rather than cropped, and no
-              frame of its own. `unoptimized` keeps the alpha channel — the
-              optimiser falls back to JPEG for browsers that do not advertise
-              WebP, and JPEG turns the transparent edge solid black. */}
-          <Image
+              frame of its own. Served as-is (the optimiser would fall back to
+              JPEG for some browsers, turning the transparent edge black), so
+              phones get a 760px file instead of the full 1438px one. It is the
+              page's largest element, so it loads first. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="/media/hero/lexart-hero.webp"
-            alt={dict.hero.imageAlt}
-            fill
-            priority
-            unoptimized
+            srcSet="/media/hero/lexart-hero-760.webp 760w, /media/hero/lexart-hero.webp 1438w"
             sizes="(min-width: 1024px) 42vw, 100vw"
-            className="object-contain"
+            alt={dict.hero.imageAlt}
+            width={1438}
+            height={1014}
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 size-full object-contain"
           />
         </div>
       </div>

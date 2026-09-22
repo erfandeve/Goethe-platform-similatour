@@ -18,7 +18,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Carousel } from "@/components/ui/Carousel";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { isLocale } from "@/i18n/config";
+import { isLocale, localeMeta } from "@/i18n/config";
 import { apiFetch } from "@/lib/api";
 import { EMPTY_HOME, orOffline } from "@/lib/offline";
 import { OfflineNotice } from "@/components/layout/OfflineNotice";
@@ -91,35 +91,41 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       .catch(() => [] as TopLearner[]),
   ]);
 
+  // One brand entity across every language page (same @id), named the way
+  // searchers in that language write it, with the other spellings attached.
+  const brandNames = ["LexArt", "لکس آرت", "لکس‌آرت", "لکسارت", "Lex Art"];
+  const brandName = locale === "fa" ? "لکس آرت" : "LexArt";
   const organization = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    name: "LexArt",
-    alternateName: Array.from(new Set(["لکس آرت", "لکس‌آرت", "Lex Art", "Lexart", dict.meta.siteName])),
-    url: `${SITE_URL}/${locale}`,
+    "@id": `${SITE_URL}/#organization`,
+    name: brandName,
+    alternateName: brandNames.filter((name) => name !== brandName),
+    url: `${SITE_URL}/`,
     description: dict.meta.description,
-    logo: `${SITE_URL}/icon-512.png`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/icon-512.png`,
+      width: 512,
+      height: 512,
+    },
+    image: `${SITE_URL}/og-${locale}.jpg`,
     // Social profiles, comma-separated in NEXT_PUBLIC_SAME_AS, tie the brand
     // to its accounts in Google's knowledge panel.
     sameAs: (process.env.NEXT_PUBLIC_SAME_AS ?? "").split(",").map((url) => url.trim()).filter(Boolean),
     knowsLanguage: ["fa", "de", "en"],
   };
 
+  // Google reads the site name from WebSite markup on the home page.
   const website = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "LexArt",
-    alternateName: dict.meta.siteName,
-    url: `${SITE_URL}/${locale}`,
-    inLanguage: locale,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/${locale}/courses?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
+    "@id": `${SITE_URL}/#website`,
+    name: brandName,
+    alternateName: brandNames.filter((name) => name !== brandName),
+    url: `${SITE_URL}/`,
+    inLanguage: localeMeta[locale].htmlLang,
+    publisher: { "@id": `${SITE_URL}/#organization` },
   };
 
   /* A cached payload from before sections existed has no `sections` key, and

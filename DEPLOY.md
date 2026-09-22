@@ -28,73 +28,56 @@ nginx جلوی سایت، دو سرویس systemd (سایت Next.js و API جن�
 ## ۲) آماده‌سازی سرور (فقط یک بار)
 
 ```bash
-apt update && apt install -y nginx certbot python3-certbot-nginx rsync curl ufw
-# Node.js 20 یا جدیدتر (برای اجرای سایت)
-curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt install -y nodejs
-# MongoDB 7 طبق راهنمای رسمی mongodb.com (اگر مخزنش از ایران باز نشد، بسته .deb را جدا دانلود کن)
-systemctl enable --now mongod
-
-# پایتون ۳.۱۳ با uv، در مسیری که کاربر www-data هم به آن دسترسی دارد
-curl -LsSf https://astral.sh/uv/install.sh | sh
-export UV_PYTHON_INSTALL_DIR=/opt/uv-python && ~/.local/bin/uv python install 3.13
-chmod -R a+rX /opt/uv-python
-
-mkdir -p /var/www/lexart/{backend,web}
-cd /var/www/lexart/backend && ~/.local/bin/uv venv --python 3.13 .venv
-
-ufw allow OpenSSH && ufw allow 'Nginx Full' && ufw enable
+scp deploy/server-setup.sh root@43.225.90.120:/root/
+ssh root@43.225.90.120 bash /root/server-setup.sh
 ```
 
-فایل `/var/www/lexart/backend/.env` را از روی `deploy/backend.env.example` بساز و پر کن:
+این اسکریپت این‌ها را نصب و تنظیم می‌کند: ۲ گیگ swap، nginx، Node 20، MongoDB 7 (فقط روی 127.0.0.1)، پایتون، فایروال (فقط پورت‌های SSH و وب باز هستند) و fail2ban برای SSH. اجرای دوباره‌اش بی‌خطر است.
 
-- **`SECRET_KEY`**: یک رشته تصادفی بلند (دستورش داخل همان فایل هست). اگر خالی یا کوتاه باشد، API عمداً روشن نمی‌شود، چون با کلید معلوم هر کسی می‌تواند توکن ادمین جعل کند.
-- **`ADMIN_EMAIL` و `ADMIN_PASSWORD`**: حساب ادمین واقعی تو. رمز حداقل ۱۲ کاراکتر باشد.
-- دامنه‌ها در `ALLOWED_HOSTS`، `CSRF_TRUSTED_ORIGINS` و `CORS_ORIGINS`.
+بعد فایل `/var/www/lexart/backend/.env` را از روی `deploy/backend.env.example` بساز و پر کن:
 
-## ۳) بیلد و آپلود (هر بار که کد عوض شد)
+- **`SECRET_KEY`**: یک رشته تصادفی بلند (دستورش داخل همان فایل هست). اگر خالی یا کوتاه باشد، API عمداً روشن نمی‌شود.
+- **`OPENAI_API_KEY`**: یک کلید **جدید**.
+- **`MOCK_PAYMENTS`** را اضافه نکن. بدون درگاه پرداخت واقعی، شارژ کیف پول در سایت اصلی غیرفعال است.
+
+## ۳) کد، محتوا و سرویس‌ها
 
 روی لپ‌تاپ:
 
 ```bash
-cp deploy/frontend.env.example deploy/frontend.env   # فقط بار اول؛ دامنه را داخلش بنویس
-bash deploy/build.sh
-SERVER=root@IP-سرور bash deploy/push.sh
+bash deploy/build.sh                                   # بیلد برای https://lexart.ir
+SERVER=root@43.225.90.120 bash deploy/push.sh           # آپلود کد
+SERVER=root@43.225.90.120 ADMIN_EMAIL=… ADMIN_PASSWORD='…' bash deploy/seed-db.sh
 ```
 
-- `build.sh` اگر `NEXT_PUBLIC_SITE_URL` با `https://` شروع نشود، متوقف می‌شود. این آدرس داخل همه لینک‌های canonical، نقشه سایت و تصاویر اشتراک‌گذاری قرار می‌گیرد، پس باید دامنه واقعی باشد.
-- `push.sh` اگر اتصال وسط آپلود قطع شود، خودش دوباره امتحان می‌کند.
+`seed-db.sh` فقط **محتوا** را از دیتابیس لپ‌تاپ کپی می‌کند: دوره‌ها، آزمون‌ها، کدهای آزمون، مقاله‌ها، بخش‌های صفحه اصلی، پادکست‌ها و اشتراک‌ها، به‌علاوه فایل‌های آپلودی. کاربرهای تستی، سفارش‌ها و آزمون‌های داده‌شده کپی نمی‌شوند. اگر روی سرور کاربری وجود داشته باشد، اجرا نمی‌شود تا هیچ‌وقت سایت زنده را خراب نکند. بعد از کپی، `prepare_production` این کارها را می‌کند:
 
-## ۴) اولین راه‌اندازی (فقط یک بار، روی سرور)
+- حساب دمو را پاک می‌کند و حساب ادمین تو را می‌سازد.
+- امتیازها و آمار ساختگی را صفر می‌کند.
+- **دوره‌هایی که هیچ درس یا ویدیوی واقعی ندارند را از حالت انتشار خارج می‌کند.** این دوره‌ها پاک نمی‌شوند و هر وقت محتوایشان آماده شد، از پنل ادمین با یک کلیک منتشر می‌شوند.
+
+روی سرور:
 
 ```bash
-cd /var/www/lexart/backend
-sudo -u www-data .venv/bin/python manage.py bootstrap --if-empty
-
 cp /var/www/lexart/deploy/lexart-*.service /etc/systemd/system/
 systemctl daemon-reload && systemctl enable --now lexart-api lexart-web
-```
-
-`bootstrap` روی سرور (با `DEBUG=False`) این کارها را انجام می‌دهد:
-
-- دوره‌ها، آزمون‌ها، مقاله‌ها و پادکست‌ها را می‌سازد.
-- **حساب دمو `student@goteh.de` را که رمزش در README نوشته شده پاک می‌کند** و حساب ادمین تو را از `ADMIN_EMAIL` می‌سازد.
-- **امتیازها، تعداد نظرها، تعداد دانشجوها و بازدیدهای ساختگی را صفر می‌کند** و نظرهای نمونه را پاک می‌کند. این اعداد در نتایج گوگل هم نمایش داده می‌شوند و عدد ساختگی ممکن است باعث جریمه شود. از این به بعد فقط آمار واقعی نمایش داده می‌شود، و هر عددی که صفر باشد اصلاً نشان داده نمی‌شود.
-
-بعد nginx و SSL:
-
-```bash
-sed 's/example.com/دامنه‌ات/g' /var/www/lexart/deploy/nginx-lexart.conf > /etc/nginx/sites-available/lexart
-ln -s /etc/nginx/sites-available/lexart /etc/nginx/sites-enabled/ && rm -f /etc/nginx/sites-enabled/default
+cp /var/www/lexart/deploy/nginx-lexart.conf /etc/nginx/sites-available/lexart
+cp /var/www/lexart/deploy/lexart-proxy.conf /etc/nginx/lexart-proxy.conf
+ln -sf /etc/nginx/sites-available/lexart /etc/nginx/sites-enabled/lexart
 nginx -t && systemctl reload nginx
-certbot --nginx -d دامنه‌ات -d www.دامنه‌ات --redirect
-```
-
-و بکاپ شبانه:
-
-```bash
+certbot --nginx -d lexart.ir -d www.lexart.ir --redirect -m ایمیل‌ت --agree-tos -n
 cp /var/www/lexart/deploy/backup.sh /usr/local/bin/lexart-backup && chmod +x /usr/local/bin/lexart-backup
-(crontab -l; echo "30 2 * * * /usr/local/bin/lexart-backup") | crontab -
+(crontab -l 2>/dev/null; echo "30 2 * * * /usr/local/bin/lexart-backup") | crontab -
 ```
+
+## ۴) امنیتی که در کد و سرور لحاظ شده
+
+- **ورود:** بعد از ۱۰ تلاش اشتباه، آن حساب ۱۵ دقیقه قفل می‌شود. nginx هم تعداد تلاش ورود و ثبت‌نام هر IP را محدود می‌کند.
+- **پرداخت:** شارژ آزمایشی کیف پول در سایت اصلی خاموش است؛ وگرنه هر کسی می‌توانست همه دوره‌ها را مجانی بخرد.
+- **هزینه OpenAI:** مکالمه با هوش مصنوعی فقط برای کسی کار می‌کند که آن درس را دارد، و هر نفر روزانه حداکثر ۱۲۰ بار از آن استفاده می‌کند.
+- **آپلود ویدیو:** فایل مستقیم به API فرستاده می‌شود و در رم نگه داشته نمی‌شود، پس آپلود ویدیوی بزرگ سرور ۲ گیگی را از کار نمی‌اندازد.
+- **دسترسی‌ها:** API و MongoDB فقط از داخل خود سرور در دسترس‌اند. هدرهای امنیتی، HSTS و انتقال خودکار به https فعال است، و فایل‌هایی مثل `.env` هیچ‌وقت سرو نمی‌شوند.
+- **بکاپ:** بکاپ شبانه ۷ روز نگه داشته می‌شود. ویدیوها در آن نیستند تا دیسک پر نشود؛ نسخه اصلی ویدیوها را جای دیگری نگه دار. اگر دیسک از ۸۵٪ پر‌تر شود، هشدار ثبت می‌شود.
 
 ## ۵) بعد از بالا آمدن سایت: چک‌لیست سئو
 

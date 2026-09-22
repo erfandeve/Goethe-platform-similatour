@@ -8,7 +8,7 @@ import { Section } from "@/components/ui/Section";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale } from "@/i18n/config";
 import { apiFetch } from "@/lib/api";
-import { alternates, JsonLd, SITE_URL } from "@/lib/seo";
+import { alternates, brandRef, JsonLd, SITE_URL } from "@/lib/seo";
 import type { ArticleDetail } from "@/lib/types";
 
 export const revalidate = 300;
@@ -22,6 +22,13 @@ async function loadArticle(slug: string, locale: string) {
   } catch {
     return null;
   }
+}
+
+/** The article's own cover when it has one, otherwise the brand card in its language. */
+function shareImage(cover: string | undefined, locale: string) {
+  if (cover?.startsWith("http")) return cover;
+  if (cover) return `${SITE_URL}${cover.startsWith("/") ? cover : `/${cover}`}`;
+  return `${SITE_URL}/og-${locale}.jpg`;
 }
 
 export async function generateMetadata({
@@ -51,13 +58,13 @@ export async function generateMetadata({
       siteName: "LexArt",
       publishedTime: article.published_at ?? undefined,
       modifiedTime: article.updated_at ?? undefined,
-      images: [{ url: `${SITE_URL}/og-default.png`, width: 1200, height: 630, alt: article.title }],
+      images: [{ url: shareImage(article.cover, locale), width: 1200, height: 630, alt: article.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.meta_description,
-      images: [`${SITE_URL}/og-default.png`],
+      images: [shareImage(article.cover, locale)],
     },
   };
 }
@@ -88,14 +95,9 @@ export default async function ArticlePage({
       wordCount: article.words,
       keywords: article.keywords.join(", "),
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
-      image: [`${SITE_URL}/og-default.png`],
+      image: [shareImage(article.cover, locale)],
       author: { "@type": "Organization", name: "LexArt", url: `${SITE_URL}/${locale}` },
-      publisher: {
-        "@type": "Organization",
-        name: "LexArt",
-        url: `${SITE_URL}/${locale}`,
-        logo: { "@type": "ImageObject", url: `${SITE_URL}/og-default.png` },
-      },
+      publisher: brandRef(),
     },
     {
       "@context": "https://schema.org",

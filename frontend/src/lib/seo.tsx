@@ -9,6 +9,21 @@ import { locales, localeMeta, type Locale } from "@/i18n/config";
  */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, "");
 
+/**
+ * The brand as structured data refers to it from courses, exams and articles:
+ * the same @id as the Organization on the home page, so every page is tied
+ * back to one LexArt entity.
+ */
+export function brandRef() {
+  return {
+    "@type": "EducationalOrganization",
+    "@id": `${SITE_URL}/#organization`,
+    name: "LexArt",
+    url: `${SITE_URL}/`,
+    logo: { "@type": "ImageObject", url: `${SITE_URL}/icon-512.png`, width: 512, height: 512 },
+  };
+}
+
 /** hreflang map for a path that exists in every language. */
 export function alternates(path: string, locale: Locale) {
   // The home page is "/fa", never "/fa/": one URL per page, or Google sees two.

@@ -79,9 +79,10 @@ export function AuthForm({
       router.push(destination());
       router.refresh();
     } catch (caught) {
-      const failure = caught as { fields?: Record<string, string>; message?: string };
+      const failure = caught as { fields?: Record<string, string>; message?: string; code?: string };
       setErrors(failure.fields ?? {});
-      setMessage(failure.message ?? dict.common.error);
+      const known = dict.auth.errors[failure.code as keyof typeof dict.auth.errors];
+      setMessage(known ?? failure.message ?? dict.common.error);
     } finally {
       setBusy(false);
     }

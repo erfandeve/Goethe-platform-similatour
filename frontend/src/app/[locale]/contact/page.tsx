@@ -10,7 +10,7 @@ import { buildMetadata, JsonLd, SITE_URL } from "@/lib/seo";
 export const revalidate = 3600;
 
 // Set NEXT_PUBLIC_CONTACT_EMAIL to the real inbox on the live domain.
-export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "support@lexart.academy";
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "support@lexart.ir";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

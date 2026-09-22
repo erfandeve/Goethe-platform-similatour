@@ -24,6 +24,9 @@ npx next build
 OUT="$ROOT/deploy/out/web"
 rm -rf "$OUT"; mkdir -p "$OUT/.next"
 cp -R .next/standalone/. "$OUT/"
+# The build cached API answers from THIS machine's database (local demo data).
+# The server must start empty and fill its cache from the production API.
+rm -rf "$OUT/.next/cache"
 cp -R .next/static "$OUT/.next/static"
 cp -R public "$OUT/public"
 

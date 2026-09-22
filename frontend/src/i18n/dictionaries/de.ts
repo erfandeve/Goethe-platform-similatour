@@ -244,6 +244,7 @@ const de: Dictionary = {
     success: { title: "Zahlung abgeschlossen", body: "Alles Gekaufte finden Sie in Ihrem Bereich.", cta: "Zu meinem Bereich" },
   },
   auth: {
+    errors: { invalid_credentials: "E-Mail oder Passwort ist falsch.", locked: "Zu viele Versuche. Bitte versuchen Sie es in 15 Minuten erneut.", disabled: "Dieses Konto wurde deaktiviert." },
     loginTitle: "Willkommen zurück",
     loginSubtitle: "Machen Sie dort weiter, wo Sie aufgehört haben.",
     registerTitle: "Konto erstellen",
@@ -302,7 +303,7 @@ const de: Dictionary = {
     },
     courses: { progress: "Fortschritt", lastActivity: "Letzte Aktivität", certificate: "Zertifikat", resume: "Fortsetzen", browse: "Kurs finden" },
     exams: { score: "Punktzahl", date: "Datum", status: "Status", inProgress: "Läuft", view: "Bericht ansehen", empty: "Sie haben noch keine Prüfung abgelegt." },
-    wallet: { title: "Guthaben", balance: "Aktuelles Guthaben", topup: "Aufladen", amount: "Betrag (Rial)", history: "Transaktionen", kinds: { topup: "Aufladung", purchase: "Kauf", refund: "Erstattung", bonus: "Bonus", withdraw: "Auszahlung" }, empty: "Noch keine Transaktionen." },
+    wallet: { title: "Guthaben", balance: "Aktuelles Guthaben", topup: "Aufladen", amount: "Betrag (Rial)", history: "Transaktionen", kinds: { topup: "Aufladung", purchase: "Kauf", refund: "Erstattung", bonus: "Bonus", withdraw: "Auszahlung" }, unavailable: "Online-Zahlung folgt in Kürze. Für einen Kauf wenden Sie sich bitte an den Support.", empty: "Noch keine Transaktionen." },
     orders: { code: "Bestellung", date: "Datum", total: "Gesamt", status: "Status", empty: "Noch keine Bestellungen.", statuses: { paid: "Bezahlt", pending: "Offen", failed: "Fehlgeschlagen", refunded: "Erstattet" } },
     notifications: { markAll: "Alle als gelesen markieren", empty: "Alles gelesen.", unread: "ungelesen" },
     messages: { empty: "Noch keine Nachrichten.", reply: "Nachricht schreiben", subject: "Betreff", body: "Nachricht", send: "Senden", sent: "Nachricht gesendet." },

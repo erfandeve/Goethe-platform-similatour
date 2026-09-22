@@ -43,7 +43,12 @@ export function WalletPanel({
       setRows([data.transaction, ...rows]);
       router.refresh();
     } catch (caught) {
-      setError((caught as Error).message);
+      const failure = caught as { code?: string; message?: string };
+      setError(
+        failure.code === "payments_unavailable"
+          ? dict.dashboard.wallet.unavailable
+          : (failure.message ?? ""),
+      );
     } finally {
       setBusy(false);
     }

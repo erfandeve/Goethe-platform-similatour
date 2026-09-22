@@ -32,8 +32,13 @@ export async function login(email: string, password: string) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  const payload = await response.json();
-  if (!response.ok) throw Object.assign(new Error(payload.detail ?? "Login failed"), payload);
+  // A rate-limited request comes back from nginx as HTML, not JSON.
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw Object.assign(new Error(payload.detail ?? "Login failed"), payload, {
+      code: payload.code ?? (response.status === 429 ? "locked" : undefined),
+    });
+  }
   return payload.user;
 }
 
@@ -43,8 +48,12 @@ export async function register(data: Record<string, string>) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  const payload = await response.json();
-  if (!response.ok) throw Object.assign(new Error(payload.detail ?? "Sign up failed"), payload);
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw Object.assign(new Error(payload.detail ?? "Sign up failed"), payload, {
+      code: payload.code ?? (response.status === 429 ? "locked" : undefined),
+    });
+  }
   return payload.user;
 }
 

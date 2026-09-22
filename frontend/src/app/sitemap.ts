@@ -17,6 +17,10 @@ interface Feed {
   episodes: FeedEntry[];
 }
 
+// Built on request (and cached for an hour by the fetch below), never at build
+// time: the build machine's database is not the one the live site serves.
+export const dynamic = "force-dynamic";
+
 const STATIC_PATHS = ["", "/courses", "/exams", "/podcasts", "/plans", "/about", "/contact", "/articles"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
