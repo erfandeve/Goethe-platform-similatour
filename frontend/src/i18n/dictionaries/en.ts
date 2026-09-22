@@ -4,7 +4,15 @@ const en = {
     siteName: "Lexora",
     tagline: "German exam simulator and A1–C1 courses",
     description:
-      "Lexora is a German language simulator that rebuilds the Goethe exam screen for screen, from A1 to C1 — plus structured courses, an AI speaking teacher and bilingual podcasts.",
+      "Lexora rebuilds the Goethe exam screen for screen from A1 to C1, with structured German courses, an AI speaking teacher and bilingual podcasts.",
+    seo: {
+      podcasts:
+        "Bilingual German-learning podcasts at Lexora: short episodes that train your listening from A1 to C1, with transcripts and vocabulary.",
+      plans:
+        "Lexora plans: one payment unlocks every Goethe exam simulator, the German courses, the AI speaking teacher and premium podcasts.",
+      about:
+        "Lexora is a German language simulator that rebuilds the Goethe exam from A1 to C1, with structured courses, AI speaking practice and podcasts.",
+    },
   },
   nav: {
     home: "Home",
@@ -74,6 +82,16 @@ const en = {
       ],
     },
     teachers: { title: "Your teachers", subtitle: "Native speakers and exam specialists" },
+    topLearners: {
+      title: "Top learners",
+      eyebrow: "Lexora honour roll",
+      subtitle: "The three learners who made the most progress this month, chosen by the Lexora teaching team.",
+      lessons: "lessons done",
+      exams: "exams passed",
+      average: "average score",
+      fallbackName: "Lexora learner",
+      rank: "Rank",
+    },
     testimonials: {
       title: "What learners say",
       items: [
@@ -92,6 +110,8 @@ const en = {
   courses: {
     title: "Courses",
     subtitle: "From your first word to academic fluency",
+    metaDescription:
+      "German courses from A1 to C1 at Lexora: video lessons, AI speaking practice and Goethe exam preparation, step by step with progress tracking.",
     filters: {
       title: "Filters",
       level: "Level",
@@ -204,6 +224,16 @@ const en = {
     coupon: "Coupon code",
     applyCoupon: "Apply",
     couponInvalid: "That coupon is not valid.",
+    couponApplied: "Discount code applied.",
+    couponRemove: "Remove code",
+    couponErrors: {
+      coupon_expired: "This code has expired.",
+      coupon_not_started: "This code is not active yet.",
+      coupon_used_up: "This code has been fully used.",
+      coupon_already_used: "You have already used this code.",
+      coupon_not_applicable: "This code does not apply to the items in your cart.",
+      coupon_min_total: "Your cart total is below this code's minimum.",
+    },
     remove: "Remove",
     checkout: "Pay with wallet",
     payGateway: "Pay online",

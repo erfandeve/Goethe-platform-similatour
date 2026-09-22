@@ -47,9 +47,11 @@ export function PodcastCard({
               {podcast.host_name.slice(0, 1)}
             </span>
             <span>{podcast.host_name}</span>
-            <span className="tnum ms-auto">
-              {compact(podcast.plays, locale)} {dict.podcasts.card.plays}
-            </span>
+            {podcast.plays ? (
+              <span className="tnum ms-auto">
+                {compact(podcast.plays, locale)} {dict.podcasts.card.plays}
+              </span>
+            ) : null}
           </div>
         </div>
       </Link>

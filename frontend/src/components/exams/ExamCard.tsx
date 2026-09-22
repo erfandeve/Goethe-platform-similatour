@@ -71,11 +71,13 @@ export function ExamCard({
             ))}
           </div>
 
-          <dl className="mt-5 grid grid-cols-3 gap-2 border-t border-white/8 pt-4 text-center">
+          <dl
+            className={`mt-5 grid gap-2 border-t border-white/8 pt-4 text-center ${exam.attempts_count ? "grid-cols-3" : "grid-cols-2"}`}
+          >
             {[
               [dict.exams.card.questions, formatNumber(exam.questions_count, locale)],
               [dict.exams.card.minutes, formatNumber(exam.duration_minutes, locale)],
-              [dict.exams.card.attempts, compact(exam.attempts_count, locale)],
+              ...(exam.attempts_count ? [[dict.exams.card.attempts, compact(exam.attempts_count, locale)]] : []),
             ].map(([label, value]) => (
               <div key={label}>
                 <dt className="text-[10px] tracking-wider text-mist-600 uppercase">{label}</dt>

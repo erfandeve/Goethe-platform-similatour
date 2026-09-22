@@ -10,7 +10,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale, type Locale } from "@/i18n/config";
 import { apiFetch } from "@/lib/api";
 import { compact, formatNumber } from "@/lib/format";
-import { buildMetadata, JsonLd, SITE_URL } from "@/lib/seo";
+import { buildMetadata, JsonLd, SITE_URL, snippet } from "@/lib/seo";
 import type { Podcast } from "@/lib/types";
 
 export const revalidate = 300;
@@ -34,7 +34,7 @@ export async function generateMetadata({
   if (!show) return {};
   return buildMetadata({
     title: show.title,
-    description: show.tagline || (show.description ?? "").slice(0, 155),
+    description: snippet(show.tagline, show.description),
     path: `/podcasts/${slug}`,
     locale,
     siteName: dict.meta.siteName,
@@ -96,9 +96,11 @@ export default async function PodcastDetailPage({
               <span className="tnum text-xs text-mist-500">
                 {formatNumber(show.episodes_count, locale)} {dict.podcasts.card.episodes}
               </span>
-              <span className="tnum text-xs text-mist-500">
-                {compact(show.plays, locale)} {dict.podcasts.card.plays}
-              </span>
+              {show.plays ? (
+                <span className="tnum text-xs text-mist-500">
+                  {compact(show.plays, locale)} {dict.podcasts.card.plays}
+                </span>
+              ) : null}
             </div>
 
             <h1 className="font-display mt-4 text-4xl leading-tight font-semibold text-balance md:text-5xl">

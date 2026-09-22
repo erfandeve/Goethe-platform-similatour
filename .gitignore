@@ -41,3 +41,5 @@ yarn-error.log*
 .vercel
 next-env.d.ts
 !.env.example
+deploy/out/
+deploy/frontend.env

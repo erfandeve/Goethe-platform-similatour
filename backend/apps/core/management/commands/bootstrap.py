@@ -4,6 +4,8 @@ Runs every seeder in dependency order and hands the demo student the keys to
 the back office, so a newly deployed instance is browsable immediately.
 """
 
+from decouple import config
+from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
@@ -45,6 +47,17 @@ class Command(BaseCommand):
         for name, kwargs in STEPS:
             self.stdout.write(self.style.MIGRATE_HEADING(f"→ {name}"))
             call_command(name, **kwargs)
+
+        if not settings.DEBUG:
+            # A public site keeps the catalogue but not the demo account (whose
+            # password is in the README) or the invented ratings and counters.
+            call_command(
+                "prepare_production",
+                admin_email=config("ADMIN_EMAIL", default=""),
+                admin_password=config("ADMIN_PASSWORD", default=""),
+            )
+            self.stdout.write(self.style.SUCCESS("Bootstrap complete."))
+            return
 
         email = options["staff"].lower().strip()
         user = User.objects(email=email).first()

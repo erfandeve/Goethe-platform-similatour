@@ -2,11 +2,17 @@ import type { Metadata } from "next";
 
 import { locales, localeMeta, type Locale } from "@/i18n/config";
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lexora.academy";
+/**
+ * The public origin every canonical, hreflang, sitemap and OG URL is built
+ * from. It is inlined at build time, so a production build must be made with
+ * the real domain set — see DEPLOY.md.
+ */
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, "");
 
 /** hreflang map for a path that exists in every language. */
 export function alternates(path: string, locale: Locale) {
-  const clean = path.startsWith("/") ? path : `/${path}`;
+  // The home page is "/fa", never "/fa/": one URL per page, or Google sees two.
+  const clean = !path || path === "/" ? "" : path.startsWith("/") ? path : `/${path}`;
   const languages: Record<string, string> = {};
   for (const code of locales) {
     languages[localeMeta[code].htmlLang] = `${SITE_URL}/${code}${clean}`;
@@ -37,8 +43,13 @@ export function buildMetadata({
   /** Skip the layout's `%s · siteName` template — the title already reads whole. */
   absolute?: boolean;
 }): Metadata {
-  const url = `${SITE_URL}/${locale}${path.startsWith("/") ? path : `/${path}`}`;
-  const ogImage = image?.startsWith("http") ? image : `${SITE_URL}/og-default.png`;
+  const url = alternates(path, locale).canonical;
+  // A page's own cover when it has one, otherwise the brand card in its language.
+  const ogImage = image?.startsWith("http")
+    ? image
+    : image?.startsWith("/")
+      ? `${SITE_URL}${image}`
+      : `${SITE_URL}/og-${locale}.jpg`;
 
   return {
     title: absolute ? { absolute: title } : title,
@@ -62,6 +73,22 @@ export function buildMetadata({
     },
     robots: { index: true, follow: true, "max-image-preview": "large" },
   };
+}
+
+/**
+ * A search snippet of 120–160 characters from the pieces a page has: a short
+ * subtitle alone is too thin for Google, a long description gets cut mid-word.
+ */
+export function snippet(...parts: (string | null | undefined)[]) {
+  const text = parts
+    .map((part) => (part ?? "").replace(/\s+/g, " ").trim())
+    .filter(Boolean)
+    .filter((part, index, all) => all.indexOf(part) === index)
+    .join(" — ");
+  if (text.length <= 160) return text;
+  const cut = text.slice(0, 157);
+  const space = cut.lastIndexOf(" ");
+  return `${(space > 110 ? cut.slice(0, space) : cut).replace(/[\s,.;:،—-]+$/, "")}…`;
 }
 
 /** Brand plus the head terms every page should carry, per language. */

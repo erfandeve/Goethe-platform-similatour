@@ -5,9 +5,21 @@ from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+from django.core.exceptions import ImproperlyConfigured
+
 SECRET_KEY = config("SECRET_KEY", default="dev-insecure-key")
 DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=Csv())
+
+# The key signs every login token. With a known or short key anyone could mint
+# an admin token, so production refuses to start without a real one.
+if not DEBUG and (
+    SECRET_KEY in ("dev-insecure-key", "change-me-in-production", "build") or len(SECRET_KEY) < 40
+):
+    raise ImproperlyConfigured(
+        "Set SECRET_KEY to a random string of 40+ characters before running with DEBUG=False "
+        "(python -c \"import secrets; print(secrets.token_urlsafe(50))\")."
+    )
 
 INSTALLED_APPS = [
     "django.contrib.staticfiles",
@@ -60,7 +72,11 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Behind a proxy (Render, Railway, Fly) the TLS terminates upstream.
+if not DEBUG:
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = "DENY"
+
+# Behind a proxy (Render, Railway, Fly, nginx) the TLS terminates upstream.
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
 CSRF_TRUSTED_ORIGINS = config(

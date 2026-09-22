@@ -442,3 +442,11 @@ def _record_speaking_progress(user, course, part, video, score):
     record.updated_at = datetime.utcnow()
     record.save()
     _touch_enrollment(user, course)
+
+
+@api_view(["GET"])
+def top_learners(request):
+    """Public: the podium the back office chose, with their headline numbers."""
+    from .standing import podium
+
+    return Response({"results": podium(get_locale(request))})

@@ -304,3 +304,83 @@ export const PERK_LABELS: Record<string, string> = {
   speaking: "مکالمه با هوش مصنوعی",
   podcasts: "پادکست‌های ویژه",
 };
+
+export interface AdminCoupon {
+  id: string;
+  code: string;
+  kind: "percent" | "amount";
+  /** Percent (1–100) or Rial off. */
+  value: number;
+  max_discount: number;
+  min_total: number;
+  applies_to: string[];
+  starts_at: string | null;
+  expires_at: string | null;
+  max_uses: number;
+  per_user_limit: number;
+  used_count: number;
+  is_active: boolean;
+  note: string;
+  status: "active" | "inactive" | "scheduled" | "expired" | "used_up";
+  created_at: string | null;
+}
+
+export interface CouponRedemption {
+  user: string;
+  email: string;
+  order_code: string;
+  amount: number;
+  created_at: string | null;
+}
+
+export const COUPON_TARGET_LABELS: Record<string, string> = {
+  course: "دوره‌ها",
+  exam: "آزمون‌ها",
+  exam_code: "کدهای آزمون",
+  plan: "اشتراک‌ها",
+};
+
+export const COUPON_STATUS_LABELS: Record<AdminCoupon["status"], string> = {
+  active: "فعال",
+  inactive: "غیرفعال",
+  scheduled: "هنوز شروع نشده",
+  expired: "منقضی شده",
+  used_up: "ظرفیت تمام شده",
+};
+
+export interface LearnerStats {
+  courses: number;
+  course_progress: number;
+  lessons_done: number;
+  speaking_answers: number;
+  speaking_score: number;
+  exams_taken: number;
+  exams_passed: number;
+  exam_score: number;
+  best_exam_score: number;
+  last_active: string | null;
+  points: number;
+}
+
+export interface AdminLearner {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  level: string;
+  target_level: string;
+  city: string;
+  joined: string | null;
+  is_active: boolean;
+  is_staff: boolean;
+  showcase_rank: number;
+  showcase_note: Translated;
+  stats: LearnerStats;
+}
+
+export interface AdminLearnerPage {
+  results: AdminLearner[];
+  podium: AdminLearner[];
+  meta: { page: number; size: number; total: number; pages: number };
+  sort: string;
+}

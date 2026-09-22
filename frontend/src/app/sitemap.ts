@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { locales } from "@/i18n/config";
+import { localeMeta, locales } from "@/i18n/config";
 import { apiFetch } from "@/lib/api";
 import { SITE_URL } from "@/lib/seo";
 
@@ -29,8 +29,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const entries: MetadataRoute.Sitemap = [];
 
+  // The same hreflang codes as the pages' own <link rel="alternate"> tags,
+  // plus x-default — Google wants the two to agree.
   const alternatesFor = (path: string) => ({
-    languages: Object.fromEntries(locales.map((code) => [code, `${SITE_URL}/${code}${path}`])),
+    languages: {
+      ...Object.fromEntries(
+        locales.map((code) => [localeMeta[code].htmlLang, `${SITE_URL}/${code}${path}`]),
+      ),
+      "x-default": `${SITE_URL}/fa${path}`,
+    },
   });
 
   for (const locale of locales) {

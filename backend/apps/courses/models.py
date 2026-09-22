@@ -170,10 +170,27 @@ class Cart(Document):
     def subtotal(self):
         return sum(item.price * item.quantity for item in self.items)
 
+    def coupon_state(self):
+        """(discount, error code) for the code on the cart, checked live.
+
+        A code can expire or run out while it sits in a cart, so it is never
+        trusted from the moment it was applied.
+        """
+        if not self.coupon:
+            return 0, ""
+        from apps.billing.models import Coupon, CouponError
+
+        coupon = Coupon.lookup(self.coupon)
+        if not coupon:
+            return 0, "invalid_coupon"
+        try:
+            return coupon.check(self.user, self.items), ""
+        except CouponError as error:
+            return 0, error.code
+
     @property
     def discount(self):
-        # Single demo coupon until the promotions phase lands.
-        return int(self.subtotal * 0.15) if self.coupon.upper() == "GOTEH15" else 0
+        return self.coupon_state()[0]
 
     @property
     def total(self):
@@ -197,6 +214,7 @@ class Order(Document):
     items = EmbeddedDocumentListField(OrderItem, default=list)
     subtotal = IntField(default=0)
     discount = IntField(default=0)
+    coupon = StringField(default="")
     total = IntField(default=0)
     payment_method = StringField(choices=("wallet", "gateway"), default="wallet")
     status = StringField(choices=("pending", "paid", "failed", "refunded"), default="pending")

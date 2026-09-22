@@ -21,7 +21,7 @@ cp .env.example .env
 
 Requires a running MongoDB (`brew services start mongodb-community`).
 
-Demo student: `student@goteh.de` / `goteh1234` · demo coupon: `GOTEH15`
+Local demo login: `student@goteh.de` / `goteh1234` (local only — production bootstrap removes it; see DEPLOY.md). Discount codes are created in the admin panel.
 
 ### Data model
 

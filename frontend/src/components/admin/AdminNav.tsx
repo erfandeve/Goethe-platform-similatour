@@ -16,6 +16,8 @@ const ITEMS = [
   { href: "/exams", label: "آزمون‌ها", labelDe: "Prüfungen", icon: "M6 3h9l4 4v14H6V3Zm3 9h7M9 16h5" },
   { href: "/podcasts", label: "پادکست‌ها", labelDe: "Podcasts", icon: "M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3Zm6-3a6 6 0 0 1-12 0M12 17v4" },
   { href: "/plans", label: "اشتراک‌ها", labelDe: "Abos", icon: "M3 7h18v12H3V7Zm0 5h18M8 16h4" },
+  { href: "/coupons", label: "کدهای تخفیف", labelDe: "Rabattcodes", icon: "M3 9V5h18v4a3 3 0 0 0 0 6v4H3v-4a3 3 0 0 0 0-6Zm6 6 6-6M9.5 9.5h.01M14.5 14.5h.01" },
+  { href: "/learners", label: "زبان‌آموزان برتر", labelDe: "Top-Lernende", icon: "M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Zm10 2h3a3 3 0 0 1-3 3M7 6H4a3 3 0 0 0 3 3" },
 ];
 
 export function AdminNav({ locale }: { locale: Locale }) {

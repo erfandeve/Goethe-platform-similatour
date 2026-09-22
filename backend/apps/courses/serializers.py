@@ -166,13 +166,17 @@ def cart_item(item, locale):
 
 
 def cart_detail(cart, locale):
+    discount, coupon_error = cart.coupon_state()
     return {
         "items": [cart_item(i, locale) for i in cart.items],
         "count": sum(i.quantity for i in cart.items),
         "subtotal": cart.subtotal,
-        "discount": cart.discount,
-        "total": cart.total,
+        "discount": discount,
+        "total": max(cart.subtotal - discount, 0),
         "coupon": cart.coupon,
+        # set when the applied code stopped working (expired, used up, the
+        # cart changed under its minimum) so the page can say why
+        "coupon_error": coupon_error,
     }
 
 
@@ -192,6 +196,7 @@ def order_item(order, locale):
         ],
         "subtotal": order.subtotal,
         "discount": order.discount,
+        "coupon": order.coupon,
         "total": order.total,
         "status": order.status,
         "payment_method": order.payment_method,

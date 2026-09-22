@@ -9,6 +9,7 @@ import { HomeSectionBlock } from "@/components/home/HomeSections";
 import { Marquee } from "@/components/home/Marquee";
 import { MethodSteps } from "@/components/home/MethodSteps";
 import { Testimonials } from "@/components/home/Testimonials";
+import { TopLearners, type TopLearner } from "@/components/home/TopLearners";
 import { CourseCard } from "@/components/courses/CourseCard";
 import { ExamCard } from "@/components/exams/ExamCard";
 import { EpisodeCard } from "@/components/podcasts/EpisodeCard";
@@ -82,10 +83,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   if (!isLocale(locale)) notFound();
 
   const dict = await getDictionary(locale);
-  const [data, online] = await orOffline<HomePayload>(
-    apiFetch<HomePayload>("/home/", { locale, revalidate: 300 }),
-    EMPTY_HOME,
-  );
+  const [[data, online], podium] = await Promise.all([
+    orOffline<HomePayload>(apiFetch<HomePayload>("/home/", { locale, revalidate: 300 }), EMPTY_HOME),
+    // The podium is extra: if it fails, the page simply goes without it.
+    apiFetch<{ results: TopLearner[] }>("/learners/top/", { locale, revalidate: 300 })
+      .then((payload) => payload.results)
+      .catch(() => [] as TopLearner[]),
+  ]);
 
   const organization = {
     "@context": "https://schema.org",
@@ -94,8 +98,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     alternateName: ["لکسورا", dict.meta.siteName],
     url: `${SITE_URL}/${locale}`,
     description: dict.meta.description,
-    sameAs: [] as string[],
-    address: { "@type": "PostalAddress", addressCountry: "DE" },
+    logo: `${SITE_URL}/icon-512.png`,
+    // Social profiles, comma-separated in NEXT_PUBLIC_SAME_AS, tie the brand
+    // to its accounts in Google's knowledge panel.
+    sameAs: (process.env.NEXT_PUBLIC_SAME_AS ?? "").split(",").map((url) => url.trim()).filter(Boolean),
     knowsLanguage: ["fa", "de", "en"],
   };
 
@@ -269,6 +275,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {interleaved}
 
       <MethodSteps dict={dict} />
+      <TopLearners learners={podium} locale={locale} dict={dict} />
       <Testimonials dict={dict} />
       <CtaBanner locale={locale} dict={dict} />
     </>

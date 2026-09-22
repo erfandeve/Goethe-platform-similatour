@@ -1,26 +1,37 @@
 import type { Locale } from "@/i18n/config";
 import { API_BASE } from "@/lib/api";
 
-const COPY: Record<Locale, { title: string; body: string; hint: string }> = {
+const COPY: Record<Locale, { title: string; body: string; live: string; hint: string }> = {
   fa: {
     title: "سرور محتوا در دسترس نیست",
     body: "طراحی سایت را می‌بینید، ولی دوره‌ها، آزمون‌ها و پادکست‌ها از API خوانده می‌شوند و آن آدرس الان جواب نمی‌دهد.",
+    live: "بخشی از محتوا موقتاً در دسترس نیست. چند دقیقه دیگر دوباره سر بزنید.",
     hint: "بک‌اند جنگو را بالا بیاورید و NEXT_PUBLIC_API_URL را به آن وصل کنید.",
   },
   en: {
     title: "The content server is unreachable",
     body: "The site itself is fine, but courses, exams and podcasts come from the API and that address is not responding.",
+    live: "Some content is temporarily unavailable. Please check back in a few minutes.",
     hint: "Deploy the Django backend and point NEXT_PUBLIC_API_URL at it.",
   },
   de: {
     title: "Der Inhaltsserver ist nicht erreichbar",
     body: "Die Seite selbst läuft, aber Kurse, Prüfungen und Podcasts kommen aus der API, und diese Adresse antwortet nicht.",
+    live: "Einige Inhalte sind vorübergehend nicht verfügbar. Bitte schauen Sie in ein paar Minuten wieder vorbei.",
     hint: "Django-Backend bereitstellen und NEXT_PUBLIC_API_URL darauf zeigen lassen.",
   },
 };
 
 export function OfflineNotice({ locale }: { locale: Locale }) {
   const copy = COPY[locale];
+  // Visitors get an apology; the diagnosis and the internal address are for developers.
+  if (process.env.NODE_ENV === "production") {
+    return (
+      <div className="border-b border-amber-400/30 bg-amber-400/10">
+        <p className="mx-auto max-w-6xl px-4 py-3 text-sm text-amber-100/90">{copy.live}</p>
+      </div>
+    );
+  }
   return (
     <div className="border-b border-amber-400/30 bg-amber-400/10">
       <div className="mx-auto max-w-6xl px-4 py-3 text-sm">

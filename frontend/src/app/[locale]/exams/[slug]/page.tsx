@@ -10,7 +10,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale, type Locale } from "@/i18n/config";
 import { apiFetch, getAccessToken } from "@/lib/api";
 import { compact, formatNumber, formatPrice } from "@/lib/format";
-import { breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL } from "@/lib/seo";
+import { breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL, snippet } from "@/lib/seo";
 import type { ExamDetail } from "@/lib/types";
 import { alpha } from "@/lib/utils";
 
@@ -46,7 +46,7 @@ export async function generateMetadata({
   if (!exam) return {};
   return buildMetadata({
     title: exam.title,
-    description: exam.subtitle || exam.description.slice(0, 155),
+    description: snippet(exam.subtitle, exam.description),
     path: `/exams/${slug}`,
     locale,
     siteName: dict.meta.siteName,
@@ -233,7 +233,9 @@ export default async function ExamDetailPage({
                     `${formatNumber(exam.duration_minutes, locale)} ${dict.common.minutes}`,
                   ],
                   [dict.exams.card.passScore, `${formatNumber(exam.pass_score, locale)}%`],
-                  [dict.exams.card.attempts, compact(exam.attempts_count, locale)],
+                  ...(exam.attempts_count
+                    ? [[dict.exams.card.attempts, compact(exam.attempts_count, locale)]]
+                    : []),
                 ].map(([label, value]) => (
                   <div key={label} className="flex items-center justify-between">
                     <dt className="text-mist-500">{label}</dt>

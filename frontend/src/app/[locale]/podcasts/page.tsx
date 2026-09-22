@@ -23,8 +23,8 @@ export async function generateMetadata({
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
   return buildMetadata({
-    title: dict.podcasts.title,
-    description: dict.podcasts.subtitle,
+    title: `${dict.podcasts.title} — ${dict.podcasts.subtitle}`,
+    description: dict.meta.seo.podcasts,
     path: "/podcasts",
     locale,
     siteName: dict.meta.siteName,

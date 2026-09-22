@@ -21,7 +21,7 @@ import {
   formatNumber,
   formatPrice,
 } from "@/lib/format";
-import { breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL } from "@/lib/seo";
+import { breadcrumbs, buildMetadata, JsonLd, keywordsFor, SITE_URL, snippet } from "@/lib/seo";
 import type { CourseDetail } from "@/lib/types";
 
 export const revalidate = 300;
@@ -53,7 +53,7 @@ export async function generateMetadata({
 
   return buildMetadata({
     title: course.title,
-    description: course.subtitle || course.description.slice(0, 155),
+    description: snippet(course.subtitle, course.description),
     path: `/courses/${slug}`,
     locale,
     siteName: dict.meta.siteName,
@@ -129,7 +129,9 @@ export default async function CourseDetailPage({
         min: dict.common.minutes,
       }),
     },
-    { label: dict.courses.card.students, value: compact(course.students_count, locale) },
+    ...(course.students_count
+      ? [{ label: dict.courses.card.students, value: compact(course.students_count, locale) }]
+      : []),
   ];
 
   return (
@@ -192,13 +194,15 @@ export default async function CourseDetailPage({
             <p className="text-muted mt-5 max-w-2xl text-lg">{course.subtitle}</p>
 
             <div className="mt-7 flex flex-wrap items-center gap-6 text-sm">
-              <span className="flex items-center gap-2">
-                <span className="text-amber-400" aria-hidden>
-                  ★
+              {course.reviews_count ? (
+                <span className="flex items-center gap-2">
+                  <span className="text-amber-400" aria-hidden>
+                    ★
+                  </span>
+                  <span className="tnum font-semibold">{course.rating.toFixed(1)}</span>
+                  <span className="tnum text-mist-500">({course.reviews_count})</span>
                 </span>
-                <span className="tnum font-semibold">{course.rating.toFixed(1)}</span>
-                <span className="tnum text-mist-500">({course.reviews_count})</span>
-              </span>
+              ) : null}
               {course.instructor ? (
                 <span className="flex items-center gap-2 text-mist-300">
                   <span className="grid size-7 place-items-center rounded-full bg-white/8 text-[11px] font-bold">

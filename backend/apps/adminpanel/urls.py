@@ -2,7 +2,7 @@ from django.urls import path
 
 from apps.cms import admin_views as cms_views
 
-from . import views
+from . import promotions, views
 
 urlpatterns = [
     path("admin/overview/", views.overview),
@@ -39,6 +39,10 @@ urlpatterns = [
     path("admin/codes/<str:pk>/modules/<int:index>/parts/", views.exam_code_parts),
     path("admin/codes/<str:pk>/modules/<int:index>/parts/<int:part_index>/", views.exam_code_part_detail),
     path("admin/codes/<str:pk>/modules/<int:index>/parts/<int:part_index>/items/", views.exam_code_items),
+    path("admin/coupons/", promotions.coupons),
+    path("admin/coupons/<str:pk>/", promotions.coupon_detail),
+    path("admin/learners/", promotions.learners),
+    path("admin/learners/<str:pk>/showcase/", promotions.learner_showcase),
     path("admin/plans/", views.plans),
     path("admin/plans/<str:pk>/", views.plan_detail),
     path("admin/exams/", views.exams),

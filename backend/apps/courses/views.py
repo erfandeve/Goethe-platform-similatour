@@ -266,10 +266,18 @@ def cart_remove(request):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def cart_coupon(request):
+    from apps.billing.models import Coupon, CouponError
+
     cart = get_cart(request.user)
-    code = ((request.data or {}).get("coupon") or "").strip().upper()
-    if code and code != "GOTEH15":
-        raise ApiError("Coupon code is not valid.", code="invalid_coupon")
+    code = Coupon.normalize((request.data or {}).get("coupon"))
+    if code:
+        coupon = Coupon.lookup(code)
+        if not coupon:
+            raise ApiError("Coupon code is not valid.", code="invalid_coupon")
+        try:
+            coupon.check(request.user, cart.items)
+        except CouponError as error:
+            raise ApiError(error.message, code=error.code)
     cart.coupon = code
     cart.save()
     return Response(cart_detail(cart, get_locale(request)))
@@ -284,7 +292,17 @@ def checkout(request):
     if not cart.items:
         raise ApiError("Your cart is empty.", code="empty_cart")
 
-    total = cart.total
+    # The code is checked again here, not trusted from when it was applied.
+    discount, coupon_error = cart.coupon_state()
+    if coupon_error:
+        cart.coupon = ""
+        cart.save()
+        raise ApiError(
+            "Your discount code can no longer be used; it has been removed.",
+            code=coupon_error,
+        )
+    subtotal = cart.subtotal
+    total = max(subtotal - discount, 0)
     method = (request.data or {}).get("payment_method", "wallet")
     if method == "wallet" and user.wallet_balance < total:
         raise ApiError(
@@ -307,14 +325,29 @@ def checkout(request):
             )
             for i in cart.items
         ],
-        subtotal=cart.subtotal,
-        discount=cart.discount,
+        subtotal=subtotal,
+        discount=discount,
+        coupon=cart.coupon if discount else "",
         total=total,
         payment_method=method,
         status="paid",
         paid_at=datetime.utcnow(),
     )
     order.save()
+
+    if order.coupon:
+        from apps.billing.models import Coupon
+
+        coupon = Coupon.lookup(order.coupon)
+        # Lost the race for the last use: undo the order before money moves.
+        if not coupon or not coupon.redeem(user, order.code, discount):
+            order.delete()
+            cart.coupon = ""
+            cart.save()
+            raise ApiError(
+                "Your discount code was used up a moment ago; it has been removed.",
+                code="coupon_used_up",
+            )
 
     if method == "wallet" and total:
         credit_wallet(user, -total, "purchase", f"Order {order.code}", reference=order.code)

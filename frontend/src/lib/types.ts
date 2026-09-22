@@ -286,6 +286,8 @@ export interface CartState {
   discount: number;
   total: number;
   coupon: string;
+  /** Set when the applied code stopped working since it was entered. */
+  coupon_error?: string;
 }
 
 export interface Notification {

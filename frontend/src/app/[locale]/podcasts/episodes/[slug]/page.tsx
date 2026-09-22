@@ -9,7 +9,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { isLocale, type Locale } from "@/i18n/config";
 import { apiFetch, getAccessToken } from "@/lib/api";
 import { compact, formatDate, formatNumber } from "@/lib/format";
-import { buildMetadata, JsonLd, SITE_URL } from "@/lib/seo";
+import { buildMetadata, JsonLd, SITE_URL, snippet } from "@/lib/seo";
 import type { EpisodeDetail } from "@/lib/types";
 
 export const revalidate = 300;
@@ -39,8 +39,12 @@ export async function generateMetadata({
   ]);
   if (!episode) return {};
   return buildMetadata({
-    title: episode.title,
-    description: episode.description.slice(0, 155),
+    // Episode names repeat across shows ("Folge 1"), so the show is part of the title.
+    title: episode.podcast ? `${episode.title} — ${episode.podcast.title}` : episode.title,
+    description: snippet(
+      episode.podcast ? `${episode.podcast.title} · ${episode.title}` : episode.title,
+      episode.description,
+    ),
     path: `/podcasts/episodes/${slug}`,
     locale,
     siteName: dict.meta.siteName,
@@ -110,9 +114,11 @@ export default async function EpisodePage({
               {formatNumber(Math.round(episode.duration_seconds / 60), locale)}{" "}
               {dict.podcasts.card.minutes}
             </span>
-            <span className="tnum text-xs text-mist-500">
-              {compact(episode.plays, locale)} {dict.podcasts.card.plays}
-            </span>
+            {episode.plays ? (
+              <span className="tnum text-xs text-mist-500">
+                {compact(episode.plays, locale)} {dict.podcasts.card.plays}
+              </span>
+            ) : null}
             <span className="text-xs text-mist-600">{formatDate(episode.published_at, locale)}</span>
           </div>
 

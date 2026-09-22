@@ -49,18 +49,23 @@ export function CartView({
     }
   }
 
-  async function applyCoupon() {
+  /** The server names what is wrong with a code; say it rather than "invalid". */
+  const couponMessage = (code?: string) =>
+    (code && dict.cart.couponErrors[code as keyof typeof dict.cart.couponErrors]) || dict.cart.couponInvalid;
+
+  async function applyCoupon(value = coupon) {
     setBusy(true);
     setError("");
     try {
       const next = await callApi<CartState>("cart/coupon", {
         method: "POST",
-        body: { coupon },
+        body: { coupon: value },
         locale,
       });
       setCart(next);
-    } catch {
-      setError(dict.cart.couponInvalid);
+      setCoupon(next.coupon);
+    } catch (caught) {
+      setError(couponMessage((caught as { code?: string }).code));
     } finally {
       setBusy(false);
     }
@@ -81,6 +86,16 @@ export function CartView({
       router.refresh();
     } catch (caught) {
       const failure = caught as { code?: string; message?: string };
+      if (failure.code?.startsWith("coupon") || failure.code === "invalid_coupon") {
+        // The server dropped the code; show the new total before a retry.
+        const fresh = await callApi<CartState>("cart", { locale }).catch(() => null);
+        if (fresh) {
+          setCart(fresh);
+          setCoupon(fresh.coupon);
+        }
+        setError(couponMessage(failure.code));
+        return;
+      }
       setError(
         failure.code === "insufficient_funds" ? dict.cart.insufficient : (failure.message ?? ""),
       );
@@ -167,10 +182,29 @@ export function CartView({
             placeholder={dict.cart.coupon}
             aria-label={dict.cart.coupon}
           />
-          <Button variant="soft" onClick={applyCoupon} disabled={busy}>
+          <Button variant="soft" onClick={() => applyCoupon()} disabled={busy || !coupon.trim()}>
             {dict.cart.applyCoupon}
           </Button>
         </div>
+        {cart.coupon ? (
+          <div className="mt-2 flex items-center justify-between gap-2 text-xs">
+            {cart.coupon_error ? (
+              <span className="text-amber-400">{couponMessage(cart.coupon_error)}</span>
+            ) : (
+              <span className="text-mint-400">
+                {dict.cart.couponApplied} <b dir="ltr">{cart.coupon}</b>
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => applyCoupon("")}
+              disabled={busy}
+              className="shrink-0 text-mist-500 underline-offset-4 hover:text-mist-200 hover:underline"
+            >
+              {dict.cart.couponRemove}
+            </button>
+          </div>
+        ) : null}
 
         <dl className="mt-6 space-y-3 border-t border-white/8 pt-5 text-sm">
           <div className="flex justify-between">

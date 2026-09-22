@@ -39,7 +39,7 @@ export async function generateMetadata({
   const dict = await getDictionary(locale);
   return buildMetadata({
     title: `${dict.courses.title} — ${dict.courses.subtitle}`,
-    description: dict.meta.description,
+    description: dict.courses.metaDescription,
     path: "/courses",
     locale,
     siteName: dict.meta.siteName,

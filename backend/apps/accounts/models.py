@@ -14,6 +14,8 @@ from mongoengine import (
     StringField,
 )
 
+from apps.core.i18n import TranslatedText
+
 LEVELS = ("A1", "A2", "B1", "B2", "C1", "C2")
 
 
@@ -26,7 +28,7 @@ class NotificationPrefs(EmbeddedDocument):
 class User(Document):
     meta = {
         "collection": "users",
-        "indexes": ["email", "phone", "-created_at"],
+        "indexes": ["email", "phone", "-created_at", "showcase_rank"],
     }
 
     email = EmailField(required=True, unique=True)
@@ -47,6 +49,11 @@ class User(Document):
     target_level = StringField(choices=LEVELS, default="B1")
 
     wallet_balance = IntField(default=0)  # Rial
+
+    # The "top learners" showcase: 1–3 when staff has placed this learner on
+    # the podium, 0 otherwise. The note is the line shown under their name.
+    showcase_rank = IntField(default=0, min_value=0, max_value=3)
+    showcase_note = EmbeddedDocumentField(TranslatedText, default=TranslatedText)
     prefs = EmbeddedDocumentField(NotificationPrefs, default=NotificationPrefs)
 
     is_active = BooleanField(default=True)

@@ -5,7 +5,15 @@ const de: Dictionary = {
     siteName: "Lexora",
     tagline: "Deutsch-Simulator und Kurse von A1 bis C1",
     description:
-      "Lexora ist ein Deutsch-Simulator, der die Goethe-Prüfung von A1 bis C1 Bildschirm für Bildschirm nachbaut — dazu strukturierte Kurse von A1 bis C1, eine KI-Sprechlehrerin und zweisprachige Podcasts.",
+      "Lexora baut die Goethe-Prüfung von A1 bis C1 Bildschirm für Bildschirm nach – mit Deutschkursen, KI-Sprechtraining und zweisprachigen Podcasts.",
+    seo: {
+      podcasts:
+        "Zweisprachige Podcasts zum Deutschlernen bei Lexora: kurze Folgen für Ihr Hörverstehen von A1 bis C1, mit Transkript und Wortschatz.",
+      plans:
+        "Lexora-Abos: Eine Zahlung öffnet alle Goethe-Prüfungssimulatoren, die Deutschkurse, das Sprechtraining mit KI und Premium-Podcasts.",
+      about:
+        "Lexora ist ein Deutsch-Simulator, der die Goethe-Prüfung von A1 bis C1 nachbaut – mit Kursen, Sprechtraining mit KI und Podcasts.",
+    },
   },
   nav: {
     home: "Start",
@@ -75,6 +83,16 @@ const de: Dictionary = {
       ],
     },
     teachers: { title: "Ihre Lehrkräfte", subtitle: "Muttersprachler und Prüfungsexperten" },
+    topLearners: {
+      title: "Top-Lernende",
+      eyebrow: "Lexora Ehrentafel",
+      subtitle: "Die drei Lernenden mit den größten Fortschritten in diesem Monat – ausgewählt vom Lexora-Lehrteam.",
+      lessons: "Lektionen",
+      exams: "bestandene Prüfungen",
+      average: "Durchschnitt",
+      fallbackName: "Lexora-Lernende:r",
+      rank: "Platz",
+    },
     testimonials: {
       title: "Stimmen der Lernenden",
       items: [
@@ -93,6 +111,8 @@ const de: Dictionary = {
   courses: {
     title: "Kurse",
     subtitle: "Vom ersten Wort bis zur akademischen Sicherheit",
+    metaDescription:
+      "Deutschkurse von A1 bis C1 bei Lexora: Videolektionen, Sprechtraining mit KI und Vorbereitung auf die Goethe-Prüfung – Schritt für Schritt mit Fortschrittsanzeige.",
     filters: {
       title: "Filter",
       level: "Niveau",
@@ -205,6 +225,16 @@ const de: Dictionary = {
     coupon: "Gutscheincode",
     applyCoupon: "Einlösen",
     couponInvalid: "Dieser Gutschein ist ungültig.",
+    couponApplied: "Rabattcode eingelöst.",
+    couponRemove: "Code entfernen",
+    couponErrors: {
+      coupon_expired: "Dieser Code ist abgelaufen.",
+      coupon_not_started: "Dieser Code ist noch nicht gültig.",
+      coupon_used_up: "Dieser Code wurde bereits vollständig eingelöst.",
+      coupon_already_used: "Sie haben diesen Code bereits verwendet.",
+      coupon_not_applicable: "Dieser Code gilt nicht für die Artikel in Ihrem Warenkorb.",
+      coupon_min_total: "Ihr Warenkorb liegt unter dem Mindestbetrag dieses Codes.",
+    },
     remove: "Entfernen",
     checkout: "Mit Guthaben bezahlen",
     payGateway: "Online bezahlen",

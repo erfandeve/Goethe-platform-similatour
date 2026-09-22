@@ -16,8 +16,9 @@ export function Hero({
   dict: Dictionary;
   stats: HomePayload["stats"];
 }) {
+  // A figure is only shown once it is real: no "0 learners" on launch day.
   const numbers = [
-    { value: compact(stats.students, locale), label: dict.hero.stats.students },
+    ...(stats.students ? [{ value: compact(stats.students, locale), label: dict.hero.stats.students }] : []),
     { value: compact(stats.courses, locale), label: dict.hero.stats.courses },
     { value: compact(stats.exams, locale), label: dict.hero.stats.exams },
     { value: compact(stats.episodes, locale), label: dict.hero.stats.episodes },

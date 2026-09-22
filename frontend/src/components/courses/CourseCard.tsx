@@ -71,19 +71,26 @@ export function CourseCard({
                 min: dict.common.minutes,
               })}
             </span>
-            <span className="tnum">
-              {compact(course.students_count, locale)} {dict.courses.card.students}
-            </span>
+            {/* counters appear once there is real activity to count */}
+            {course.students_count ? (
+              <span className="tnum">
+                {compact(course.students_count, locale)} {dict.courses.card.students}
+              </span>
+            ) : null}
           </div>
 
           <div className="mt-5 flex items-end justify-between gap-3 border-t border-white/8 pt-4">
-            <div className="flex items-center gap-2">
-              <span className="text-amber-400" aria-hidden>
-                ★
-              </span>
-              <span className="tnum text-sm font-semibold">{course.rating.toFixed(1)}</span>
-              <span className="tnum text-xs text-mist-600">({course.reviews_count})</span>
-            </div>
+            {course.reviews_count ? (
+              <div className="flex items-center gap-2">
+                <span className="text-amber-400" aria-hidden>
+                  ★
+                </span>
+                <span className="tnum text-sm font-semibold">{course.rating.toFixed(1)}</span>
+                <span className="tnum text-xs text-mist-600">({course.reviews_count})</span>
+              </div>
+            ) : (
+              <span />
+            )}
             <div className="text-end">
               {course.discount_price ? (
                 <span className="tnum block text-xs text-mist-600 line-through">
