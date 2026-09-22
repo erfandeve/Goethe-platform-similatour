@@ -1,10 +1,10 @@
-# Lexora — لکسورا
+# LexArt — لکس آرت
 
 Trilingual (Deutsch / English / فارسی) language-learning platform: courses, exam
 simulators, high-frequency exam banks and podcasts, with a personal student panel.
 
 ```
-lexora/
+lexart/
 ├── backend/    Django 5 + DRF + MongoEngine (MongoDB)      → http://localhost:8010
 └── frontend/   Next.js 16 (App Router) + Tailwind 4 + three.js → http://localhost:3000
 ```
@@ -174,7 +174,7 @@ episode points at one generated German demo track
 (`api/media/podcasts/audio/demo.m4a`) — swap in real uploads when they exist.
 The B2 exam text is the Goethe-Institut Modellsatz: fine for practice, but
 licence it or replace it with in-house items before selling access. The exam
-player deliberately carries Lexora branding — the Goethe-Institut logo is their
+player deliberately carries LexArt branding — the Goethe-Institut logo is their
 trademark and must not appear here.
 Checkout debits the wallet directly; a real payment gateway replaces
 `POST /api/checkout/` and `POST /api/auth/wallet/topup/` in the payment phase.

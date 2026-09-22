@@ -25,7 +25,7 @@ export function Logo({ locale, label }: { locale: Locale; label: string }) {
         </svg>
       </span>
       <span className="flex flex-col leading-none">
-        <span className="font-display text-lg font-semibold tracking-tight">{label}</span>
+        <span className="font-display text-lg font-semibold tracking-tight whitespace-nowrap">{label}</span>
         <span className="text-[10px] tracking-[0.3em] text-mist-500 uppercase">Deutsch</span>
       </span>
     </Link>

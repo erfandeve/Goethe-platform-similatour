@@ -11,7 +11,7 @@ from apps.cms.models import HomeSection, SectionItem
 from apps.core.i18n import tt
 
 # One picture per prose section, named after the section it belongs to.
-ABOUT_IMAGE = "/media/sections/about-lexora.webp"
+ABOUT_IMAGE = "/media/sections/about-lexart.webp"
 SIMULATOR_IMAGE = "/media/sections/why-simulator.webp"
 SPEAKING_IMAGE = "/media/sections/ai-speaking.webp"
 
@@ -22,60 +22,60 @@ def item(fa_t, en_t, de_t, fa_b, en_b, de_b, icon=""):
 
 SECTIONS = [
     {
-        "key": "about-lexora",
+        "key": "about-lexart",
         "kind": "text_image",
         "order": 10,
         "image": ABOUT_IMAGE,
         "image_side": "end",
         "accent": "#8b7dff",
-        "eyebrow": tt("درباره لکسورا", "About Lexora", "Über Lexora"),
+        "eyebrow": tt("درباره لکس آرت", "About LexArt", "Über LexArt"),
         "title": tt(
-            "لکسورا چیست و چه فرقی با یک آموزشگاه معمولی دارد",
-            "What Lexora is, and why it is not another language school",
-            "Was Lexora ist — und warum es keine gewöhnliche Sprachschule ist",
+            "لکس آرت چیست و چه فرقی با یک آموزشگاه معمولی دارد",
+            "What LexArt is, and why it is not another language school",
+            "Was LexArt ist — und warum es keine gewöhnliche Sprachschule ist",
         ),
         "body": tt(
-            "لکسورا (Lexora) یک آکادمی سه‌زبانه‌ی زبان آلمانی است که دور یک ایده ساخته شده: "
-            "روز آزمون نباید اولین باری باشد که محیط آزمون را می‌بینی. به همین دلیل قلب لکسورا "
+            "لکس آرت (LexArt) یک آکادمی سه‌زبانه‌ی زبان آلمانی است که دور یک ایده ساخته شده: "
+            "روز آزمون نباید اولین باری باشد که محیط آزمون را می‌بینی. به همین دلیل قلب لکس آرت "
             "یک سیمیلیتور زبان آلمانی است که آزمون گوته را صفحه‌به‌صفحه، تایمر‌به‌تایمر و "
             "قانون‌به‌قانون بازسازی می‌کند.\n\n"
             "بیشتر داوطلب‌ها به‌خاطر ضعف زبانی رد نمی‌شوند؛ به این خاطر رد می‌شوند که فرمت "
             "غافلگیرشان می‌کند: نمی‌دانند فایل صوتی چند بار پخش می‌شود، نمی‌دانند می‌شود به "
-            "سؤال قبلی برگشت یا نه، و وقتی تایمر را می‌بینند تمرکزشان می‌شکند. لکسورا دقیقاً "
+            "سؤال قبلی برگشت یا نه، و وقتی تایمر را می‌بینند تمرکزشان می‌شکند. لکس آرت دقیقاً "
             "همین ناشناخته‌ها را حذف می‌کند.\n\n"
             "کنار سیمیلیتور، دوره‌های ساختاریافته‌ی A1 تا C1، سؤالات پرتکرار B2 و C1، "
             "پادکست‌های دوزبانه با متن همزمان و «آلمانی در محیط» — مربی مکالمه‌ی هوش مصنوعی — "
             "قرار دارند. همه‌چیز به فارسی، آلمانی و انگلیسی.",
-            "Lexora is a trilingual German academy built around a single idea: exam day should "
-            "not be the first time you see the exam. That is why the heart of Lexora is a German "
+            "LexArt is a trilingual German academy built around a single idea: exam day should "
+            "not be the first time you see the exam. That is why the heart of LexArt is a German "
             "language simulator that rebuilds the Goethe exam screen for screen, timer for timer "
             "and rule for rule.\n\n"
             "Most candidates do not fail because their German is weak. They fail because the "
             "format surprises them: they do not know how often the audio plays, whether they can "
-            "go back a question, or how the timer will feel. Lexora removes exactly those "
+            "go back a question, or how the timer will feel. LexArt removes exactly those "
             "unknowns.\n\n"
             "Around the simulator sit structured A1–C1 courses, high-frequency B2 and C1 question "
             "banks, bilingual podcasts with synchronised transcripts, and German in Context — an "
             "AI speaking teacher. All of it in Persian, German and English.",
-            "Lexora ist eine dreisprachige Deutsch-Akademie mit einer einzigen Idee im Zentrum: "
+            "LexArt ist eine dreisprachige Deutsch-Akademie mit einer einzigen Idee im Zentrum: "
             "Der Prüfungstag sollte nicht der erste Tag sein, an dem Sie die Prüfung sehen. "
-            "Deshalb steht im Kern von Lexora ein Deutsch-Simulator, der die Goethe-Prüfung "
+            "Deshalb steht im Kern von LexArt ein Deutsch-Simulator, der die Goethe-Prüfung "
             "Bildschirm für Bildschirm, Timer für Timer und Regel für Regel nachbaut.\n\n"
             "Die meisten Kandidatinnen und Kandidaten scheitern nicht an ihrem Deutsch, sondern "
             "am Format: Sie wissen nicht, wie oft das Audio läuft, ob sie zurückspringen dürfen "
-            "oder wie sich der Timer anfühlt. Genau diese Unbekannten nimmt Lexora heraus.\n\n"
+            "oder wie sich der Timer anfühlt. Genau diese Unbekannten nimmt LexArt heraus.\n\n"
             "Um den Simulator herum liegen strukturierte Kurse von A1 bis C1, Aufgabenbänke mit "
             "häufigen B2- und C1-Fragen, zweisprachige Podcasts mit synchronem Transkript und "
             "„Deutsch im Kontext“ — eine KI-Sprechlehrerin. Alles auf Persisch, Deutsch und "
             "Englisch.",
         ),
         "image_alt": tt(
-            "سه زبان‌آموز لکسورا با کتاب‌های آلمانی و تابلوی Lexora، با پس‌زمینه برلین",
-            "Three Lexora learners holding German coursebooks and a Lexora sign, Berlin behind them",
-            "Drei Lexora-Lernende mit deutschen Lehrbüchern und einem Lexora-Schild vor Berliner "
+            "سه زبان‌آموز لکس آرت با کتاب‌های آلمانی و تابلوی LexArt، با پس‌زمینه برلین",
+            "Three LexArt learners holding German coursebooks and a LexArt sign, Berlin behind them",
+            "Drei LexArt-Lernende mit deutschen Lehrbüchern und einem LexArt-Schild vor Berliner "
             "Kulisse",
         ),
-        "cta_label": tt("بیشتر درباره لکسورا", "More about Lexora", "Mehr über Lexora"),
+        "cta_label": tt("بیشتر درباره لکس آرت", "More about LexArt", "Mehr über LexArt"),
         "cta_href": "/about",
     },
     {
@@ -96,7 +96,7 @@ SECTIONS = [
         "body": tt(
             "آزمون زبان دو چیز را همزمان می‌سنجد: دانش زبانی، و توانایی استفاده از آن دانش زیر "
             "فشار زمان. دومی مهارت جداگانه‌ای است و فقط با تمرین در شرایط مشابه ساخته می‌شود.\n\n"
-            "سیمیلیتور زبان آلمانی لکسورا با یک «آزمون آزمایشی» معمولی فرق دارد: تایمر جداگانه "
+            "سیمیلیتور زبان آلمانی لکس آرت با یک «آزمون آزمایشی» معمولی فرق دارد: تایمر جداگانه "
             "برای هر ماژول، همان تعداد دفعات مجاز پخش صوت، ممنوعیت برگشت در Hören، و همان "
             "تسک‌های واقعی — تطبیق افراد با متن، کشیدن و رها کردن، تطبیق عنوان با پاراگراف.\n\n"
             "هر نشست با یک کد آزمون مستقل انجام می‌شود، پس دفعه‌ی دوم سؤال‌ها تازه‌اند و نمره‌ات "
@@ -105,7 +105,7 @@ SECTIONS = [
             "A language exam measures two things at once: what you know, and whether you can use "
             "it under time pressure. The second is a separate skill, and it is only built by "
             "practising in the same conditions.\n\n"
-            "The Lexora German simulator is not a generic mock test: a separate timer per module, "
+            "The LexArt German simulator is not a generic mock test: a separate timer per module, "
             "the same number of audio replays the real exam allows, no going back inside Hören, "
             "and the real task types — matching people to texts, drag-and-drop gaps, matching "
             "headings to paragraphs.\n\n"
@@ -115,7 +115,7 @@ SECTIONS = [
             "Eine Sprachprüfung misst zweierlei zugleich: Ihr Wissen und Ihre Fähigkeit, es unter "
             "Zeitdruck einzusetzen. Das Zweite ist eine eigene Fertigkeit und entsteht nur durch "
             "Üben unter denselben Bedingungen.\n\n"
-            "Der Lexora-Simulator ist kein beliebiger Modelltest: ein eigener Timer pro Modul, "
+            "Der LexArt-Simulator ist kein beliebiger Modelltest: ein eigener Timer pro Modul, "
             "genauso viele Audiowiederholungen wie in der echten Prüfung, kein Zurückspringen im "
             "Hören und die echten Aufgabentypen — Personen zu Texten zuordnen, Lücken per "
             "Drag-and-drop füllen, Überschriften Absätzen zuordnen.\n\n"

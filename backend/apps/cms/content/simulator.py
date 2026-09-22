@@ -18,9 +18,9 @@ META = {
         "Was ein Deutsch-Simulator ist und wie er Ihre Punktzahl hebt",
     ),
     "meta_title": tt(
-        "سیمیلیتور زبان آلمانی — شبیه‌ساز کامل آزمون گوته | لکسورا",
-        "German Language Simulator — Full Goethe Exam Practice | Lexora",
-        "Deutsch-Simulator — vollständige Goethe-Prüfung üben | Lexora",
+        "سیمیلیتور زبان آلمانی — شبیه‌ساز کامل آزمون گوته | لکس آرت",
+        "German Language Simulator — Full Goethe Exam Practice | LexArt",
+        "Deutsch-Simulator — vollständige Goethe-Prüfung üben | LexArt",
     ),
     "meta_description": tt(
         "سیمیلیتور زبان آلمانی یعنی تجربه‌ی دقیق آزمون قبل از آزمون. راهنمای کامل شبیه‌ساز "
@@ -35,11 +35,11 @@ META = {
     ),
     "keywords": tt(
         "سیمیلیتور زبان آلمانی, شبیه ساز آزمون آلمانی, سیمولاتور آزمون گوته, آزمون آزمایشی آلمانی, "
-        "شبیه ساز آزمون گوته B2, آزمون آنلاین زبان آلمانی, مدل ساتز گوته, لکسورا, Lexora",
+        "شبیه ساز آزمون گوته B2, آزمون آنلاین زبان آلمانی, مدل ساتز گوته, لکس آرت, LexArt",
         "German language simulator, Goethe exam simulator, German mock exam, online German exam "
-        "practice, Goethe B2 simulator, Modellsatz, Lexora",
+        "practice, Goethe B2 simulator, Modellsatz, LexArt",
         "Deutsch-Simulator, Goethe-Prüfungssimulator, Deutsch Modelltest, Deutschprüfung online "
-        "üben, Goethe B2 Simulator, Modellsatz, Lexora",
+        "üben, Goethe B2 Simulator, Modellsatz, LexArt",
     ),
     "excerpt": tt(
         "سیمیلیتور زبان آلمانی فقط یک آزمون آزمایشی نیست؛ بازسازی دقیق محیط، تایمر و قوانین آزمون "

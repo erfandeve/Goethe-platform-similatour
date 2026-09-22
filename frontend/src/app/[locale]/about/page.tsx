@@ -15,15 +15,15 @@ export function generateStaticParams() {
 
 const KEYWORDS: Record<string, string[]> = {
   fa: [
-    "لکسورا",
-    "Lexora",
+    "لکس آرت",
+    "LexArt",
     "درباره ما",
     "سیمیلیتور زبان آلمانی",
     "آموزش زبان آلمانی",
     "آکادمی زبان آلمانی",
   ],
-  en: ["Lexora", "about Lexora", "German language simulator", "German academy", "Goethe exam prep"],
-  de: ["Lexora", "über Lexora", "Deutsch-Simulator", "Deutsch-Akademie", "Goethe-Prüfung"],
+  en: ["LexArt", "about LexArt", "German language simulator", "German academy", "Goethe exam prep"],
+  de: ["LexArt", "über LexArt", "Deutsch-Simulator", "Deutsch-Akademie", "Goethe-Prüfung"],
 };
 
 export async function generateMetadata({
@@ -61,8 +61,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       inLanguage: locale,
       mainEntity: {
         "@type": "EducationalOrganization",
-        name: "Lexora",
-        alternateName: "لکسورا",
+        name: "LexArt",
+        alternateName: "لکس آرت",
         url: `${SITE_URL}/${locale}`,
         description: dict.meta.description,
         address: { "@type": "PostalAddress", addressCountry: "DE" },
@@ -83,7 +83,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <JsonLd data={schema} />
 
       <Section className="pb-10">
-        <SectionHeading as="h1" eyebrow="Lexora" title={t.title} subtitle={t.subtitle} />
+        <SectionHeading as="h1" eyebrow="LexArt" title={t.title} subtitle={t.subtitle} />
         <p className="-mt-6 max-w-3xl text-lg leading-9 text-mist-300">{t.intro}</p>
       </Section>
 

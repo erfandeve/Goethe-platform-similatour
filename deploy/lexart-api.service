@@ -1,15 +1,15 @@
-# /etc/systemd/system/lexora-api.service
+# /etc/systemd/system/lexart-api.service
 [Unit]
-Description=Lexora API (Django + gunicorn)
+Description=LexArt API (Django + gunicorn)
 After=network.target mongod.service
 
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/lexora/backend
-EnvironmentFile=/var/www/lexora/backend/.env
+WorkingDirectory=/var/www/lexart/backend
+EnvironmentFile=/var/www/lexart/backend/.env
 # Only the Next server talks to the API, so it listens on loopback alone.
-ExecStart=/var/www/lexora/backend/.venv/bin/gunicorn config.wsgi:application \
+ExecStart=/var/www/lexart/backend/.venv/bin/gunicorn config.wsgi:application \
     --bind 127.0.0.1:8010 --workers 2 --timeout 180
 Restart=always
 RestartSec=3

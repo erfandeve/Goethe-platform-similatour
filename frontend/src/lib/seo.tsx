@@ -93,9 +93,10 @@ export function snippet(...parts: (string | null | undefined)[]) {
 
 /** Brand plus the head terms every page should carry, per language. */
 const BASE_KEYWORDS: Record<Locale, string[]> = {
-  fa: ["لکسورا", "Lexora", "سیمیلیتور زبان آلمانی", "آموزش زبان آلمانی", "آزمون گوته"],
-  en: ["Lexora", "German language simulator", "learn German", "Goethe exam"],
-  de: ["Lexora", "Deutsch-Simulator", "Deutsch lernen", "Goethe-Prüfung"],
+  // The spellings people actually type for the brand.
+  fa: ["لکس آرت", "لکس‌آرت", "لکسارت", "LexArt", "سیمیلیتور زبان آلمانی", "آموزش زبان آلمانی", "آزمون گوته"],
+  en: ["LexArt", "Lex Art", "German language simulator", "learn German", "Goethe exam"],
+  de: ["LexArt", "Lex Art", "Deutsch-Simulator", "Deutsch lernen", "Goethe-Prüfung"],
 };
 
 /** Page-specific terms first — they carry the most weight — then the brand. */

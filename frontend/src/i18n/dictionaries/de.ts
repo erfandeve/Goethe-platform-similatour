@@ -2,17 +2,17 @@ import type { Dictionary } from "./en";
 
 const de: Dictionary = {
   meta: {
-    siteName: "Lexora",
+    siteName: "LexArt",
     tagline: "Deutsch-Simulator und Kurse von A1 bis C1",
     description:
-      "Lexora baut die Goethe-Prüfung von A1 bis C1 Bildschirm für Bildschirm nach – mit Deutschkursen, KI-Sprechtraining und zweisprachigen Podcasts.",
+      "LexArt baut die Goethe-Prüfung von A1 bis C1 Bildschirm für Bildschirm nach – mit Deutschkursen, KI-Sprechtraining und zweisprachigen Podcasts.",
     seo: {
       podcasts:
-        "Zweisprachige Podcasts zum Deutschlernen bei Lexora: kurze Folgen für Ihr Hörverstehen von A1 bis C1, mit Transkript und Wortschatz.",
+        "Zweisprachige Podcasts zum Deutschlernen bei LexArt: kurze Folgen für Ihr Hörverstehen von A1 bis C1, mit Transkript und Wortschatz.",
       plans:
-        "Lexora-Abos: Eine Zahlung öffnet alle Goethe-Prüfungssimulatoren, die Deutschkurse, das Sprechtraining mit KI und Premium-Podcasts.",
+        "LexArt-Abos: Eine Zahlung öffnet alle Goethe-Prüfungssimulatoren, die Deutschkurse, das Sprechtraining mit KI und Premium-Podcasts.",
       about:
-        "Lexora ist ein Deutsch-Simulator, der die Goethe-Prüfung von A1 bis C1 nachbaut – mit Kursen, Sprechtraining mit KI und Podcasts.",
+        "LexArt ist ein Deutsch-Simulator, der die Goethe-Prüfung von A1 bis C1 nachbaut – mit Kursen, Sprechtraining mit KI und Podcasts.",
     },
   },
   nav: {
@@ -37,7 +37,7 @@ const de: Dictionary = {
     close: "Schließen",
   },
   hero: {
-    eyebrow: "Lexora · Deutsch-Simulator, A1 → C1",
+    eyebrow: "LexArt · Deutsch-Simulator, A1 → C1",
     titleTop: "Ein Deutsch-Simulator,",
     titleAccent: "der sich wie das Original verhält",
     subtitle:
@@ -73,7 +73,7 @@ const de: Dictionary = {
       latest: "Neueste Folgen",
     },
     method: {
-      title: "So funktioniert Lexora",
+      title: "So funktioniert LexArt",
       subtitle: "Vier Schritte, kein Rätselraten",
       steps: [
         { title: "Niveau bestimmen", body: "Kostenloser Einstufungstest mit GER-Einschätzung in 20 Minuten." },
@@ -85,12 +85,12 @@ const de: Dictionary = {
     teachers: { title: "Ihre Lehrkräfte", subtitle: "Muttersprachler und Prüfungsexperten" },
     topLearners: {
       title: "Top-Lernende",
-      eyebrow: "Lexora Ehrentafel",
-      subtitle: "Die drei Lernenden mit den größten Fortschritten in diesem Monat – ausgewählt vom Lexora-Lehrteam.",
+      eyebrow: "LexArt Ehrentafel",
+      subtitle: "Die drei Lernenden mit den größten Fortschritten in diesem Monat – ausgewählt vom LexArt-Lehrteam.",
       lessons: "Lektionen",
       exams: "bestandene Prüfungen",
       average: "Durchschnitt",
-      fallbackName: "Lexora-Lernende:r",
+      fallbackName: "LexArt-Lernende:r",
       rank: "Platz",
     },
     testimonials: {
@@ -112,7 +112,7 @@ const de: Dictionary = {
     title: "Kurse",
     subtitle: "Vom ersten Wort bis zur akademischen Sicherheit",
     metaDescription:
-      "Deutschkurse von A1 bis C1 bei Lexora: Videolektionen, Sprechtraining mit KI und Vorbereitung auf die Goethe-Prüfung – Schritt für Schritt mit Fortschrittsanzeige.",
+      "Deutschkurse von A1 bis C1 bei LexArt: Videolektionen, Sprechtraining mit KI und Vorbereitung auf die Goethe-Prüfung – Schritt für Schritt mit Fortschrittsanzeige.",
     filters: {
       title: "Filter",
       level: "Niveau",
@@ -479,16 +479,16 @@ const de: Dictionary = {
   },
   site: {
     about: {
-      title: "Über Lexora",
+      title: "Über LexArt",
       subtitle: "Warum ein Deutsch-Simulator, und wer dahintersteht",
       intro:
-        "Lexora ist eine dreisprachige Deutsch-Akademie mit einer einfachen Idee: Am Prüfungstag sollte man nicht erst herausfinden, ob man bereit ist. Man findet es vorher heraus — in einem Simulator, der sich genau wie das Original verhält.",
+        "LexArt ist eine dreisprachige Deutsch-Akademie mit einer einfachen Idee: Am Prüfungstag sollte man nicht erst herausfinden, ob man bereit ist. Man findet es vorher heraus — in einem Simulator, der sich genau wie das Original verhält.",
       missionTitle: "Wofür wir da sind",
       mission:
-        "Die meisten Lernenden scheitern an einer Goethe-Prüfung nicht am Deutsch, sondern am Format. Lexora nimmt diese Überraschung heraus. Jedes Modul — Lesen, Hören, Schreiben, Sprechen — ist Bildschirm für Bildschirm und Timer für Timer nachgebaut.",
-      storyTitle: "Wie Lexora entstand",
+        "Die meisten Lernenden scheitern an einer Goethe-Prüfung nicht am Deutsch, sondern am Format. LexArt nimmt diese Überraschung heraus. Jedes Modul — Lesen, Hören, Schreiben, Sprechen — ist Bildschirm für Bildschirm und Timer für Timer nachgebaut.",
+      storyTitle: "Wie LexArt entstand",
       story:
-        "Lexora entstand aus einem Ärgernis: Kandidatinnen und Kandidaten zahlten für eine teure Prüfung, nur um dort zum ersten Mal die Oberfläche zu sehen. Wir haben den Simulator gebaut, den wir uns gewünscht hätten, und darum herum die Kurse, die Podcasts und den KI-Sprechpartner gestellt.",
+        "LexArt entstand aus einem Ärgernis: Kandidatinnen und Kandidaten zahlten für eine teure Prüfung, nur um dort zum ersten Mal die Oberfläche zu sehen. Wir haben den Simulator gebaut, den wir uns gewünscht hätten, und darum herum die Kurse, die Podcasts und den KI-Sprechpartner gestellt.",
       valuesTitle: "Woran wir festhalten",
       values: [
         { title: "Echtes Format, keine Nachahmung", body: "Unsere Simulatoren folgen dem offiziellen Modellsatz Aufgabe für Aufgabe — mit denselben Regeln für Audiowiederholungen und Navigation." },
@@ -496,13 +496,13 @@ const de: Dictionary = {
         { title: "Drei Sprachen, eine Akademie", body: "Persisch, Deutsch und Englisch überall — Oberfläche, Transkripte und KI-Feedback inklusive." },
         { title: "Sprechen ist nicht optional", body: "„Deutsch im Kontext“ setzt Sie in eine echte Szene, nimmt Ihre Antwort auf und bewertet sie wie eine Prüferin." },
       ],
-      statsTitle: "Lexora in Zahlen",
+      statsTitle: "LexArt in Zahlen",
       ctaTitle: "Testen Sie den Simulator, bevor Sie die Prüfung bezahlen",
       ctaBody: "Beginnen Sie mit einer vollständigen B2-Sitzung und sehen Sie genau, wo Sie stehen.",
       ctaButton: "Zu den Simulatoren",
     },
     contact: {
-      title: "Kontakt zu Lexora",
+      title: "Kontakt zu LexArt",
       subtitle: "Fragen zu Kursen, Prüfungen oder Ihrem Konto",
       intro:
         "Schreiben Sie uns — es antwortet ein Mensch. In der Regel innerhalb eines Werktags.",
@@ -529,7 +529,7 @@ const de: Dictionary = {
       title: "Artikel zum Deutschlernen",
       subtitle: "Ausführliche Leitfäden zum Deutschlernen, zu Prüfungssimulatoren und zur Goethe-Anmeldung",
       intro:
-        "Praktische, ausführliche Leitfäden vom Team, das die Lexora-Simulatoren baut.",
+        "Praktische, ausführliche Leitfäden vom Team, das die LexArt-Simulatoren baut.",
       readingTime: "Min. Lesezeit",
       updated: "Aktualisiert",
       toc: "Inhalt",

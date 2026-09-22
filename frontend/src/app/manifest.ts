@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 /** Lets phones "add to home screen" with the right name, icon and colours. */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Lexora · لکسورا",
-    short_name: "Lexora",
+    name: "LexArt · لکس آرت",
+    short_name: "LexArt",
     description: "سیمیلیتور زبان آلمانی و آموزش A1 تا C1",
     start_url: "/fa",
     display: "standalone",

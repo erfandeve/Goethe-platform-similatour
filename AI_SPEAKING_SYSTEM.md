@@ -1,7 +1,7 @@
 # AI German Speaking Teacher
 
 Video lessons paired with a spoken answer that an AI teacher transcribes, grades
-and corrects. Built into the existing Lexora platform — it reuses the current
+and corrects. Built into the existing LexArt platform — it reuses the current
 accounts, course catalogue and purchase/enrolment logic rather than replacing
 any of it.
 

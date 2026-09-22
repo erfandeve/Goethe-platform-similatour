@@ -31,8 +31,8 @@ export const revalidate = 300;
 const HOME_KEYWORDS: Record<string, string[]> = {
   fa: [
     "سیمیلیتور زبان آلمانی",
-    "لکسورا",
-    "Lexora",
+    "لکس آرت",
+    "LexArt",
     "شبیه ساز آزمون گوته",
     "آزمون آنلاین زبان آلمانی",
     "آموزش زبان آلمانی",
@@ -43,7 +43,7 @@ const HOME_KEYWORDS: Record<string, string[]> = {
   ],
   en: [
     "German language simulator",
-    "Lexora",
+    "LexArt",
     "Goethe exam simulator",
     "German exam practice online",
     "learn German A1 to C1",
@@ -51,7 +51,7 @@ const HOME_KEYWORDS: Record<string, string[]> = {
   ],
   de: [
     "Deutsch-Simulator",
-    "Lexora",
+    "LexArt",
     "Goethe-Prüfungssimulator",
     "Deutsch online üben",
     "Deutsch lernen A1 bis C1",
@@ -94,8 +94,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const organization = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    name: "Lexora",
-    alternateName: ["لکسورا", dict.meta.siteName],
+    name: "LexArt",
+    alternateName: Array.from(new Set(["لکس آرت", "لکس‌آرت", "Lex Art", "Lexart", dict.meta.siteName])),
     url: `${SITE_URL}/${locale}`,
     description: dict.meta.description,
     logo: `${SITE_URL}/icon-512.png`,
@@ -108,7 +108,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const website = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Lexora",
+    name: "LexArt",
     alternateName: dict.meta.siteName,
     url: `${SITE_URL}/${locale}`,
     inLanguage: locale,

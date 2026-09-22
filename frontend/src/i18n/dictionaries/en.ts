@@ -1,17 +1,17 @@
 // Not `as const`: the literal widening keeps fa.ts / de.ts assignable to this shape.
 const en = {
   meta: {
-    siteName: "Lexora",
+    siteName: "LexArt",
     tagline: "German exam simulator and A1–C1 courses",
     description:
-      "Lexora rebuilds the Goethe exam screen for screen from A1 to C1, with structured German courses, an AI speaking teacher and bilingual podcasts.",
+      "LexArt rebuilds the Goethe exam screen for screen from A1 to C1, with structured German courses, an AI speaking teacher and bilingual podcasts.",
     seo: {
       podcasts:
-        "Bilingual German-learning podcasts at Lexora: short episodes that train your listening from A1 to C1, with transcripts and vocabulary.",
+        "Bilingual German-learning podcasts at LexArt: short episodes that train your listening from A1 to C1, with transcripts and vocabulary.",
       plans:
-        "Lexora plans: one payment unlocks every Goethe exam simulator, the German courses, the AI speaking teacher and premium podcasts.",
+        "LexArt plans: one payment unlocks every Goethe exam simulator, the German courses, the AI speaking teacher and premium podcasts.",
       about:
-        "Lexora is a German language simulator that rebuilds the Goethe exam from A1 to C1, with structured courses, AI speaking practice and podcasts.",
+        "LexArt is a German language simulator that rebuilds the Goethe exam from A1 to C1, with structured courses, AI speaking practice and podcasts.",
     },
   },
   nav: {
@@ -36,7 +36,7 @@ const en = {
     close: "Close",
   },
   hero: {
-    eyebrow: "Lexora · German exam simulator, A1 → C1",
+    eyebrow: "LexArt · German exam simulator, A1 → C1",
     titleTop: "A German exam simulator",
     titleAccent: "that behaves like the real thing",
     subtitle:
@@ -72,7 +72,7 @@ const en = {
       latest: "Latest episodes",
     },
     method: {
-      title: "How Lexora works",
+      title: "How LexArt works",
       subtitle: "Four steps, no guesswork",
       steps: [
         { title: "Find your level", body: "Take the free placement test and get a CEFR estimate in 20 minutes." },
@@ -84,12 +84,12 @@ const en = {
     teachers: { title: "Your teachers", subtitle: "Native speakers and exam specialists" },
     topLearners: {
       title: "Top learners",
-      eyebrow: "Lexora honour roll",
-      subtitle: "The three learners who made the most progress this month, chosen by the Lexora teaching team.",
+      eyebrow: "LexArt honour roll",
+      subtitle: "The three learners who made the most progress this month, chosen by the LexArt teaching team.",
       lessons: "lessons done",
       exams: "exams passed",
       average: "average score",
-      fallbackName: "Lexora learner",
+      fallbackName: "LexArt learner",
       rank: "Rank",
     },
     testimonials: {
@@ -111,7 +111,7 @@ const en = {
     title: "Courses",
     subtitle: "From your first word to academic fluency",
     metaDescription:
-      "German courses from A1 to C1 at Lexora: video lessons, AI speaking practice and Goethe exam preparation, step by step with progress tracking.",
+      "German courses from A1 to C1 at LexArt: video lessons, AI speaking practice and Goethe exam preparation, step by step with progress tracking.",
     filters: {
       title: "Filters",
       level: "Level",
@@ -478,16 +478,16 @@ const en = {
   },
   site: {
     about: {
-      title: "About Lexora",
+      title: "About LexArt",
       subtitle: "Why a German simulator, and who builds it",
       intro:
-        "Lexora is a trilingual German academy built around one idea: you do not find out whether you are ready on exam day. You find out beforehand, in a simulator that behaves exactly like the real thing.",
+        "LexArt is a trilingual German academy built around one idea: you do not find out whether you are ready on exam day. You find out beforehand, in a simulator that behaves exactly like the real thing.",
       missionTitle: "What we are for",
       mission:
-        "Most learners fail a Goethe exam not because their German is weak, but because the format surprises them. Lexora removes that surprise. Every module — Lesen, Hören, Schreiben, Sprechen — is rebuilt screen for screen, timer for timer.",
-      storyTitle: "How Lexora started",
+        "Most learners fail a Goethe exam not because their German is weak, but because the format surprises them. LexArt removes that surprise. Every module — Lesen, Hören, Schreiben, Sprechen — is rebuilt screen for screen, timer for timer.",
+      storyTitle: "How LexArt started",
       story:
-        "Lexora grew out of a simple frustration: candidates were paying for an expensive exam sitting to discover how the interface worked. We built the simulator we wished we had had, then added the courses, the podcasts and the AI speaking partner around it.",
+        "LexArt grew out of a simple frustration: candidates were paying for an expensive exam sitting to discover how the interface worked. We built the simulator we wished we had had, then added the courses, the podcasts and the AI speaking partner around it.",
       valuesTitle: "What we hold to",
       values: [
         { title: "Real format, not a lookalike", body: "Our simulators follow the official Modellsatz task by task, with the same rules on audio replays and navigation." },
@@ -495,13 +495,13 @@ const en = {
         { title: "Three languages, one academy", body: "Persian, German and English throughout — including the interface, the transcripts and the AI feedback." },
         { title: "Speaking is not optional", body: "German in Context puts you in a real scene, records your answer and grades it like an examiner would." },
       ],
-      statsTitle: "Lexora in numbers",
+      statsTitle: "LexArt in numbers",
       ctaTitle: "Try the simulator before you pay for the exam",
       ctaBody: "Start with a full B2 sitting and see exactly where you stand.",
       ctaButton: "Open the simulators",
     },
     contact: {
-      title: "Contact Lexora",
+      title: "Contact LexArt",
       subtitle: "Questions about courses, exams or your account",
       intro:
         "Write to us and a real person answers. We usually reply within one working day.",
@@ -528,7 +528,7 @@ const en = {
       title: "German learning articles",
       subtitle: "Long-form guides on studying German, exam simulators and Goethe registration",
       intro:
-        "Practical, detailed guides written by the team that builds the Lexora simulators.",
+        "Practical, detailed guides written by the team that builds the LexArt simulators.",
       readingTime: "min read",
       updated: "Updated",
       toc: "On this page",

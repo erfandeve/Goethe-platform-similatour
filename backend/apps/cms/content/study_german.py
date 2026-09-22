@@ -18,9 +18,9 @@ META = {
         "Deutsch lernen: der vollständige Leitfaden von null bis C1",
     ),
     "meta_title": tt(
-        "نحوه خواندن زبان آلمانی — راهنمای کامل صفر تا C1 | لکسورا",
-        "How to Study German — Complete Guide, Zero to C1 | Lexora",
-        "Deutsch lernen — vollständiger Leitfaden von null bis C1 | Lexora",
+        "نحوه خواندن زبان آلمانی — راهنمای کامل صفر تا C1 | لکس آرت",
+        "How to Study German — Complete Guide, Zero to C1 | LexArt",
+        "Deutsch lernen — vollständiger Leitfaden von null bis C1 | LexArt",
     ),
     "meta_description": tt(
         "نحوه خواندن زبان آلمانی از صفر تا C1: برنامه هفتگی، روش یادگیری گرامر و واژگان، تقویت "
@@ -33,11 +33,11 @@ META = {
     "focus_keyword": tt("نحوه خواندن زبان آلمانی", "how to study German", "Deutsch lernen"),
     "keywords": tt(
         "نحوه خواندن زبان آلمانی, یادگیری زبان آلمانی, آموزش زبان آلمانی از صفر, چطور آلمانی یاد "
-        "بگیریم, برنامه یادگیری زبان آلمانی, گرامر زبان آلمانی, سطح A1 تا C1, لکسورا, Lexora",
+        "بگیریم, برنامه یادگیری زبان آلمانی, گرامر زبان آلمانی, سطح A1 تا C1, لکس آرت, LexArt",
         "how to study German, learn German from scratch, German study plan, German grammar order, "
-        "German vocabulary method, A1 to C1, Lexora",
+        "German vocabulary method, A1 to C1, LexArt",
         "Deutsch lernen, Deutsch von null lernen, Deutsch Lernplan, deutsche Grammatik Reihenfolge, "
-        "Wortschatz Deutsch, A1 bis C1, Lexora",
+        "Wortschatz Deutsch, A1 bis C1, LexArt",
     ),
     "excerpt": tt(
         "اگر می‌خواهی بدانی نحوه خواندن زبان آلمانی از کجا شروع می‌شود و تا C1 چه مسیری دارد، این "

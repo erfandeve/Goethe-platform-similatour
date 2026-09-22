@@ -1,12 +1,12 @@
-# /etc/systemd/system/lexora-web.service
+# /etc/systemd/system/lexart-web.service
 [Unit]
-Description=Lexora web (Next.js standalone)
-After=network.target lexora-api.service
+Description=LexArt web (Next.js standalone)
+After=network.target lexart-api.service
 
 [Service]
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/lexora/web
+WorkingDirectory=/var/www/lexart/web
 Environment=NODE_ENV=production
 Environment=PORT=3000
 Environment=HOSTNAME=127.0.0.1

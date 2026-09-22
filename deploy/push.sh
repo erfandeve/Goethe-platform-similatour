@@ -15,22 +15,22 @@ sync() {
   return 1
 }
 
-ssh "$SERVER" 'mkdir -p /var/www/lexora/web /var/www/lexora/backend /var/www/lexora/deploy'
-sync "$ROOT/deploy/out/web/" "$SERVER:/var/www/lexora/web/"
-sync --exclude out --exclude frontend.env "$ROOT/deploy/" "$SERVER:/var/www/lexora/deploy/"
+ssh "$SERVER" 'mkdir -p /var/www/lexart/web /var/www/lexart/backend /var/www/lexart/deploy'
+sync "$ROOT/deploy/out/web/" "$SERVER:/var/www/lexart/web/"
+sync --exclude out --exclude frontend.env "$ROOT/deploy/" "$SERVER:/var/www/lexart/deploy/"
 sync --exclude .venv --exclude media --exclude .env --exclude __pycache__ \
-  "$ROOT/backend/" "$SERVER:/var/www/lexora/backend/"
+  "$ROOT/backend/" "$SERVER:/var/www/lexart/backend/"
 
 ssh "$SERVER" 'set -e
-  cd /var/www/lexora/backend
+  cd /var/www/lexart/backend
   .venv/bin/pip install -q -r requirements.txt
   mkdir -p media
-  chown -R www-data:www-data /var/www/lexora
-  if ! systemctl list-unit-files lexora-api.service >/dev/null 2>&1; then
+  chown -R www-data:www-data /var/www/lexart
+  if ! systemctl list-unit-files lexart-api.service >/dev/null 2>&1; then
     echo "Uploaded. Services are not installed yet — continue with DEPLOY.md step 4."
     exit 0
   fi
-  systemctl restart lexora-api lexora-web
+  systemctl restart lexart-api lexart-web
   sleep 4
   curl -fsS http://127.0.0.1:8010/api/health/ >/dev/null && echo "API ok"
   curl -fsS -o /dev/null http://127.0.0.1:3000/fa && echo "Web ok"'

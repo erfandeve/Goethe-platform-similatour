@@ -15,7 +15,7 @@ Structure taken from the published Modellsatz (8. Auflage, 2024):
             Teil 2             ~30 words with a greeting and three points
 
 Every Teil opens with a worked example numbered 0, as the real paper does. The
-wording is Lexora's own; only the format follows the Goethe model set.
+wording is LexArt's own; only the format follows the Goethe model set.
 """
 
 from ._build import TRUE_FALSE

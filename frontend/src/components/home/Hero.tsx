@@ -79,7 +79,7 @@ export function Hero({
               optimiser falls back to JPEG for browsers that do not advertise
               WebP, and JPEG turns the transparent edge solid black. */}
           <Image
-            src="/media/hero/lexora-hero.webp"
+            src="/media/hero/lexart-hero.webp"
             alt={dict.hero.imageAlt}
             fill
             priority

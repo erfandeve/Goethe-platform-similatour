@@ -62,7 +62,7 @@ def register(request):
 
     Notification(
         user=user,
-        title="Willkommen bei Lexora!",
+        title="Willkommen bei LexArt!",
         body="Your account is ready. Take the free placement test to find your level.",
         kind="system",
         link="/exams",

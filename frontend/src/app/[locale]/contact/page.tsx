@@ -9,16 +9,17 @@ import { buildMetadata, JsonLd, SITE_URL } from "@/lib/seo";
 
 export const revalidate = 3600;
 
-export const CONTACT_EMAIL = "support@lexora.academy";
+// Set NEXT_PUBLIC_CONTACT_EMAIL to the real inbox on the live domain.
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "support@lexart.academy";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
 const KEYWORDS: Record<string, string[]> = {
-  fa: ["تماس با ما", "پشتیبانی لکسورا", "Lexora", "لکسورا", "سیمیلیتور زبان آلمانی"],
-  en: ["contact Lexora", "Lexora support", "German language simulator", "Goethe exam help"],
-  de: ["Kontakt Lexora", "Lexora Support", "Deutsch-Simulator", "Goethe-Prüfung Hilfe"],
+  fa: ["تماس با ما", "پشتیبانی لکس آرت", "LexArt", "لکس آرت", "سیمیلیتور زبان آلمانی"],
+  en: ["contact LexArt", "LexArt support", "German language simulator", "Goethe exam help"],
+  de: ["Kontakt LexArt", "LexArt Support", "Deutsch-Simulator", "Goethe-Prüfung Hilfe"],
 };
 
 export async function generateMetadata({
@@ -56,7 +57,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       inLanguage: locale,
       mainEntity: {
         "@type": "Organization",
-        name: "Lexora",
+        name: "LexArt",
         url: `${SITE_URL}/${locale}`,
         email: CONTACT_EMAIL,
         contactPoint: [
@@ -99,7 +100,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       <JsonLd data={schema} />
 
       <Section className="pb-10">
-        <SectionHeading as="h1" eyebrow="Lexora" title={t.title} subtitle={t.subtitle} />
+        <SectionHeading as="h1" eyebrow="LexArt" title={t.title} subtitle={t.subtitle} />
         <p className="-mt-6 max-w-2xl text-lg leading-9 text-mist-300">{t.intro}</p>
       </Section>
 

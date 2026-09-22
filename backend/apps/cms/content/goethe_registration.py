@@ -18,9 +18,9 @@ META = {
         "Anmeldung zur Goethe-Prüfung: eine Schritt-für-Schritt-Anleitung",
     ),
     "meta_title": tt(
-        "نحوه ثبت نام آزمون گوته — راهنمای گام‌به‌گام | لکسورا",
-        "How to Register for a Goethe Exam — Step by Step | Lexora",
-        "Goethe-Prüfung anmelden — Schritt für Schritt | Lexora",
+        "نحوه ثبت نام آزمون گوته — راهنمای گام‌به‌گام | لکس آرت",
+        "How to Register for a Goethe Exam — Step by Step | LexArt",
+        "Goethe-Prüfung anmelden — Schritt für Schritt | LexArt",
     ),
     "meta_description": tt(
         "نحوه ثبت نام آزمون گوته از انتخاب سطح تا روز آزمون: مدارک لازم، هزینه، انتخاب مرکز، "
@@ -37,11 +37,11 @@ META = {
     ),
     "keywords": tt(
         "نحوه ثبت نام آزمون گوته, ثبت نام آزمون گوته, آزمون گوته, هزینه آزمون گوته, مدارک آزمون "
-        "گوته, آزمون گوته B1, آزمون گوته B2, مرکز آزمون گوته, لکسورا, Lexora",
+        "گوته, آزمون گوته B1, آزمون گوته B2, مرکز آزمون گوته, لکس آرت, LexArt",
         "how to register for a Goethe exam, Goethe exam registration, Goethe-Zertifikat, Goethe "
-        "exam fee, Goethe exam documents, Goethe B1, Goethe B2, exam centre, Lexora",
+        "exam fee, Goethe exam documents, Goethe B1, Goethe B2, exam centre, LexArt",
         "Goethe-Prüfung anmelden, Anmeldung Goethe-Zertifikat, Goethe-Prüfungsgebühr, Unterlagen "
-        "Goethe-Prüfung, Goethe B1, Goethe B2, Prüfungszentrum, Lexora",
+        "Goethe-Prüfung, Goethe B1, Goethe B2, Prüfungszentrum, LexArt",
     ),
     "excerpt": tt(
         "نحوه ثبت نام آزمون گوته از انتخاب سطح شروع می‌شود، نه از باز کردن سایت. این راهنما کل مسیر "

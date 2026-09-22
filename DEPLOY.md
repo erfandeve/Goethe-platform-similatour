@@ -1,4 +1,4 @@
-# استقرار لکسورا روی سرور و دامنه واقعی
+# استقرار لکس آرت روی سرور و دامنه واقعی
 
 این راهنما برای یک **سرور مجازی اوبونتو (VPS)** نوشته شده، همان روشی که پروژه‌های دیگرت هم با آن بالا آمده‌اند:
 nginx جلوی سایت، دو سرویس systemd (سایت Next.js و API جنگو)، MongoDB روی همان سرور و گواهی SSL رایگان با certbot.
@@ -7,8 +7,8 @@ nginx جلوی سایت، دو سرویس systemd (سایت Next.js و API جن�
 
 | فایل | کارش |
 |---|---|
-| `nginx-lexora.conf` | تنظیم nginx: انتقال www به دامنه اصلی، سرو کردن `/media`، ارسال بقیه درخواست‌ها به سایت |
-| `lexora-api.service` / `lexora-web.service` | سرویس‌های systemd |
+| `nginx-lexart.conf` | تنظیم nginx: انتقال www به دامنه اصلی، سرو کردن `/media`، ارسال بقیه درخواست‌ها به سایت |
+| `lexart-api.service` / `lexart-web.service` | سرویس‌های systemd |
 | `backend.env.example` | متغیرهای سرور (جنگو) |
 | `frontend.env.example` | متغیرهای بیلد سایت (روی لپ‌تاپ خودت) |
 | `build.sh` | بیلد سایت روی لپ‌تاپ |
@@ -39,13 +39,13 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 export UV_PYTHON_INSTALL_DIR=/opt/uv-python && ~/.local/bin/uv python install 3.13
 chmod -R a+rX /opt/uv-python
 
-mkdir -p /var/www/lexora/{backend,web}
-cd /var/www/lexora/backend && ~/.local/bin/uv venv --python 3.13 .venv
+mkdir -p /var/www/lexart/{backend,web}
+cd /var/www/lexart/backend && ~/.local/bin/uv venv --python 3.13 .venv
 
 ufw allow OpenSSH && ufw allow 'Nginx Full' && ufw enable
 ```
 
-فایل `/var/www/lexora/backend/.env` را از روی `deploy/backend.env.example` بساز و پر کن:
+فایل `/var/www/lexart/backend/.env` را از روی `deploy/backend.env.example` بساز و پر کن:
 
 - **`SECRET_KEY`**: یک رشته تصادفی بلند (دستورش داخل همان فایل هست). اگر خالی یا کوتاه باشد، API عمداً روشن نمی‌شود، چون با کلید معلوم هر کسی می‌تواند توکن ادمین جعل کند.
 - **`ADMIN_EMAIL` و `ADMIN_PASSWORD`**: حساب ادمین واقعی تو. رمز حداقل ۱۲ کاراکتر باشد.
@@ -67,11 +67,11 @@ SERVER=root@IP-سرور bash deploy/push.sh
 ## ۴) اولین راه‌اندازی (فقط یک بار، روی سرور)
 
 ```bash
-cd /var/www/lexora/backend
+cd /var/www/lexart/backend
 sudo -u www-data .venv/bin/python manage.py bootstrap --if-empty
 
-cp /var/www/lexora/deploy/lexora-*.service /etc/systemd/system/
-systemctl daemon-reload && systemctl enable --now lexora-api lexora-web
+cp /var/www/lexart/deploy/lexart-*.service /etc/systemd/system/
+systemctl daemon-reload && systemctl enable --now lexart-api lexart-web
 ```
 
 `bootstrap` روی سرور (با `DEBUG=False`) این کارها را انجام می‌دهد:
@@ -83,8 +83,8 @@ systemctl daemon-reload && systemctl enable --now lexora-api lexora-web
 بعد nginx و SSL:
 
 ```bash
-sed 's/example.com/دامنه‌ات/g' /var/www/lexora/deploy/nginx-lexora.conf > /etc/nginx/sites-available/lexora
-ln -s /etc/nginx/sites-available/lexora /etc/nginx/sites-enabled/ && rm -f /etc/nginx/sites-enabled/default
+sed 's/example.com/دامنه‌ات/g' /var/www/lexart/deploy/nginx-lexart.conf > /etc/nginx/sites-available/lexart
+ln -s /etc/nginx/sites-available/lexart /etc/nginx/sites-enabled/ && rm -f /etc/nginx/sites-enabled/default
 nginx -t && systemctl reload nginx
 certbot --nginx -d دامنه‌ات -d www.دامنه‌ات --redirect
 ```
@@ -92,8 +92,8 @@ certbot --nginx -d دامنه‌ات -d www.دامنه‌ات --redirect
 و بکاپ شبانه:
 
 ```bash
-cp /var/www/lexora/deploy/backup.sh /usr/local/bin/lexora-backup && chmod +x /usr/local/bin/lexora-backup
-(crontab -l; echo "30 2 * * * /usr/local/bin/lexora-backup") | crontab -
+cp /var/www/lexart/deploy/backup.sh /usr/local/bin/lexart-backup && chmod +x /usr/local/bin/lexart-backup
+(crontab -l; echo "30 2 * * * /usr/local/bin/lexart-backup") | crontab -
 ```
 
 ## ۵) بعد از بالا آمدن سایت: چک‌لیست سئو
@@ -102,9 +102,9 @@ cp /var/www/lexora/deploy/backup.sh /usr/local/bin/lexora-backup && chmod +x /us
    - اگر روش «HTML tag» را انتخاب کردی، مقدار `content` را در `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` بگذار، دوباره بیلد و آپلود کن.
    - بعد در بخش Sitemaps آدرس `https://دامنه/sitemap.xml` را ثبت کن.
 2. **Bing Webmaster Tools**: همین کار را انجام بده (`NEXT_PUBLIC_BING_SITE_VERIFICATION`). می‌توانی از Search Console هم ایمپورت کنی.
-3. لینک صفحه‌های اینستاگرام، تلگرام و یوتیوب را در `NEXT_PUBLIC_SAME_AS` بگذار تا گوگل آن‌ها را به برند لکسورا وصل کند.
+3. لینک صفحه‌های اینستاگرام، تلگرام و یوتیوب را در `NEXT_PUBLIC_SAME_AS` بگذار تا گوگل آن‌ها را به برند لکس آرت وصل کند.
 4. **آزمون نتایج غنی**: چند صفحه، مثل یک دوره، یک آزمون و یک مقاله، را در https://search.google.com/test/rich-results تست کن.
-5. **پیش‌نمایش اشتراک‌گذاری**: لینک سایت را در تلگرام یا واتس‌اپ بفرست. باید تصویر لکسورا به زبان همان صفحه نمایش داده شود.
+5. **پیش‌نمایش اشتراک‌گذاری**: لینک سایت را در تلگرام یا واتس‌اپ بفرست. باید تصویر لکس آرت به زبان همان صفحه نمایش داده شود.
 6. **محتوای نمونه**: پادکست‌ها و بخشی از متن دوره‌ها هنوز محتوای نمونه هستند. قبل از انتشار عمومی از پنل ادمین با محتوای واقعی عوضشان کن. همه ۲۴ اپیزود پادکست توضیح یکسان دارند.
 
 ## کارهایی که از قبل در کد انجام شده

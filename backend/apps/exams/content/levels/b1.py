@@ -21,7 +21,7 @@ Structure taken from the published Modellsatz Erwachsene (2. Auflage, 2015):
             3  a polite email to a teacher, ~40 words                  15 min
 
 Every Teil carries its worked example (Beispiel 0), as the paper does. The
-wording is Lexora's own; only the format follows the model set.
+wording is LexArt's own; only the format follows the model set.
 """
 
 from ._build import TRUE_FALSE

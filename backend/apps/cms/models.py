@@ -24,7 +24,7 @@ from apps.core.i18n import TranslatedText
 # What a home section looks like on the page. The kind drives the layout only;
 # every kind reads from the same fields, so switching one does not lose content.
 SECTION_KINDS = (
-    "text_image",  # prose beside a picture — the "About Lexora" block
+    "text_image",  # prose beside a picture — the "About LexArt" block
     "rich_text",   # a wide column of prose with optional bullets
     "features",    # a grid of small cards built from `items`
     "stats",       # `items` rendered as value + label

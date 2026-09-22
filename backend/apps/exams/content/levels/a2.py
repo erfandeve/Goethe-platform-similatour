@@ -22,7 +22,7 @@ Structure taken from the published Modellsatz Erwachsene (2016, Vs5.1):
             Teil 2  a semi-formal email, 30–40 words, three points          18 min
 
 Worked examples (Beispiel 0) appear where the paper prints them: Lesen 1, 2
-and 4, Hören 2 and 4. The wording is Lexora's own; only the format follows
+and 4, Hören 2 and 4. The wording is LexArt's own; only the format follows
 the model set. `manage.py make_a2_bilder` draws the Hören pictures and
 `manage.py make_hoeren_audio --only a2` renders the recordings.
 """
