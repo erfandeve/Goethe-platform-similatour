@@ -11,6 +11,7 @@ import { COUPON_STATUS_LABELS, COUPON_TARGET_LABELS } from "@/lib/admin";
 import { formatDate, formatNumber, formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
+import { JalaliDateTime } from "./JalaliDateTime";
 import { useAdmin } from "./useAdmin";
 import { Modal, Panel, Toast } from "./ui";
 
@@ -39,23 +40,12 @@ const STATUS_TONE: Record<AdminCoupon["status"], string> = {
   used_up: "bg-amber-400/12 text-amber-300",
 };
 
-/** `<input type="datetime-local">` speaks local time without a zone. */
-function toLocalInput(iso: string | null) {
-  if (!iso) return "";
-  const date = new Date(iso);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
-
-function fromLocalInput(value: string) {
-  return value ? new Date(value).toISOString() : null;
-}
-
+/** End of the day, N days from now, as ISO. Dates are kept as ISO strings throughout. */
 function daysFromNow(days: number) {
   const date = new Date();
   date.setDate(date.getDate() + days);
   date.setHours(23, 59, 0, 0);
-  return toLocalInput(date.toISOString());
+  return date.toISOString();
 }
 
 const blank = (): Draft => ({
@@ -81,8 +71,8 @@ const toDraft = (row: AdminCoupon): Draft => ({
   max_discount_toman: row.max_discount ? String(row.max_discount / 10) : "",
   min_total_toman: row.min_total ? String(row.min_total / 10) : "",
   applies_to: row.applies_to,
-  starts_at: toLocalInput(row.starts_at),
-  expires_at: toLocalInput(row.expires_at),
+  starts_at: row.starts_at ?? "",
+  expires_at: row.expires_at ?? "",
   max_uses: String(row.max_uses),
   per_user_limit: String(row.per_user_limit),
   is_active: row.is_active,
@@ -128,8 +118,8 @@ export function CouponsManager({
       max_discount: draft.kind === "percent" ? rial(draft.max_discount_toman) : 0,
       min_total: rial(draft.min_total_toman),
       applies_to: draft.applies_to,
-      starts_at: fromLocalInput(draft.starts_at),
-      expires_at: fromLocalInput(draft.expires_at),
+      starts_at: draft.starts_at || null,
+      expires_at: draft.expires_at || null,
       max_uses: Number(draft.max_uses) || 0,
       per_user_limit: Number(draft.per_user_limit) || 0,
       is_active: draft.is_active,
@@ -308,21 +298,20 @@ export function CouponsManager({
 
             <div className="rounded-2xl border border-white/10 p-4">
               <p className="mb-3 text-sm font-medium">مدت اعتبار</p>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="از" hint={draft.starts_at ? formatDate(new Date(draft.starts_at).toISOString(), locale) : "خالی = از همین الان"}>
-                  <Input
-                    type="datetime-local"
-                    dir="ltr"
+              <div className="space-y-4">
+                <Field label="از" hint="خالی = از همین الان">
+                  <JalaliDateTime
                     value={draft.starts_at}
-                    onChange={(e) => setDraft({ ...draft, starts_at: e.target.value })}
+                    defaultTime="00:00"
+                    emptyLabel="از همین الان — برای تعیین تاریخ شروع بزن"
+                    onChange={(starts_at) => setDraft({ ...draft, starts_at })}
                   />
                 </Field>
-                <Field label="تا" hint={draft.expires_at ? formatDate(new Date(draft.expires_at).toISOString(), locale) : "خالی = بدون انقضا"}>
-                  <Input
-                    type="datetime-local"
-                    dir="ltr"
+                <Field label="تا" hint="خالی = بدون انقضا">
+                  <JalaliDateTime
                     value={draft.expires_at}
-                    onChange={(e) => setDraft({ ...draft, expires_at: e.target.value })}
+                    emptyLabel="بدون انقضا — برای تعیین تاریخ پایان بزن"
+                    onChange={(expires_at) => setDraft({ ...draft, expires_at })}
                   />
                 </Field>
               </div>
