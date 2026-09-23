@@ -64,7 +64,7 @@ const de: Dictionary = {
       simulators: "Vollständige Simulatoren",
       frequent: "Häufigkeitssets",
       frequentNote: "Wiederkehrende Aufgaben aus aktuellen B2- und C1-Prüfungen",
-      cta: "Alle Prüfungen",
+      cta: "Alle Deutsch-Simulatoren",
     },
     podcasts: {
       title: "Hören Sie sich zur Sicherheit",
@@ -153,6 +153,15 @@ const de: Dictionary = {
     },
   },
   exams: {
+    metaDescription:
+      "Der LexArt Deutsch-Simulator baut die Goethe-Prüfung von A1 bis C1 nach — gleiche Bildschirme, gleicher Timer, gleiche Regeln — mit Auswertung pro Fertigkeit.",
+    faqTitle: "Häufige Fragen zum Deutsch-Simulator",
+    faq: [
+      { q: "Was ist ein Deutsch-Simulator?", a: "Ein Deutsch-Simulator ist eine Modellprüfung, die die echte Prüfungsumgebung nachbaut: dieselben Bildschirme, derselbe Timer, dieselben Regeln. Bei LexArt verhält sich jedes Modul — Lesen, Hören und Schreiben — wie die digitale Goethe-Prüfung: Aufnahmen laufen nur so oft wie erlaubt, und im Hörverstehen gibt es keinen Weg zurück." },
+      { q: "Welche Niveaus deckt der Simulator ab?", a: "Für jedes Niveau von A1 bis C1 gibt es einen vollständigen Simulator nach dem offiziellen Goethe-Modellsatz, dazu Sätze mit häufigen Aufgaben für B2 und C1." },
+      { q: "Was bekomme ich nach der Prüfung?", a: "Sofort eine Auswertung pro Fertigkeit: Punkte je Modul, Anzahl der richtigen Antworten und zu jeder Aufgabe eine Erklärung auf Persisch, Englisch und Deutsch." },
+      { q: "Funktioniert der Simulator auf dem Handy?", a: "Ja. Er läuft auf Handy, Tablet und Computer; auf dem Handy wird das zweispaltige Layout zu zwei Tabs — Text und Aufgaben." },
+    ],
     title: "Deutsch-Prüfungssimulatoren",
     subtitle: "Unter echten Bedingungen proben und gezielt nachbessern",
     simulators: { title: "Niveau-Simulatoren", body: "Eine vollständige Musterprüfung pro GER-Niveau, A1 bis C1." },

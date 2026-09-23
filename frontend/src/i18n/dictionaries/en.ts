@@ -63,7 +63,7 @@ const en = {
       simulators: "Full simulators",
       frequent: "High-frequency sets",
       frequentNote: "Recycled questions from recent B2 and C1 sittings",
-      cta: "All exams",
+      cta: "All German exam simulators",
     },
     podcasts: {
       title: "Listen your way to fluency",
@@ -152,6 +152,15 @@ const en = {
     },
   },
   exams: {
+    metaDescription:
+      "The LexArt German language simulator rebuilds the Goethe exam from A1 to C1 — same screens, timer and rules — and gives you a per-skill report after every sitting.",
+    faqTitle: "Frequently asked questions about the German language simulator",
+    faq: [
+      { q: "What is a German language simulator?", a: "A German language simulator is a mock exam that rebuilds the real test environment: the same screens, the same timer and the same rules. At LexArt every Lesen, Hören and Schreiben module behaves like the digital Goethe exam — recordings play only as often as the exam allows, and the listening module has no way back to a previous question." },
+      { q: "Which levels does the LexArt simulator cover?", a: "There is a full simulator for every level from A1 to C1, built to the official Goethe Modellsatz, plus high-frequency question sets for B2 and C1." },
+      { q: "What do I get after the exam?", a: "A per-skill report straight away: your score for each module, how many answers were right, and an explanation for every question in Persian, English and German." },
+      { q: "Does the simulator work on a phone?", a: "Yes. It runs on phones, tablets and desktops; on a phone the two-column exam layout becomes two tabs, one for the text and one for the questions." },
+    ],
     title: "German exam simulators",
     subtitle: "Rehearse under real conditions, then fix exactly what broke",
     simulators: { title: "Level simulators", body: "One full mock exam per CEFR level, A1 through C1." },

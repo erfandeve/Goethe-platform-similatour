@@ -27,7 +27,7 @@ export async function generateMetadata({
   const dict = await getDictionary(locale);
   return buildMetadata({
     title: dict.exams.title,
-    description: dict.exams.subtitle,
+    description: dict.exams.metaDescription,
     path: "/exams",
     locale,
     siteName: dict.meta.siteName,
@@ -62,9 +62,30 @@ export default async function ExamsPage({ params }: { params: Promise<{ locale: 
     })),
   };
 
+  // The questions people actually ask about a German exam simulator: content
+  // for the reader, and FAQ structured data for the search result.
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: dict.exams.faq.map((entry) => ({
+      "@type": "Question",
+      name: entry.q,
+      acceptedAnswer: { "@type": "Answer", text: entry.a },
+    })),
+  };
+
   return (
     <>
-      <JsonLd data={jsonLd} />
+      <JsonLd
+        data={[
+          breadcrumbs(locale, [
+            { name: dict.nav.home, path: "" },
+            { name: dict.exams.title, path: "/exams" },
+          ]),
+          jsonLd,
+          faqLd,
+        ]}
+      />
 
       <div className="container-page pt-10 pb-4">
         <p className="text-xs font-semibold tracking-[0.25em] text-violet-400 uppercase">
@@ -103,6 +124,20 @@ export default async function ExamsPage({ params }: { params: Promise<{ locale: 
             <ExamCard key={exam.id} exam={exam} locale={locale} dict={dict} />
           ))}
         </Carousel>
+      </section>
+
+      <section className="container-page pb-20">
+        <h2 className="font-display mb-6 text-2xl font-semibold">{dict.exams.faqTitle}</h2>
+        <div className="mx-auto grid max-w-4xl gap-3 md:grid-cols-2">
+          {dict.exams.faq.map((entry) => (
+            <details key={entry.q} className="glass rounded-2xl p-5 [&[open]>summary]:text-mist-50">
+              <summary className="cursor-pointer text-sm font-semibold text-mist-200">
+                {entry.q}
+              </summary>
+              <p className="text-muted mt-3 text-sm leading-relaxed">{entry.a}</p>
+            </details>
+          ))}
+        </div>
       </section>
     </>
   );
