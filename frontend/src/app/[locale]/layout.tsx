@@ -92,6 +92,11 @@ export async function generateMetadata({
     applicationName: dict.meta.siteName,
     formatDetection: { telephone: false },
     manifest: "/manifest.webmanifest",
+    // Enamad (the Iranian e-commerce trust seal) verifies ownership by
+    // reading this tag on the home page.
+    other: process.env.NEXT_PUBLIC_ENAMAD
+      ? { enamad: process.env.NEXT_PUBLIC_ENAMAD }
+      : {},
     // Search Console / Bing Webmaster ownership, set per deployment.
     verification: {
       google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,

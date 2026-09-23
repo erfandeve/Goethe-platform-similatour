@@ -46,6 +46,7 @@ export function proxy(request: NextRequest) {
 
   const url = request.nextUrl.clone();
   url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
+
   const response = NextResponse.redirect(url);
   // The answer depends on these headers, so caches must not share it.
   response.headers.set("Vary", "Accept-Language, Cookie");
